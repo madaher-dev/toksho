@@ -49,7 +49,7 @@ export default function NotFound() {
             </CardContent>
           </CardActionArea>
           <CardActions>
-            <Button size="small" color="primary" component={Link} to="/welcome">
+            <Button size="small" color="primary" component={Link} to="/home">
               Back to Home Page
             </Button>
           </CardActions>

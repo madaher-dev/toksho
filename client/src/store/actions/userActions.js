@@ -6,9 +6,12 @@ import {
   LOGOUT,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  HANDLER_ADDED
+  HANDLER_ADDED,
+  AVATAR_UPLOADED,
+  AVATAR_FAIL
 } from './Types';
 import axios from 'axios';
+// const FormData = require('form-data');
 const factory = require('./actionsFactory');
 // Register User
 
@@ -23,6 +26,7 @@ export const registerUser = user =>
 export const checkUser = () => async dispatch => {
   try {
     const response = await axios.get('/api/v1/users/me');
+
     dispatch({
       type: USER_LOADED,
       payload: response.data
@@ -40,6 +44,37 @@ export const resendEmail = email =>
     '/api/v1/users/resendEmail',
     'EMAIL_RESEND',
     'AUTH_ERROR'
+  );
+
+// Upload Avatar
+export const uploadAvatar = image => async dispatch => {
+  const config = {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  };
+  const form = new FormData();
+  form.append('photo', image);
+  try {
+    const res = await axios.patch('/api/v1/users/uploadAvatar', form, config);
+
+    dispatch({
+      type: AVATAR_UPLOADED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: AVATAR_FAIL,
+      payload: err.response.data.message
+    });
+  }
+};
+
+// Update Bio
+export const updateBio = bio =>
+  factory.patch(
+    { bio, firstLogin: false },
+    `/api/v1/users/updateBio`,
+    'UPDATE_BIO',
+    'BIO_FAIL'
   );
 
 // Verify Email with code
@@ -110,16 +145,16 @@ export const loginUser = user => async dispatch => {
   };
   try {
     const res = await axios.post('/api/v1/users/login', user, config);
-    console.log(res);
+
     if (res.data.token && res.data.data.user.handler) {
       dispatch({
         type: HANDLER_ADDED,
-        payload: res.data //Token
+        payload: res.data //User
       });
     } else {
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data //Token
+        payload: res.data //User
       });
     }
   } catch (err) {

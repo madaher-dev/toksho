@@ -117,7 +117,7 @@ const NotVerified = ({
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/welcome" />;
+    return <Redirect to="/home" />;
   } else if (user) {
     if (!user.verified || !user.handler) {
       return (
@@ -241,7 +241,7 @@ const NotVerified = ({
           </Backdrop>
         </Grid>
       );
-    } else return <Redirect to="/welcome" />;
+    } else return <Redirect to="/home" />;
   } else return <Redirect to="/login" />;
 };
 NotVerified.propTypes = {

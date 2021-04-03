@@ -16,8 +16,8 @@ const sendEmail = async options => {
     from: 'Your Website Admin <admin@yourwebsite.io>',
     to: options.email,
     subject: options.subject,
-    text: options.message
-    // html:
+    text: options.message,
+    html: options.html_message
   };
 
   // 3) Actually send the email

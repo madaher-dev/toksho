@@ -14,7 +14,8 @@ import Login from './components/auth/Login';
 import NotVerified from './pages/NotVerified';
 import Forgot from './components/auth/Forgot';
 import ResetPassword from './components/auth/ResetPassword';
-
+import Profile from './pages/Profile';
+import './assets/scss/material-kit-react.scss?v=1.9.0';
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -47,7 +48,12 @@ function App() {
                 <Route exact path="/" component={Landing} />
                 <Route path="/signup/:id" component={Landing} />
                 <Route exact path="/login" component={Login} />
-                <PrivateRoute exact path="/welcome" component={Welcome} />
+                <PrivateRoute
+                  exact
+                  path="/home"
+                  component={Welcome}
+                  page="home"
+                />
                 <Route exact path="/notverified" component={NotVerified} />
                 <Route exact path="/forgot" component={Forgot} />
                 <Route
@@ -55,6 +61,10 @@ function App() {
                   path="/reset/:email_token"
                   component={ResetPassword}
                 />
+                <Route exact path="/profile" component={Profile} />
+                <Route exact path="/404" component={NotFound} />
+                <Route exact path="/:handler" component={Profile} />
+
                 <Route component={NotFound} />
               </Switch>
             </Router>

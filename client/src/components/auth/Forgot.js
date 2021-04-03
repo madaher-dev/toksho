@@ -64,7 +64,7 @@ const Login = ({
   }, [linkSent, setAlert, clearErrors, error]);
 
   if (isAuthenticated) {
-    return <Redirect to="/welcome" />;
+    return <Redirect to="/home" />;
   } else if (linkSent) {
     return <Redirect to="/login" />;
   } else {

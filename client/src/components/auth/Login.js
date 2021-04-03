@@ -93,7 +93,7 @@ const Login = ({
   }, [error, setAlert, clearErrors]);
 
   if (isAuthenticated) {
-    return <Redirect to="/welcome" />;
+    return <Redirect to="/home" />;
   } else if (user) {
     if (!user.verified || !user.handler) {
       return <Redirect to="/notverified" />;

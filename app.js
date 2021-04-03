@@ -78,6 +78,14 @@ app.use((req, res, next) => {
   next();
 });
 
+//Logger
+
+app.use(
+  require('connect-logger')({
+    /* options */
+  })
+);
+
 // 2-Routes
 app.get('/', (req, res) =>
   res.json({ msg: 'Welcome to the Delivery App API' })

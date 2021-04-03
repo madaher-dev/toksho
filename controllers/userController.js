@@ -1,7 +1,41 @@
+const multer = require('multer');
+const sharp = require('sharp');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('Not an image! Please upload only images.', 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter
+});
+
+exports.uploadUserPhoto = upload.single('photo');
+
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+  if (!req.file) return next();
+
+  const fileName = `user-${req.user._id}.jpeg`;
+
+  await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`assets/images/avatars/${fileName}`);
+
+  req.body.photo = fileName;
+  next();
+});
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -15,11 +49,13 @@ exports.getMe = catchAsync(async (req, res, next) => {
   req.params.id = req.user.id;
 
   const currentUser = await User.findById(req.user.id);
+
   if (!currentUser.handler) {
     return next(
       new AppError('The user belonging to this token no longer exist.', 401)
     );
   }
+  next();
 });
 
 exports.updateMe = catchAsync(async (req, res, next) => {
@@ -34,7 +70,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
 
   // 2) Filtered out unwanted fields names that are not allowed to be updated
-  const filteredBody = filterObj(req.body, 'name', 'email');
+  const filteredBody = filterObj(req.body, 'photo', 'bio', 'firstLogin');
 
   // 3) Update user document
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
@@ -56,6 +92,18 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: 'success',
     data: null
+  });
+});
+
+exports.getProfile = catchAsync(async (req, res, next) => {
+  const user = await User.findOne(
+    { handler: req.body.profile },
+    { name: 1, email: 1, handler: 1, photo: 1, bio: 1 }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    data: user
   });
 });
 

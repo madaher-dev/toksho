@@ -15,29 +15,34 @@ import {
   LOGIN_FAIL,
   LINK_SENT,
   TOKEN_CONFIRMED,
-  RESET_PASS_SUCCESSS
+  RESET_PASS_SUCCESSS,
+  AVATAR_UPLOADED,
+  AVATAR_FAIL,
+  BIO_FAIL,
+  UPDATE_BIO
 } from '../actions/Types';
 
 const initialState = {
   isAuthenticated: null,
-  loading: false,
+  loading: true, //Initialize to true to avoid redirect to landing while checking user
   user: null,
   error: null,
-  step: 1,
-  emailSent: false
+  step: 1, //Step is used for signup Modal - Step 1 for email/pass/dob - Step 2 for Email Validation - Step 3 for set handler
+  avatarStep: 1, // Step for the avatar page
+  emailSent: false //Validation Email Sent
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initialState, action) => {
   switch (action.type) {
-    case REGISTER_SUCCESS:
+    case REGISTER_SUCCESS: //Completed step 1 of registration
       return {
         ...state,
         user: action.payload.data.user,
         loading: false,
         step: 2
       };
-    case HANDLER_ADDED:
+    case HANDLER_ADDED: //Completed step 3 of registration
       return {
         ...state,
         user: action.payload.data.user,
@@ -45,18 +50,20 @@ export default (state = initialState, action) => {
         loading: false,
         step: 1
       };
-    case RESET_PASS_SUCCESSS: //check/test if not email confirmed
+    case RESET_PASS_SUCCESSS: //checks if email verified and handler set (step 2 and 3)
       if (
         !action.payload.data.user.verified ||
         !action.payload.data.user.handler
       ) {
         return {
+          // redirects to notverified
           ...state,
           user: action.payload.data.user,
           loading: false,
           step: 1
         };
       } else {
+        // redirects to home
         return {
           ...state,
           user: action.payload.data.user,
@@ -78,14 +85,45 @@ export default (state = initialState, action) => {
         isAuthenticated: false,
         loading: false,
         user: null,
-        error: action.payload
+        error: action.payload,
+        avatarStep: 1
       };
     case USER_LOADED:
       return {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: action.payload.data.doc
+        user: action.payload.data.data
+      };
+    case AVATAR_UPLOADED:
+      return {
+        ...state,
+        avatarStep: 2,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload.data.user
+      };
+    case UPDATE_BIO:
+      return {
+        ...state,
+        avatarStep: 3,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload.data.user
+      };
+    case BIO_FAIL:
+      return {
+        ...state,
+        avatarStep: 2,
+        loading: false,
+        error: action.payload
+      };
+    case AVATAR_FAIL:
+      return {
+        ...state,
+        avatarStep: 1,
+        loading: false,
+        error: action.payload
       };
     case EMAIL_VERIFIED:
       return {

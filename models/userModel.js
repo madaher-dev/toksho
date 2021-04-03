@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     lowercase: true
   },
   photo: String,
+  bio: String,
   dob: Date,
   password: {
     type: String,
@@ -45,6 +46,10 @@ const userSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default: false
+  },
+  firstLogin: {
+    type: Boolean,
+    default: true
   },
   active: {
     type: Boolean,

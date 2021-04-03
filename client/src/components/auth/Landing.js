@@ -137,7 +137,7 @@ const Landing = ({ isAuthenticated, checkUser, match }) => {
     setOpen(false);
   };
   if (isAuthenticated) {
-    return <Redirect to="/welcome" />;
+    return <Redirect to="/home" />;
   } else {
     return (
       <Grid container className={classes.container} direction="column">

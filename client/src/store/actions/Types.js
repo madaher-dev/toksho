@@ -22,3 +22,12 @@ export const RESET_PASS_SUCCESSS = 'RESET_PASS_SUCCESSS';
 export const USER_LOADED = 'USER_LOADED';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
 export const SET_ALERT = 'SET_ALERT';
+export const AVATAR_UPLOADED = 'AVATAR_UPLOADED';
+export const AVATAR_FAIL = 'AVATAR_FAIL';
+export const UPDATE_BIO = 'UPDATE_BIO';
+export const BIO_FAIL = 'BIO_FAIL';
+
+//Profile
+export const GET_PROFILE = 'GET_PROFILE';
+export const PROFILE_ERROR = 'PROFILE_ERROR';
+export const NO_PROFILE = 'NO_PROFILE';

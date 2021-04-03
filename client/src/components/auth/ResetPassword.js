@@ -144,12 +144,11 @@ const ResetPassword = ({
       </Grid>
     </Grid>
   );
+
   if (isAuthenticated) {
-    return <Redirect to="/welcome" />;
-  } else if (user) {
-    if (!user.verified || !user.handler) {
-      return <Redirect to="/notverified" />;
-    }
+    return <Redirect to="/home" />;
+  } else if ((user && !user.verified) || (user && !user.handler)) {
+    return <Redirect to="/notverified" />;
   } else {
     return (
       <Grid
@@ -171,7 +170,7 @@ ResetPassword.propTypes = {
   setLoading: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   checkToken: PropTypes.func.isRequired,
-  error: PropTypes.object
+  error: PropTypes.string
 };
 
 const mapStateToProps = state => ({

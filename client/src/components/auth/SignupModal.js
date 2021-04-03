@@ -91,6 +91,16 @@ const HandlerSchema = Yup.object().shape({
   handler: Yup.string()
     .min(3, 'Handler has to be longer than 3 characters!')
     .required('Required')
+    //.trim('The handler cannot include leading and trailing spaces')
+    .strict(true)
+    .matches(
+      /^@?(\w){1,15}$/,
+      'The handler can only include letters and digits'
+    )
+    .matches(
+      /^(?!(?:static|notfound|welcome|login|signup|notverified|reset|forgot|admin|home|profile|settings|logout)$).*$/i,
+      'This handler is not allowed'
+    )
     .test(
       'handler-backend-validation', // Name
       'Handler has already been taken.', // Msg
@@ -163,9 +173,7 @@ const SignupModal = ({
         <Form>
           <DialogTitle id="signup-title">
             <VoiceChatIcon fontSize="large" color="primary" />
-            <Typography variant="h6" id="signup-title">
-              Create your account
-            </Typography>
+            <div>Create your account</div>
           </DialogTitle>
 
           <DialogContent>
@@ -238,7 +246,7 @@ const SignupModal = ({
     <Fragment>
       <DialogTitle id="signup-title">
         <VoiceChatIcon fontSize="large" color="primary" />
-        <Typography variant="h6">Verify your email</Typography>
+        <div>Verify your email</div>
       </DialogTitle>
 
       <DialogContent>

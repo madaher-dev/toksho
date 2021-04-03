@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -18,13 +18,17 @@ const useStyles = makeStyles(theme => ({
 const PrivateRoute = ({
   isAuthenticated,
   loading,
+  page,
   checkUser,
   component: Component,
   ...rest
 }) => {
-  // if (!isAuthenticated) {
-  //   checkUser();
-  // }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      checkUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const classes = useStyles();
   return (
@@ -32,7 +36,7 @@ const PrivateRoute = ({
       {...rest}
       render={props =>
         isAuthenticated && !loading ? (
-          <Component {...props} />
+          <Component {...props} page={page} />
         ) : loading ? (
           <Backdrop className={classes.backdrop} open={loading}>
             <CircularProgress color="inherit" />
