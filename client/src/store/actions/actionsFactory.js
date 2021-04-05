@@ -8,7 +8,6 @@ export const post = (body, url, type, typeFail) => async dispatch => {
   };
   try {
     const res = await axios.post(`${url}`, body, config);
-
     dispatch({
       type,
       payload: res.data

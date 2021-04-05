@@ -1,108 +1,119 @@
-import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import GridContainer from '../../../components/Grid/GridContainer.js';
-import GridItem from '../../../components/Grid/GridItem.js';
-import Button from '../../../components/CustomButtons/Button.js';
-import Card from '../../../components/Card/Card.js';
-import CardBody from '../../../components/Card/CardBody.js';
-import CardFooter from '../../../components/Card/CardFooter.js';
-import classNames from 'classnames';
+import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import styles from '../../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
-import team1 from '../../../assets/img/faces/avatar.jpg';
-
+import Challenges from './Challenges';
+import NavPills from '../../../components/NavPills/NavPills.js';
+import Camera from '@material-ui/icons/Camera';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import withWidth from '@material-ui/core/withWidth';
+import CreatDebate from './CreatDebate';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {
+  openModal,
+  setLoading,
+  getAllDebates
+} from '../../../store/actions/debateActions';
 const useStyles = makeStyles(styles);
 
-const DebateWall = () => {
+const DebateWall = ({
+  width,
+  openModal,
+  setLoading,
+  getAllDebates,
+  debates,
+  loading
+}) => {
   const classes = useStyles();
-  const theme = useTheme();
-  const imageClasses = classNames(
-    classes.imgRaised,
-    classes.imgRoundedCircle,
-    classes.imgFluid
-  );
+  // This is equivalent to theme.breakpoints.down("sm")
+  const isSmallScreen = /xs|sm/.test(width);
+  const buttonProps = {
+    variant: isSmallScreen ? 'round' : 'extended',
+    size: isSmallScreen ? 'small' : 'large'
+  };
+  useEffect(() => {
+    setLoading();
+    getAllDebates();
+  }, []);
+  console.log(debates);
+  console.log(loading);
   return (
-    <GridContainer style={{ paddingLeft: 10 }}>
-      <GridItem xs={12}>
-        <Card plain>
-          <GridContainer>
-            <GridItem xs={2} sm={3} md={2} lg={1} xl={1}>
-              <img src={team1} alt="..." className={imageClasses} />
-            </GridItem>
-            <GridItem>
-              <h4>
-                <strong>Mohamad Ali Daher </strong>@madaher12345678 4h
-              </h4>
-            </GridItem>
-            <GridItem>@madaher</GridItem>
-          </GridContainer>
-          <GridContainer>
-            <GridItem xs={1}>Hello</GridItem>
-            <GridItem xs={1}>Hello</GridItem>
-            <GridItem xs={1}>Hello</GridItem>
-          </GridContainer>
-          <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-            <img src={team1} alt="..." className={imageClasses} />
-          </GridItem>
-          <h4 className={classes.cardTitle}>
-            Gigi Hadid
-            <br />
-            <small className={classes.smallTitle}>Model</small>
-          </h4>
-          <CardBody>
-            <p className={classes.description}>
-              You can write here details about one of your team members. You can
-              give more details about what they do. Feel free to add some{' '}
-              <a href="#pablo">links</a> for people to be able to follow them
-              outside the site.
-            </p>
-          </CardBody>
-          <CardFooter className={classes.justifyCenter}>
-            <Button justIcon color="transparent" className={classes.margin5}>
-              <i className={classes.socials + ' fab fa-twitter'} />
-            </Button>
-            <Button justIcon color="transparent" className={classes.margin5}>
-              <i className={classes.socials + ' fab fa-instagram'} />
-            </Button>
-            <Button justIcon color="transparent" className={classes.margin5}>
-              <i className={classes.socials + ' fab fa-facebook'} />
-            </Button>
-          </CardFooter>
-        </Card>
-      </GridItem>
-      <GridItem xs={12} sm={12} md={4}>
-        <Card plain>
-          <GridItem xs={12} sm={12} md={6} className={classes.itemGrid}>
-            <img src={team1} alt="..." className={imageClasses} />
-          </GridItem>
-          <h4 className={classes.cardTitle}>
-            Gigi Hadid
-            <br />
-            <small className={classes.smallTitle}>Model</small>
-          </h4>
-          <CardBody>
-            <p className={classes.description}>
-              You can write here details about one of your team members. You can
-              give more details about what they do. Feel free to add some{' '}
-              <a href="#pablo">links</a> for people to be able to follow them
-              outside the site.
-            </p>
-          </CardBody>
-          <CardFooter className={classes.justifyCenter}>
-            <Button justIcon color="transparent" className={classes.margin5}>
-              <i className={classes.socials + ' fab fa-twitter'} />
-            </Button>
-            <Button justIcon color="transparent" className={classes.margin5}>
-              <i className={classes.socials + ' fab fa-instagram'} />
-            </Button>
-            <Button justIcon color="transparent" className={classes.margin5}>
-              <i className={classes.socials + ' fab fa-facebook'} />
-            </Button>
-          </CardFooter>
-        </Card>
-      </GridItem>
-    </GridContainer>
+    <div>
+      <Fab
+        {...buttonProps}
+        color="primary"
+        aria-label="add"
+        className={classes.cta}
+        onClick={() => openModal()}
+      >
+        <AddIcon />
+        {!isSmallScreen ? 'Host a Debate' : null}
+      </Fab>
+      <NavPills
+        color="primary"
+        tabs={[
+          {
+            tabIcon: Camera,
+            tabButton: 'Challenges',
+            tabContent: <Challenges debates={debates} loading={loading} />
+          },
+          {
+            tabButton: 'Upcoming',
+            tabIcon: Camera,
+            tabContent: (
+              <span>
+                <p>
+                  Efficiently unleash cross-media information without
+                  cross-media value. Quickly maximize timely deliverables for
+                  real-time schemas.
+                </p>
+                <br />
+                <p>
+                  Dramatically maintain clicks-and-mortar solutions without
+                  functional solutions.
+                </p>
+              </span>
+            )
+          },
+          {
+            tabButton: 'Live',
+            tabIcon: Camera,
+            tabContent: (
+              <span>
+                <p>
+                  Completely synergize resource taxing relationships via premier
+                  niche markets. Professionally cultivate one-to-one customer
+                  service with robust ideas.{' '}
+                </p>
+                <br />
+                <p>
+                  Dynamically innovate resource-leveling customer service for
+                  state of the art customer service.
+                </p>
+              </span>
+            )
+          }
+        ]}
+      />
+      <CreatDebate />
+    </div>
   );
 };
 
-export default DebateWall;
+DebateWall.propTypes = {
+  openModal: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  getAllDebates: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  debates: state.debates.debates,
+  loading: state.debates.loading
+});
+
+export default connect(mapStateToProps, {
+  openModal,
+  setLoading,
+  getAllDebates
+})(withWidth()(DebateWall));

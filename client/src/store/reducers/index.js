@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import userReducer from './userReducer';
-// import crushReducer from './crushReducer';
+import debateReducer from './debateReducer';
 import alertReducer from './alertReducer';
 import profilesReducer from './profilesReducer';
 // import matchReducer from './matchReducer';
@@ -8,7 +8,7 @@ import profilesReducer from './profilesReducer';
 
 export default combineReducers({
   users: userReducer,
-  // crushes: crushReducer,
+  debates: debateReducer,
   alerts: alertReducer,
   profiles: profilesReducer
   // matches: matchReducer,

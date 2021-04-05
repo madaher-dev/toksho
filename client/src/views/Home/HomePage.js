@@ -2,15 +2,23 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import DebateWall from '../Components/DebateWall/DebateWall';
 import SideBar from '../Components/SideBar/SideBar';
+import Box from '@material-ui/core/Box';
 const HomePage = () => {
   return (
     <Grid container>
-      <Grid item xs={12} sm={9}>
+      <Grid item sm={12} md={9} style={{ paddingLeft: 10 }}>
         <DebateWall />
       </Grid>
-      <Grid item xs={false} sm={3}>
+
+      <Box
+        component={Grid}
+        item
+        sm={false}
+        md={3}
+        display={{ xs: 'none', md: 'block' }}
+      >
         <SideBar />
-      </Grid>
+      </Box>
     </Grid>
   );
 };

@@ -12,7 +12,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const resourceRouter = require('./routes/resourceRoutes');
 const userRouter = require('./routes/userRoutes');
 // const reviewRouter = require('./routes/reviewRoutes');
-// const orderRouter = require('./routes/orderRoutes');
+const debateRouter = require('./routes/debateRoutes');
 // const transactionRouter = require('./routes/transactionRoutes');
 
 const app = express();
@@ -91,7 +91,7 @@ app.get('/', (req, res) =>
   res.json({ msg: 'Welcome to the Delivery App API' })
 );
 // app.use('/api/v1/resource', resourceRouter);
-// app.use('/api/v1/orders', orderRouter);
+app.use('/api/v1/debates', debateRouter);
 app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/tranactions', transactionRouter);
 // app.use('/api/v1/reviews', reviewRouter);
