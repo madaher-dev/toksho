@@ -35,7 +35,7 @@ const app = express();
 
 //Static Files
 //app.use(express.static('assets'));
-//app.use('/static', express.static(path.join(__dirname, 'assets')));
+app.use('/static', express.static(path.join(__dirname, 'assets')));
 //app.use(express.static('client/build'));
 // Limit requests from same API
 // const limiter = rateLimit({
