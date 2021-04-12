@@ -9,11 +9,9 @@ const cors = require('cors');
 const compression = require('compression');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-const resourceRouter = require('./routes/resourceRoutes');
+
 const userRouter = require('./routes/userRoutes');
-// const reviewRouter = require('./routes/reviewRoutes');
 const debateRouter = require('./routes/debateRoutes');
-// const transactionRouter = require('./routes/transactionRoutes');
 
 const app = express();
 // 1- Global Middleware
@@ -25,14 +23,16 @@ app.enable('trust proxy');
 //  app.use(cors({
 //   origin: 'https://myapp.com'
 // }));
-app.use(cors());
+//app.use(cors());
 //for patch and delete
-app.options('*', cors());
+//app.options('*', cors());
 // Set security HTTP headers
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
+);
 
-// Use Compression
-// app.use(compression);
 //Static Files
 //app.use(express.static('assets'));
 app.use('/static', express.static(path.join(__dirname, 'assets')));
@@ -53,6 +53,9 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS
 app.use(xss());
+
+// Use Compression
+app.use(compression);
 
 // Prevent parameter pollution
 app.use(
@@ -86,19 +89,28 @@ app.use(
   })
 );
 
-//2 - Routes;
-app.get('/', (req, res) =>
-  res.json({ msg: 'Welcome to the Delivery App API' })
-);
+// enable cors
+var corsOption = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: ['x-auth-token']
+};
+app.use(cors(corsOption));
+
+// 2-Routes
+// app.get('/', (req, res) =>
+//   res.json({ msg: 'Welcome to the Delivery App API' })
+// );
 
 // Serve static assets in production
-// if (process.env.NODE_ENV === 'production') {
-//   // Set static folder
-//   app.use(express.static('client/build'));
-//   app.get('*', (req, res) =>
-//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-//   );
-// }
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  );
+}
 
 // app.use('/api/v1/resource', resourceRouter);
 app.use('/api/v1/debates', debateRouter);
