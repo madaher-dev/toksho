@@ -14,7 +14,8 @@ router.post('/resendEmail', authController.resendEmail);
 router.post('/confirmEmail', authController.confirmEmail);
 router.post('/checkHandler', authController.checkHandler);
 router.get('/deleteCookie', authController.deleteCookie);
-router.post('/getProfile', userController.getProfile);
+router.post('/getProfileByHandler', userController.getProfileByHandler);
+router.get('/profiles/:profile', userController.getProfile);
 //Protect all routes after this middleware
 router.use(authController.protect);
 

@@ -86,7 +86,9 @@ export default (state = initialState, action) => {
         loading: false,
         user: null,
         error: action.payload,
-        avatarStep: 1
+        avatarStep: 1,
+        step: 1,
+        emailSent: false
       };
     case USER_LOADED:
       return {

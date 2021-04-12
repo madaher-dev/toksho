@@ -20,6 +20,7 @@ const debateSchema = mongoose.Schema(
       default: Date.now()
     },
     schedule: Date,
+    endDate: Date,
     topics: [String],
     language: {
       type: String,
@@ -28,15 +29,31 @@ const debateSchema = mongoose.Schema(
         message: 'Unsupported Language'
       }
     },
+    status: {
+      type: String,
+      default: 'new'
+    },
     duration: {
       type: String,
       enum: {
-        values: ['30 mins', '45 mins', '1 hr'],
+        values: [30, 45, 60],
         message: 'Unsupported Duration'
       }
     },
     slug: String,
     challengers: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ],
+    guests: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ],
+    likes: [
       {
         type: mongoose.Schema.ObjectId,
         ref: 'User'
@@ -58,6 +75,26 @@ const debateSchema = mongoose.Schema(
 debateSchema.pre('save', function(next) {
   //pre save hook
   this.slug = slugify(this.title, { lower: true });
+  next();
+});
+
+debateSchema.pre(/^find/, function(next) {
+  this.populate({
+    path: 'guests',
+    select: 'name handler photo'
+  });
+  // }).populate({
+  //   path: 'user',
+  //   select: 'name photo'
+  // });
+  debateSchema.pre('validate', function(next) {
+    if (this.guests.length > 5) throw 'You can have a maximum of 5 guests!';
+    next();
+  });
+  this.populate({
+    path: 'user',
+    select: 'name photo handler'
+  });
   next();
 });
 

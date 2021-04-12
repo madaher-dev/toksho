@@ -98,133 +98,145 @@ const CreatDebate = ({
       maxWidth="sm"
     >
       {loading && <CustomLinearProgress variant="query" color="primary" />}
-
-      <Formik
-        initialValues={{
-          title: '',
-          synopsis: '',
-          language: 'English',
-          schedule: new Date(),
-          duration: '30 mins',
-          topics: []
-        }}
-        validationSchema={HostSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            setSubmitting(false);
-            handleSubmit(values);
-          }, 500);
-        }}
-      >
-        {({
-          setFieldValue,
-          values,
-          submitForm,
-          isSubmitting,
-          touched,
-          errors
-        }) => (
-          <Form>
-            <DialogTitle id="signup-title" className={classes.modalHeader}>
-              <VoiceChatIcon fontSize="large" color="primary" />
-              <div>Host a Debate</div>
-            </DialogTitle>
-            <DialogContent className={classes.modalBody}>
-              <Box margin={1}>
-                <Field
-                  component={TextField}
-                  name="title"
-                  type="text"
-                  label="Title"
-                  fullWidth
-                />
-              </Box>
-              <Box margin={1}>
-                <Field
-                  component={TextField}
-                  name="synopsis"
-                  type="text"
-                  label="Synopsis"
-                  fullWidth
-                  placeholder="Explain the debate topic, situation and your position."
-                  multiline
-                />
-              </Box>
-              <Box margin={1}>
-                <Field
-                  component={CustomDropdown}
-                  name="language"
-                  buttonText="Language"
-                  dropdownList={['عربي', 'English', 'Français']}
-                  onClick={v => setFieldValue('language', v)}
-                />
-                {<p>{values.language}</p>}
-              </Box>
-              <Box margin={1}>
-                <Field
-                  component={DateTimePicker}
-                  name="schedule"
-                  type="date"
-                  label="Schedule"
-                  fullWidth
-                  placeholder={'Set Date & Time for your debate.'}
-                  multiline
-                  disablePast
-                  value={values.schedule}
-                  onChange={v => setFieldValue('schedule', v)}
-                />
-              </Box>
-              <Box margin={1}>
-                <Field
-                  component={CustomDropdown}
-                  id="duration"
-                  name="duration"
-                  buttonText="Duration"
-                  dropdownList={['30 mins', '45 mins', '1 hr']}
-                  onClick={v => setFieldValue('duration', v)}
-                />
-                {<p>{values.duration}</p>}
-              </Box>
-              <Box margin={1}>
-                <FieldArray
-                  name="topics"
-                  render={arrayHelpers => (
-                    <Field
-                      name="topics"
-                      component={ChipInput}
-                      type="text"
-                      label="Topics"
-                      value={values.topics}
-                      margin="none"
-                      onAdd={chip => arrayHelpers.push(chip)}
-                      onDelete={chip => arrayHelpers.remove(chip)}
-                      fullWidth
-                      chipRenderer={chipRenderer}
-                      helperText={errors.topics ? errors.topics : ''}
-                      error={errors.topics ? true : false}
-                    />
-                  )}
-                />
-              </Box>
-            </DialogContent>
-            <DialogActions
-              className={classes.modalFooter + ' ' + classes.modalFooterCenter}
-            >
-              <Button
-                onClick={() => closeModal()}
-                color="github"
-                //disabled={loading}
-                round
+      <div style={{ paddingLeft: 20, paddingRight: 20 }}>
+        <Formik
+          initialValues={{
+            title: '',
+            synopsis: '',
+            language: 'English',
+            schedule: new Date(),
+            duration: '30 mins',
+            topics: []
+          }}
+          validationSchema={HostSchema}
+          onSubmit={(values, { setSubmitting, resetForm, initialValues }) => {
+            setTimeout(() => {
+              setSubmitting(false);
+              handleSubmit(values);
+              resetForm(initialValues);
+            }, 500);
+          }}
+        >
+          {({
+            setFieldValue,
+            values,
+            submitForm,
+            isSubmitting,
+            initialValues,
+            touched,
+            resetForm,
+            errors
+          }) => (
+            <Form>
+              <DialogTitle id="signup-title" className={classes.modalHeader}>
+                <VoiceChatIcon fontSize="large" color="primary" />
+                <div>Host a Debate</div>
+              </DialogTitle>
+              <DialogContent className={classes.modalBody}>
+                <Box margin={1}>
+                  <Field
+                    component={TextField}
+                    name="title"
+                    type="text"
+                    label="Title"
+                    fullWidth
+                  />
+                </Box>
+                <Box margin={1}>
+                  <Field
+                    component={TextField}
+                    name="synopsis"
+                    type="text"
+                    label="Synopsis"
+                    fullWidth
+                    placeholder="Explain the debate topic, situation and your position."
+                    multiline
+                  />
+                </Box>
+                <Box margin={1}>
+                  <Field
+                    component={CustomDropdown}
+                    name="language"
+                    buttonText="Language"
+                    dropdownList={['عربي', 'English', 'Français']}
+                    onClick={v => setFieldValue('language', v)}
+                  />
+                  {<p>{values.language}</p>}
+                </Box>
+                <Box margin={1}>
+                  <Field
+                    component={DateTimePicker}
+                    name="schedule"
+                    type="date"
+                    label="Schedule"
+                    fullWidth
+                    placeholder={'Set Date & Time for your debate.'}
+                    multiline
+                    disablePast
+                    minutesStep={30}
+                    value={values.schedule}
+                    onChange={v => setFieldValue('schedule', v)}
+                  />
+                </Box>
+                <Box margin={1}>
+                  <Field
+                    component={CustomDropdown}
+                    id="duration"
+                    name="duration"
+                    buttonText="Duration"
+                    dropdownList={['30 mins', '45 mins', '1 hr']}
+                    onClick={v => setFieldValue('duration', v)}
+                  />
+                  {<p>{values.duration}</p>}
+                </Box>
+                <Box margin={1}>
+                  <FieldArray
+                    name="topics"
+                    render={arrayHelpers => (
+                      <Field
+                        name="topics"
+                        component={ChipInput}
+                        type="text"
+                        label="Topics"
+                        value={values.topics}
+                        margin="none"
+                        onAdd={chip => arrayHelpers.push(chip)}
+                        onDelete={chip =>
+                          arrayHelpers.remove(values.topics.indexOf(chip))
+                        }
+                        fullWidth
+                        chipRenderer={chipRenderer}
+                        helperText={errors.topics ? errors.topics : ''}
+                        error={errors.topics ? true : false}
+                      />
+                    )}
+                  />
+                </Box>
+              </DialogContent>
+              <DialogActions
+                className={
+                  classes.modalFooter + ' ' + classes.modalFooterCenter
+                }
               >
-                Cancel
-              </Button>
-              <Button onClick={submitForm} color="primary" round>
-                Next
-              </Button>
-            </DialogActions>
-          </Form>
-        )}
-      </Formik>
+                <Button
+                  onClick={() => {
+                    resetForm(initialValues);
+                    closeModal();
+                  }}
+                  color="github"
+                  //disabled={loading}
+                  round
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary" round>
+                  Next
+                </Button>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </Dialog>
   );
 };
@@ -233,7 +245,8 @@ CreatDebate.propTypes = {
   createDebate: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   setLoading: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired
+  closeModal: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({

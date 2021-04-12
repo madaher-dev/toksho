@@ -30,17 +30,40 @@ const debateWallStyle = theme => ({
   },
   socials: {
     marginTop: '0',
-    width: '100%',
+    //width: '100%',
     transform: 'none',
     left: '0',
     top: '0',
-    height: '100%',
-    lineHeight: '41px',
+    //height: '100%',
+    // lineHeight: '41px',
     fontSize: '20px',
-    color: '#999'
+    color: '#999',
+    margin: '5px',
+    '&:hover': {
+      color: '#A74A5A'
+    }
+  },
+  socials_filled: {
+    marginTop: '0',
+    //width: '100%',
+    transform: 'none',
+    left: '0',
+    top: '0',
+    //height: '100%',
+    //lineHeight: '41px',
+    fontSize: '20px',
+    color: '#A74A5A',
+    margin: '5px'
   },
   margin5: {
     margin: '5px'
+  },
+  margin6: {
+    width: '100%',
+    margin: '0px',
+    padding: '0px',
+    lineHeight: '41px',
+    fontSize: '20px'
   },
   container: {
     //display: 'flex',
@@ -55,8 +78,8 @@ const debateWallStyle = theme => ({
   duration: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start'
   },
   durationContainer: {
     display: 'flex',
@@ -99,7 +122,7 @@ const debateWallStyle = theme => ({
     right: theme.spacing(3)
   },
   debateTitle: {
-    [theme.breakpoints.down('md')]: { maxWidth: 250 }
+    [theme.breakpoints.down('md')]: { maxWidth: 220 }
   },
   wallLoader: {
     margin: 0,
@@ -108,6 +131,20 @@ const debateWallStyle = theme => ({
     left: '50%',
     //transform: 'translate(-50%, -50%)',
     translateX: '-50%'
+  },
+  link: {
+    color: '#A74A5A',
+
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+      color: '#A74A5A'
+    },
+    '&:visited': {
+      color: '#A74A5A',
+
+      textDecoration: 'none'
+    }
   }
 });
 

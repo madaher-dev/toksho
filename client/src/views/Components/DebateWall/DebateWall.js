@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from '../../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
 import Challenges from './Challenges';
+import Upcomming from '../UpcommingDebates/Upcomming';
 import NavPills from '../../../components/NavPills/NavPills.js';
 import Camera from '@material-ui/icons/Camera';
 import Fab from '@material-ui/core/Fab';
@@ -10,21 +11,11 @@ import withWidth from '@material-ui/core/withWidth';
 import CreatDebate from './CreatDebate';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  openModal,
-  setLoading,
-  getAllDebates
-} from '../../../store/actions/debateActions';
+import { openModal } from '../../../store/actions/debateActions';
+
 const useStyles = makeStyles(styles);
 
-const DebateWall = ({
-  width,
-  openModal,
-  setLoading,
-  getAllDebates,
-  debates,
-  loading
-}) => {
+const DebateWall = ({ width, openModal }) => {
   const classes = useStyles();
   // This is equivalent to theme.breakpoints.down("sm")
   const isSmallScreen = /xs|sm/.test(width);
@@ -32,12 +23,12 @@ const DebateWall = ({
     variant: isSmallScreen ? 'round' : 'extended',
     size: isSmallScreen ? 'small' : 'large'
   };
-  useEffect(() => {
-    setLoading();
-    getAllDebates();
-  }, []);
-  console.log(debates);
-  console.log(loading);
+  // useEffect(() => {
+  //   setLoading();
+  //   getAllDebates();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   return (
     <div>
       <Fab
@@ -56,25 +47,12 @@ const DebateWall = ({
           {
             tabIcon: Camera,
             tabButton: 'Challenges',
-            tabContent: <Challenges debates={debates} loading={loading} />
+            tabContent: <Challenges /> //debates={debates} loading={loading} />
           },
           {
             tabButton: 'Upcoming',
             tabIcon: Camera,
-            tabContent: (
-              <span>
-                <p>
-                  Efficiently unleash cross-media information without
-                  cross-media value. Quickly maximize timely deliverables for
-                  real-time schemas.
-                </p>
-                <br />
-                <p>
-                  Dramatically maintain clicks-and-mortar solutions without
-                  functional solutions.
-                </p>
-              </span>
-            )
+            tabContent: <Upcomming />
           },
           {
             tabButton: 'Live',
@@ -102,18 +80,11 @@ const DebateWall = ({
 };
 
 DebateWall.propTypes = {
-  openModal: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
-  getAllDebates: PropTypes.func.isRequired
+  openModal: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  debates: state.debates.debates,
-  loading: state.debates.loading
-});
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps, {
-  openModal,
-  setLoading,
-  getAllDebates
+  openModal
 })(withWidth()(DebateWall));

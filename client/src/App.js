@@ -7,6 +7,7 @@ import Landing from './components/auth/Landing';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import PrivateRoute from './components/routing/PrivateRoute';
+import DebateRoute from './components/routing/DebateRoute';
 import Alerts from './components/layout/Alerts';
 import Welcome from './pages/Welcome';
 import NotFound from './pages/NotFound';
@@ -15,6 +16,7 @@ import NotVerified from './pages/NotVerified';
 import Forgot from './components/auth/Forgot';
 import ResetPassword from './components/auth/ResetPassword';
 import Profile from './pages/Profile';
+
 import './assets/scss/material-kit-react.scss?v=1.9.0';
 const theme = createMuiTheme({
   palette: {
@@ -53,6 +55,18 @@ function App() {
                   path="/home"
                   component={Welcome}
                   page="home"
+                />
+                <PrivateRoute
+                  exact
+                  path="/mydebates"
+                  component={Welcome}
+                  page="mydebates"
+                />
+                <DebateRoute
+                  exact
+                  path="/debates/:debate"
+                  component={Welcome}
+                  page="debate"
                 />
                 <Route exact path="/notverified" component={NotVerified} />
                 <Route exact path="/forgot" component={Forgot} />

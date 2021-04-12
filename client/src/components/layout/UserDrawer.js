@@ -8,7 +8,6 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,6 +16,7 @@ import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import HomeIcon from '@material-ui/icons/Home';
 import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 import StarsIcon from '@material-ui/icons/Stars';
+import PersonIcon from '@material-ui/icons/Person';
 import { Link, useLocation } from 'react-router-dom';
 import RecordVoiceOverIcon from '@material-ui/icons/RecordVoiceOver';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -89,7 +89,11 @@ const useStyles = makeStyles(theme => ({
     //color: 'red'
   },
   active: {
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
+    '&:hover,&:focus': {
+      color: theme.palette.primary.main,
+      textDecoration: 'none'
+    }
   }
 }));
 
@@ -146,6 +150,20 @@ const UserDrawer = ({ logout }) => {
             </ListItemIcon>
             <ListItemText primary={'Lounge'} />
           </ListItem>
+          <ListItem
+            component={Link}
+            to="/mydebates"
+            key={'mydebates'}
+            className={isActiveParent('/mydebates')}
+          >
+            <ListItemIcon
+              color="inherit"
+              className={isActiveChild('/mydebates')}
+            >
+              <RecordVoiceOverIcon />
+            </ListItemIcon>
+            <ListItemText primary={'My Debates'} />
+          </ListItem>
           <ListItem button key={'watch'} className={classes.parentHover}>
             <ListItemIcon className={classes.childHover}>
               <VideoLibraryIcon />
@@ -182,7 +200,7 @@ const UserDrawer = ({ logout }) => {
             className={isActiveParent('/profile')}
           >
             <ListItemIcon color="inherit" className={isActiveChild('/profile')}>
-              <RecordVoiceOverIcon />
+              <PersonIcon />
             </ListItemIcon>
             <ListItemText primary={'Profile'} />
           </ListItem>

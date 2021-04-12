@@ -98,7 +98,7 @@ const HandlerSchema = Yup.object().shape({
       'The handler can only include letters and digits'
     )
     .matches(
-      /^(?!(?:static|notfound|welcome|login|signup|notverified|reset|forgot|admin|home|profile|settings|logout)$).*$/i,
+      /^(?!(?:static|notfound|welcome|login|signup|notverified|reset|forgot|admin|home|profile|settings|logout|debate|mmydebate|debates|mydebates)$).*$/i,
       'This handler is not allowed'
     )
     .test(

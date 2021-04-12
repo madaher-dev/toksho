@@ -1,45 +1,31 @@
 import React from 'react';
-import Button from '../../../components/CustomButtons/Button.js';
-import Card from '../../../components/Card/Card.js';
-import Badge from '../../../components/Badge/Badge.js';
-import GridContainer from '../../../components/Grid/GridContainer.js';
-import GridItem from '../../../components/Grid/GridItem.js';
+import Button from '../../components/CustomButtons/Button.js';
+import Card from '../../components/Card/Card.js';
+import Badge from '../../components/Badge/Badge.js';
+import GridContainer from '../../components/Grid/GridContainer.js';
+import GridItem from '../../components/Grid/GridItem.js';
 import classNames from 'classnames';
-import styles from '../../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
+import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
 import { makeStyles } from '@material-ui/core/styles';
 import Moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  challenge,
-  withdraw,
-  setChallengeLoading,
   setLikeLoading,
   like,
   unlike
-} from '../../../store/actions/debateActions';
-import { handleOpenModal } from '../../../store/actions/profileActions';
-import ChallengeButton from './ChallengeButton';
-import LikeButton from './LikeButton';
+} from '../../store/actions/debateActions';
+
+import LikeButton from '../Components/DebateWall/LikeButton';
 import Popover from '@material-ui/core/Popover';
 import { FacebookShareButton } from 'react-share';
+import Guests from '../Components/UpcommingDebates/Guests';
 import { Link } from 'react-router-dom';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { useHistory } from 'react-router-dom';
-
 const useStyles = makeStyles(styles);
 
-const DebateCard = ({
-  debate,
-  challenge,
-  withdraw,
-  setChallengeLoading,
-  setLikeLoading,
-  like,
-  unlike,
-  setCurrentDebate, //for challengers modal
-  handleOpenModal
-}) => {
+const ReadyDebateCard = ({ debate, setLikeLoading, like, unlike }) => {
   const classes = useStyles();
   const history = useHistory();
   const imageClasses = classNames(
@@ -50,7 +36,7 @@ const DebateCard = ({
   const [anchorElRight, setAnchorElRight] = React.useState(null);
 
   var now = Moment(); //todays date
-  //var sched = Moment(debate.schedule); // schedule date
+  // var sched = Moment(debate.schedule); // schedule date
   var created = Moment(debate.createdAt); // schedule date
   var duration = Moment.duration(now.diff(created));
   var days = Math.floor(duration.asDays());
@@ -58,14 +44,6 @@ const DebateCard = ({
   var mins = Math.floor(duration.asMinutes());
   var secs = Math.floor(duration.asSeconds());
 
-  const handleChallenge = () => {
-    setChallengeLoading(debate._id);
-    challenge(debate._id);
-  };
-  const handleWithdraw = () => {
-    setChallengeLoading(debate._id);
-    withdraw(debate._id);
-  };
   const handleLike = () => {
     setLikeLoading(debate._id);
     like(debate._id);
@@ -85,41 +63,30 @@ const DebateCard = ({
     profileImage = '/static/images/avatars/default-profile.png';
   }
 
-  let abandoned;
-  if (new Date(debate.schedule) < Date.now()) abandoned = true;
-
   return (
     <Card>
-      <CardActionArea
-        component="span"
-        onClick={() => history.push(`/debates/${debate._id}`)}
-        disableRipple={true}
-      >
+      <GridContainer style={{ paddingTop: 10, width: '100%' }}>
         <GridItem>
-          <GridContainer style={{ paddingTop: 10 }} spacing={0}>
+          <GridContainer>
             <GridItem xs={4} sm={2} xl={1}>
-              <img src={profileImage} alt="..." className={imageClasses} />
-              <p
-                style={{
-                  textAlign: 'center',
-                  paddingTop: 10,
-                  color: 'red'
-                }}
-              >
-                <strong> {abandoned && 'ABANDONED'}</strong>
-              </p>
+              <img
+                src={profileImage}
+                alt="..."
+                className={imageClasses}
+                style={{ marginLeft: 10 }}
+              />
             </GridItem>
             <GridItem xs={8} sm={10} xl={11}>
-              <GridContainer spacing={0}>
+              <GridContainer>
                 <GridItem>
-                  <GridContainer spacing={0}>
+                  <GridContainer>
                     <GridItem xs={12}>
                       <Link
                         onClick={event => {
                           event.stopPropagation();
                           event.preventDefault();
+                          history.push(`/${debate.user?.handler}`);
                         }}
-                        to={`/${debate.user?.handler}`}
                         className={classes.link}
                       >
                         {' '}
@@ -141,11 +108,10 @@ const DebateCard = ({
                         ? 'm'
                         : 's'}
                     </GridItem>
-                    <GridItem>
+                    <GridItem xs={12}>
                       <GridContainer
                         wrap="nowrap"
                         className={classes.debateTitle}
-                        spacing={0}
                       >
                         <GridItem zeroMinWidth>
                           <h4 style={{ overflowWrap: 'break-word' }}>
@@ -154,13 +120,25 @@ const DebateCard = ({
                         </GridItem>
                       </GridContainer>
                     </GridItem>
-                    <GridItem>
-                      <p className={classes.description}>{debate.synopsis}</p>
+                    <GridItem xs={12}>
+                      <GridContainer
+                        wrap="nowrap"
+                        className={classes.debateTitle}
+                      >
+                        <GridItem zeroMinWidth>
+                          <p
+                            className={classes.description}
+                            style={{ overflowWrap: 'break-word' }}
+                          >
+                            {debate.synopsis}
+                          </p>
+                        </GridItem>
+                      </GridContainer>
                     </GridItem>
                   </GridContainer>
                 </GridItem>
                 <GridItem>
-                  <GridContainer spacing={0}>
+                  <GridContainer>
                     <GridItem xs={12} md={6}>
                       <p>
                         <strong>Date: </strong>
@@ -180,16 +158,8 @@ const DebateCard = ({
                       md={6}
                       className={classes.durationContainer}
                     >
-                      <GridContainer spacing={0}>
+                      <GridContainer>
                         <GridItem className={classes.duration}>
-                          <ChallengeButton
-                            challenge={handleChallenge}
-                            withdraw={handleWithdraw}
-                            debate={debate}
-                            openChallengers={handleOpenModal}
-                            setCurrentDebate={setCurrentDebate}
-                          />
-
                           <p>
                             <strong>Duration: </strong>
                             {debate.duration === '30'
@@ -323,31 +293,28 @@ const DebateCard = ({
             </GridItem>
           </GridContainer>
         </GridItem>
-      </CardActionArea>
+        <GridItem style={{ marginLeft: 10 }}>
+          <Guests guests={debate.guests} />
+        </GridItem>
+      </GridContainer>
     </Card>
   );
 };
 
-DebateCard.propTypes = {
+ReadyDebateCard.propTypes = {
   debate: PropTypes.object.isRequired,
-  challenge: PropTypes.func.isRequired,
-  withdraw: PropTypes.func.isRequired,
+
   setLikeLoading: PropTypes.func.isRequired,
-  setChallengeLoading: PropTypes.func.isRequired,
+
   unlike: PropTypes.func.isRequired,
-  like: PropTypes.func.isRequired,
-  handleOpenModal: PropTypes.func.isRequired
+  like: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   debates: state.debates.debates
 });
 export default connect(mapStateToProps, {
-  challenge,
-  withdraw,
-  setChallengeLoading,
   setLikeLoading,
   like,
-  unlike,
-  handleOpenModal
-})(DebateCard);
+  unlike
+})(ReadyDebateCard);

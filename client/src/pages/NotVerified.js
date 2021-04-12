@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 //import { setAlert } from '../store/actions/alertActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -93,13 +93,6 @@ const NotVerified = ({
   step
 }) => {
   const classes = useStyles();
-
-  // useEffect(() => {
-  //   if (error) {
-  //     setAlert(error, 'error');
-  //     clearErrors();
-  //   }
-  // }, [error, setAlert, clearErrors]);
 
   const sendEmail = e => {
     e.preventDefault();

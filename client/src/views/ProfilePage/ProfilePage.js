@@ -18,34 +18,59 @@ import NavPills from '../../components/NavPills/NavPills.js';
 import Parallax from '../../components/Parallax/Parallax.js';
 
 import studio1 from '../../assets/img/examples/studio-1.jpg';
-import studio2 from '../../assets/img/examples/studio-2.jpg';
 import studio3 from '../../assets/img/examples/studio-3.jpg';
-import studio4 from '../../assets/img/examples/studio-4.jpg';
-import studio5 from '../../assets/img/examples/studio-5.jpg';
 import work1 from '../../assets/img/examples/olu-eletu.jpg';
 import work2 from '../../assets/img/examples/clem-onojeghuo.jpg';
-import work3 from '../../assets/img/examples/cynthia-del-rio.jpg';
 import work4 from '../../assets/img/examples/mariya-georgieva.jpg';
-import work5 from '../../assets/img/examples/clem-onojegaw.jpg';
 import bg from '../../assets/img/profile-bg.jpg';
 import styles from '../../assets/jss/material-kit-react/views/profilePage.js';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProfile } from '../../store/actions/profileActions';
+import { getProfileByHandler } from '../../store/actions/profileActions';
+import {
+  getDebatesByHandler,
+  setLoading,
+  getMyDebates
+} from '../../store/actions/debateActions';
 import NoProfile from '../../pages/NoProfile';
+import Host from '../MyDebates/Host';
+import Guest from '../MyDebates/Guest';
 const useStyles = makeStyles(styles);
 
 const ProfilePage = props => {
   const classes = useStyles();
-  const { user, profile, getProfile, noProfile, userProfile } = props;
+  const {
+    user,
+    profile,
+    getProfileByHandler,
+    noProfile,
+    userProfile,
+    getDebatesByHandler,
+    userDebates,
+    loading,
+    setLoading,
+    getMyDebates,
+    myDebates
+  } = props;
   const { ...rest } = props;
   const [myPage, setMyPage] = useState(false);
   useEffect(() => {
-    if (user.handler === profile || !profile) setMyPage(true);
-    else {
-      getProfile(profile);
+    if (user.handler === profile || !profile) {
+      setMyPage(true);
+      setLoading();
+      getMyDebates();
+    } else {
+      getProfileByHandler(profile);
+      getDebatesByHandler(profile);
     }
-  }, [profile, user, getProfile]);
+  }, [
+    profile,
+    user,
+    getProfileByHandler,
+    getDebatesByHandler,
+    setLoading,
+    getMyDebates
+  ]);
   const imageClasses = classNames(
     classes.imgRaised,
     classes.imgRoundedCircle,
@@ -103,7 +128,14 @@ const ProfilePage = props => {
                           ? userProfile.name
                           : null}
                       </h3>
-                      <h6> </h6>
+                      <p>
+                        {myPage && user ? '@' : userProfile ? '@' : null}
+                        {myPage && user
+                          ? user.handler
+                          : userProfile
+                          ? userProfile.handler
+                          : null}
+                      </p>
                       <Button justIcon link className={classes.margin5}>
                         <i className={'fab fa-twitter'} />
                       </Button>
@@ -117,15 +149,17 @@ const ProfilePage = props => {
                   </div>
                 </GridItem>
               </GridContainer>
-              <div className={classes.description}>
-                <p>
-                  {myPage && user
-                    ? user.bio
-                    : userProfile
-                    ? userProfile.bio
-                    : null}
-                </p>
-              </div>
+              <GridContainer>
+                <GridItem className={classes.description}>
+                  <p style={{ overflowWrap: 'break-word' }}>
+                    {myPage && user
+                      ? user.bio
+                      : userProfile
+                      ? userProfile.bio
+                      : null}
+                  </p>
+                </GridItem>
+              </GridContainer>
               <GridContainer justify="center">
                 <GridItem xs={12} sm={12} md={8} className={classes.navWrapper}>
                   <NavPills
@@ -133,76 +167,49 @@ const ProfilePage = props => {
                     color="primary"
                     tabs={[
                       {
-                        tabButton: 'Studio',
+                        tabButton: 'Host',
                         tabIcon: Camera,
                         tabContent: (
-                          <GridContainer justify="center">
-                            <GridItem xs={12} sm={12} md={4}>
-                              <img
-                                alt="..."
-                                src={studio1}
-                                className={navImageClasses}
+                          <div>
+                            {myPage ? (
+                              <Host
+                                debates={myDebates}
+                                loading={loading}
+                                user={user?._id}
                               />
-                              <img
-                                alt="..."
-                                src={studio2}
-                                className={navImageClasses}
+                            ) : (
+                              <Host
+                                debates={userDebates}
+                                loading={loading}
+                                user={userProfile?._id}
                               />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={4}>
-                              <img
-                                alt="..."
-                                src={studio5}
-                                className={navImageClasses}
-                              />
-                              <img
-                                alt="..."
-                                src={studio4}
-                                className={navImageClasses}
-                              />
-                            </GridItem>
-                          </GridContainer>
+                            )}
+                          </div>
                         )
                       },
                       {
-                        tabButton: 'Work',
+                        tabButton: 'Guest',
                         tabIcon: Palette,
                         tabContent: (
-                          <GridContainer justify="center">
-                            <GridItem xs={12} sm={12} md={4}>
-                              <img
-                                alt="..."
-                                src={work1}
-                                className={navImageClasses}
+                          <div>
+                            {myPage ? (
+                              <Guest
+                                debates={myDebates}
+                                loading={loading}
+                                user={user?._id}
                               />
-                              <img
-                                alt="..."
-                                src={work2}
-                                className={navImageClasses}
+                            ) : (
+                              <Guest
+                                debates={userDebates}
+                                loading={loading}
+                                user={userProfile?._id}
                               />
-                              <img
-                                alt="..."
-                                src={work3}
-                                className={navImageClasses}
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={4}>
-                              <img
-                                alt="..."
-                                src={work4}
-                                className={navImageClasses}
-                              />
-                              <img
-                                alt="..."
-                                src={work5}
-                                className={navImageClasses}
-                              />
-                            </GridItem>
-                          </GridContainer>
+                            )}
+                          </div>
                         )
                       },
                       {
-                        tabButton: 'Favorite',
+                        tabButton: 'Activity',
                         tabIcon: Favorite,
                         tabContent: (
                           <GridContainer justify="center">
@@ -253,15 +260,28 @@ const ProfilePage = props => {
 
 ProfilePage.propTypes = {
   user: PropTypes.object,
+  userDebates: PropTypes.array.isRequired,
+  getDebatesByHandler: PropTypes.func.isRequired,
   profile: PropTypes.string,
-  getProfile: PropTypes.func.isRequired,
-  noProfile: PropTypes.bool.isRequired
+  getProfileByHandler: PropTypes.func.isRequired,
+  noProfile: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  getMyDebates: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.users.user,
   userProfile: state.profiles.profile,
-  noProfile: state.profiles.noProfile
+  userDebates: state.debates.userDebates,
+  noProfile: state.profiles.noProfile,
+  loading: state.debates.loading,
+  myDebates: state.debates.myDebates
 });
 
-export default connect(mapStateToProps, { getProfile })(ProfilePage);
+export default connect(mapStateToProps, {
+  getProfileByHandler,
+  getDebatesByHandler,
+  setLoading,
+  getMyDebates
+})(ProfilePage);

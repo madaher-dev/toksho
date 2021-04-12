@@ -5,8 +5,10 @@ import AvatarModal from '../components/auth/AvatarModal';
 import UserDrawer from '../components/layout/UserDrawer';
 import HomePage from '../views/Home/HomePage';
 import NotFound from './NotFound';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AuthProfile from '../views/ProfilePage/ProfilePage.js';
+import MyDebates from '../views/MyDebates/MyDebates';
+import Debate from '../views/Debate/Debate';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
@@ -23,9 +25,8 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 56
   }
 }));
-const Welcome = ({ user, page, profile }) => {
+const Welcome = ({ user, page, profile, match }) => {
   const classes = useStyles();
-  const theme = useTheme();
 
   const [openAvatarModal, setOpenAvatarModal] = useState(false);
   useEffect(() => {
@@ -46,6 +47,10 @@ const Welcome = ({ user, page, profile }) => {
         <HomePage />
       ) : page === 'profile' ? (
         <AuthProfile profile={profile} />
+      ) : page === 'mydebates' ? (
+        <MyDebates />
+      ) : page === 'debate' ? (
+        <Debate match={match} />
       ) : (
         <NotFound />
       )}

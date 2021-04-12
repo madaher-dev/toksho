@@ -5,7 +5,7 @@ const modalStyle = {
   modalHeader: {
     borderBottom: 'none',
     paddingTop: '24px',
-    paddingRight: '24px',
+    paddingRight: '0',
     paddingBottom: '0',
     paddingLeft: '24px',
     minHeight: '16.43px'
@@ -35,16 +35,20 @@ const modalStyle = {
   },
   modalBody: {
     paddingTop: '24px',
-    paddingRight: '24px',
+    paddingRight: '0',
     paddingBottom: '16px',
-    paddingLeft: '24px',
-    position: 'relative'
+    paddingLeft: '0',
+    position: 'relative',
+    minHeight: '400px'
   },
   modalFooter: {
+    display: 'flex',
     padding: '15px',
     textAlign: 'right',
     paddingTop: '0',
-    margin: '0'
+    margin: '0',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
   },
   modalFooterCenter: {
     marginLeft: 'auto',
@@ -52,6 +56,43 @@ const modalStyle = {
   },
   chip: {
     marginRight: 5
+  },
+  margin5: {
+    margin: '5px'
+  },
+  closeButton: {
+    marginTop: '0',
+    //width: '100%',
+    transform: 'none',
+    //left: '0',
+    // top: '0',
+    //height: '100%',
+    // lineHeight: '41px',
+    fontSize: '20px',
+    color: '#999',
+    //margin: '5px',
+    '&:hover': {
+      color: '#A74A5A'
+    }
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+    paddingTop: 0
+  },
+  submit: {
+    float: 'right'
+  },
+  loading: {
+    margin: 0,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    //transform: 'translate(-50%, -50%)',
+    translateX: '-50%'
   }
 };
 

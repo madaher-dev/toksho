@@ -95,11 +95,27 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getProfile = catchAsync(async (req, res, next) => {
+exports.getProfileByHandler = catchAsync(async (req, res, next) => {
   const user = await User.findOne(
     { handler: req.body.profile },
     { name: 1, email: 1, handler: 1, photo: 1, bio: 1 }
   );
+
+  res.status(200).json({
+    status: 'success',
+    data: user
+  });
+});
+
+exports.getProfile = catchAsync(async (req, res, next) => {
+  const profile = req.params.profile;
+  const user = await User.findById(profile, {
+    name: 1,
+    email: 1,
+    handler: 1,
+    photo: 1,
+    bio: 1
+  });
 
   res.status(200).json({
     status: 'success',
