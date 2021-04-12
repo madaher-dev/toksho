@@ -80,21 +80,30 @@ app.use((req, res, next) => {
 
 //Logger
 
-app.use(
-  require('connect-logger')({
-    /* options */
-  })
-);
+// app.use(
+//   require('connect-logger')({
+//     /* options */
+//   })
+// );
 
 // 2-Routes
-app.get('/', (req, res) =>
-  res.json({ msg: 'Welcome to the Delivery App API' })
-);
+// app.get('/', (req, res) =>
+//   res.json({ msg: 'Welcome to the Delivery App API' })
+// );
 // app.use('/api/v1/resource', resourceRouter);
 app.use('/api/v1/debates', debateRouter);
 app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/tranactions', transactionRouter);
 // app.use('/api/v1/reviews', reviewRouter);
+
+// 3-Serving static assets in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  );
+}
 
 // Error Handling
 
