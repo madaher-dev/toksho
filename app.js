@@ -55,7 +55,7 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // Use Compression
-app.use(compression);
+//app.use(compression);
 
 // Prevent parameter pollution
 app.use(
