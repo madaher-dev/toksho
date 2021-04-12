@@ -58,19 +58,19 @@ app.use(xss());
 //app.use(compression);
 
 // Prevent parameter pollution
-app.use(
-  hpp({
-    whitelist: [
-      //allows the following fields from being duplicate in the query
-      'duration',
-      'ratingsQuantity',
-      'ratingsAverage',
-      'maxGroupSize',
-      'difficulty',
-      'price'
-    ]
-  })
-);
+// app.use(
+//   hpp({
+//     whitelist: [
+//       //allows the following fields from being duplicate in the query
+//       'duration',
+//       'ratingsQuantity',
+//       'ratingsAverage',
+//       'maxGroupSize',
+//       'difficulty',
+//       'price'
+//     ]
+//   })
+// );
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
