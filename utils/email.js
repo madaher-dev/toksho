@@ -5,15 +5,20 @@ const sendEmail = async options => {
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USERNAME,
       pass: process.env.EMAIL_PASSWORD
+    },
+    tls: {
+      // do not fail on invalid certs
+      rejectUnauthorized: false
     }
   });
 
   // 2) Define the email options
   const mailOptions = {
-    from: 'Your Website Admin <admin@yourwebsite.io>',
+    from: process.env.EMAIL_FROM,
     to: options.email,
     subject: options.subject,
     text: options.message,
