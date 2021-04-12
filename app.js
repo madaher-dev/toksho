@@ -29,7 +29,11 @@ app.use(cors());
 //for patch and delete
 app.options('*', cors());
 // Set security HTTP headers
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
+);
 
 // Use Compression
 // app.use(compression);
