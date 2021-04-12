@@ -23,8 +23,9 @@ export const post = (body, url, type, typeFail) => async dispatch => {
 
 export const get = (url, type, typeFail) => async dispatch => {
   try {
+    console.log('hello');
     const res = await axios.get(`${url}`);
-
+    console.log(res);
     dispatch({
       type,
       payload: res.data
