@@ -25,9 +25,12 @@ app.enable('trust proxy');
 //  app.use(cors({
 //   origin: 'https://myapp.com'
 // }));
-app.use(cors());
+
+//app.use(cors());
+
 //for patch and delete
-app.options('*', cors());
+//app.options('*', cors());
+
 // Set security HTTP headers
 app.use(
   helmet({
@@ -58,6 +61,9 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
+// Compression
+app.use(compression());
+
 // Prevent parameter pollution
 app.use(
   hpp({
@@ -81,6 +87,15 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
+
+// enable cors
+var corsOption = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: ['x-auth-token']
+};
+app.use(cors(corsOption));
 
 //Logger
 
