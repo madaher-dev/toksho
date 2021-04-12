@@ -27,11 +27,11 @@ const app = express();
 //for patch and delete
 //app.options('*', cors());
 // Set security HTTP headers
-app.use(
-  helmet({
-    contentSecurityPolicy: false
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false
+//   })
+// );
 
 //Static Files
 //app.use(express.static('assets'));
