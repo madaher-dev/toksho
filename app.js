@@ -35,15 +35,15 @@ const app = express();
 
 //Static Files
 //app.use(express.static('assets'));
-app.use('/static', express.static(path.join(__dirname, 'assets')));
+//app.use('/static', express.static(path.join(__dirname, 'assets')));
 //app.use(express.static('client/build'));
 // Limit requests from same API
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000, //100 requests from same IP per hour
-  message: 'Too many requests from this IP, please try again in an hour!'
-});
-app.use('/api', limiter); //limit only API calls
+// const limiter = rateLimit({
+//   max: 100,
+//   windowMs: 60 * 60 * 1000, //100 requests from same IP per hour
+//   message: 'Too many requests from this IP, please try again in an hour!'
+// });
+// app.use('/api', limiter); //limit only API calls
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
@@ -83,11 +83,11 @@ app.use((req, res, next) => {
 
 //Logger
 
-app.use(
-  require('connect-logger')({
-    /* options */
-  })
-);
+// app.use(
+//   require('connect-logger')({
+//     /* options */
+//   })
+// );
 
 // enable cors
 // var corsOption = {
