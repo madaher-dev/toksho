@@ -16,7 +16,7 @@ const debateRouter = require('./routes/debateRoutes');
 const app = express();
 // 1- Global Middleware
 // Enable Proxy
-app.enable('trust proxy');
+//app.enable('trust proxy');
 
 // Implementing cors (Access-Control-Allow *)
 //  can sepcify origin
