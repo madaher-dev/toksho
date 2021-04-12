@@ -90,13 +90,13 @@ app.use(
 );
 
 // enable cors
-var corsOption = {
-  origin: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  exposedHeaders: ['x-auth-token']
-};
-app.use(cors(corsOption));
+// var corsOption = {
+//   origin: true,
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   credentials: true,
+//   exposedHeaders: ['x-auth-token']
+// };
+// app.use(cors(corsOption));
 
 // 2-Routes
 // app.get('/', (req, res) =>
