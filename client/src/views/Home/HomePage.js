@@ -6,7 +6,7 @@ import Box from '@material-ui/core/Box';
 const HomePage = () => {
   return (
     <Grid container>
-      <Grid item sm={12} md={9} style={{ paddingLeft: 10 }}>
+      <Grid item sm={12} md={9}>
         <DebateWall />
       </Grid>
 

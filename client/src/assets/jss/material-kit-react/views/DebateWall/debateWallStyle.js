@@ -68,11 +68,12 @@ const debateWallStyle = theme => ({
   container: {
     //display: 'flex',
     width: '100%',
-    paddingBottom: 50
+    paddingBottom: 50,
+
     //backgroundColor: 'red',
     // minHeight: '100vh',
     // borderRight: '1px solid #cecece',
-    //paddingLeft: 10,
+    paddingLeft: 20
     //paddingRight: 0
   },
   duration: {

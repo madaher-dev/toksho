@@ -246,6 +246,7 @@ const ProfilePage = props => {
                         )
                       }
                     ]}
+                    style={{ backgroundColor: 'red' }}
                   />
                 </GridItem>
               </GridContainer>

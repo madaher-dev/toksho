@@ -46,7 +46,7 @@ app.use('/static', express.static(path.join(__dirname, 'assets')));
 //app.use(express.static('client/build'));
 // Limit requests from same API
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 60 * 1000, //100 requests from same IP per hour
   message: 'Too many requests from this IP, please try again in an hour!'
 });

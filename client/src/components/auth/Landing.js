@@ -52,10 +52,12 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
 
     [theme.breakpoints.up('sm')]: {
-      alignItems: 'flex-start'
+      alignItems: 'flex-start',
+      paddingLeft: 40
     },
     justifyContent: 'center',
-    paddingLeft: 40
+    paddingLeft: 10,
+    paddingRight: 10
   },
   buttonContainer: {
     alignItems: 'center',
@@ -65,7 +67,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   roundedButton: {
-    width: 350,
+    width: 300,
+    [theme.breakpoints.up('sm')]: {
+      alignItems: 'flex-start',
+      paddingLeft: 40,
+      width: 350
+    },
     fontWeight: 'bold',
     display: 'flex',
     alignItems: 'center',
@@ -90,7 +97,12 @@ const useStyles = makeStyles(theme => ({
     height: 45
   },
   roundedButtonLight: {
-    width: 350,
+    width: 300,
+    [theme.breakpoints.up('sm')]: {
+      alignItems: 'flex-start',
+      paddingLeft: 40,
+      width: 350
+    },
     fontWeight: 'bold',
     display: 'flex',
     alignItems: 'center',
