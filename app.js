@@ -99,11 +99,11 @@ app.use(cors(corsOption));
 
 //Logger
 
-// app.use(
-//   require('connect-logger')({
-//     /* options */
-//   })
-// );
+app.use(
+  require('connect-logger')({
+    /* options */
+  })
+);
 
 // 2-Routes
 // app.get('/', (req, res) =>

@@ -65,7 +65,7 @@ PickButton.propTypes = {
   unpick: PropTypes.func.isRequired,
   challenger: PropTypes.object.isRequired,
   pickLoading: PropTypes.string,
-  debate: PropTypes.object.isRequired,
+  debate: PropTypes.object,
   sourcePage: PropTypes.string
 };
 

@@ -55,8 +55,17 @@ export const getAllDebates = () =>
 
 export const getReadyDebates = () =>
   factory.get(
-    `/api/v1/debates?status=ready&schedule[gte]=${date}`,
+    `/api/v1/debates?status=ready&endDate[gte]=${date}`,
     'GET_READY_DEBATES',
+    'DEBATE_ERROR'
+  );
+
+// Get Ready debates
+
+export const getLiveDebates = () =>
+  factory.get(
+    `/api/v1/debates?status=joined&endDate[gte]=${date}`,
+    'GET_LIVE_DEBATES',
     'DEBATE_ERROR'
   );
 
@@ -104,6 +113,15 @@ export const setReady = debate =>
   factory.get(
     `/api/v1/debates/ready/${debate}`,
     'DEBATE_READY',
+    'DEBATE_ERROR'
+  );
+
+// SET Debate as joined (Live)
+
+export const setJoin = debate =>
+  factory.get(
+    `/api/v1/debates/join/${debate}`,
+    'DEBATE_JOINED',
     'DEBATE_ERROR'
   );
 

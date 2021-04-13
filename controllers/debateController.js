@@ -158,6 +158,21 @@ exports.setReady = catchAsync(async (req, res, next) => {
   });
 });
 
+// Set debate as joined (Live)
+exports.setJoined = catchAsync(async (req, res, next) => {
+  const updatedDebate = await Debate.findOneAndUpdate(
+    { _id: req.params.debate },
+    { status: 'joined' },
+    { new: true }
+  );
+  res.status(201).json({
+    status: 'success',
+    timestamp: req.requestTime,
+    data: {
+      debate: updatedDebate
+    }
+  });
+});
 // UnLike
 exports.unlike = catchAsync(async (req, res, next) => {
   const updatedDebate = await Debate.findOneAndUpdate(
@@ -216,6 +231,7 @@ exports.unpick = catchAsync(async (req, res, next) => {
 //Get debate Challengers
 
 exports.getChallengers = catchAsync(async (req, res, next) => {
+  console.log(req.params.debate);
   const debate = await Debate.findById(req.params.debate).populate({
     path: 'challengers',
     select: 'name email bio photo handler'

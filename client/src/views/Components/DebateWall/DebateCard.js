@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../../components/CustomButtons/Button.js';
 import Card from '../../../components/Card/Card.js';
+import CardHeader from '../../../components/Card/CardHeader.js';
 import Badge from '../../../components/Badge/Badge.js';
 import GridContainer from '../../../components/Grid/GridContainer.js';
 import GridItem from '../../../components/Grid/GridItem.js';
@@ -26,8 +27,12 @@ import { FacebookShareButton } from 'react-share';
 import { Link } from 'react-router-dom';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { useHistory } from 'react-router-dom';
+import { cardTitle } from '../../../assets/jss/material-kit-react.js';
 
-const useStyles = makeStyles(styles);
+const cardstyles = {
+  cardTitle
+};
+const useStyles = makeStyles(styles, cardstyles);
 
 const DebateCard = ({
   debate,
@@ -88,6 +93,10 @@ const DebateCard = ({
   let abandoned;
   if (new Date(debate.schedule) < Date.now()) abandoned = true;
 
+  let title;
+  if (abandoned) title = 'Abandoned';
+  else if (debate.status === 'new') title = 'Accepting Challengers';
+
   return (
     <Card>
       <CardActionArea
@@ -96,18 +105,12 @@ const DebateCard = ({
         disableRipple={true}
       >
         <GridItem>
+          <h4 className={classes.cardTitle}>{title}</h4>
+        </GridItem>
+        <GridItem>
           <GridContainer style={{ paddingTop: 10 }} spacing={0}>
             <GridItem xs={4} sm={2} xl={1}>
               <img src={profileImage} alt="..." className={imageClasses} />
-              <p
-                style={{
-                  textAlign: 'center',
-                  paddingTop: 10,
-                  color: 'red'
-                }}
-              >
-                <strong> {abandoned && 'ABANDONED'}</strong>
-              </p>
             </GridItem>
             <GridItem xs={8} sm={10} xl={11}>
               <GridContainer spacing={0}>
@@ -117,12 +120,11 @@ const DebateCard = ({
                       <Link
                         onClick={event => {
                           event.stopPropagation();
-                          event.preventDefault();
+                          //event.preventDefault();
                         }}
                         to={`/${debate.user?.handler}`}
                         className={classes.link}
                       >
-                        {' '}
                         <strong>{debate.user?.name} </strong>
                       </Link>
                       @{debate.user?.handler}{' '}
@@ -238,7 +240,7 @@ const DebateCard = ({
                       sm={3}
                       style={{
                         display: 'flex',
-                        alignItems: 'flex-end',
+                        alignItems: 'center',
                         justifyContent: 'flex-end'
                       }}
                     >
@@ -316,6 +318,9 @@ const DebateCard = ({
                         like={handleLike}
                         debate={debate}
                       />
+                      <h4>
+                        {debate.likes.length > 0 ? debate.likes.length : null}
+                      </h4>
                     </GridItem>
                   </GridContainer>
                 </GridItem>
@@ -339,9 +344,7 @@ DebateCard.propTypes = {
   handleOpenModal: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  debates: state.debates.debates
-});
+const mapStateToProps = state => ({});
 export default connect(mapStateToProps, {
   challenge,
   withdraw,

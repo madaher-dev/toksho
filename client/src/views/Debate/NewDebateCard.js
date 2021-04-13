@@ -24,10 +24,12 @@ import LikeButton from '../Components/DebateWall/LikeButton';
 import Popover from '@material-ui/core/Popover';
 import { FacebookShareButton } from 'react-share';
 import { Link } from 'react-router-dom';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import { useHistory } from 'react-router-dom';
+import { cardTitle } from '../../assets/jss/material-kit-react.js';
 
-const useStyles = makeStyles(styles);
+const cardstyles = {
+  cardTitle
+};
+const useStyles = makeStyles(styles, cardstyles);
 
 const NewDebateCard = ({
   debate,
@@ -41,7 +43,7 @@ const NewDebateCard = ({
   handleOpenModal
 }) => {
   const classes = useStyles();
-  const history = useHistory();
+
   const imageClasses = classNames(
     classes.imgRaised,
     classes.imgRoundedCircle,
@@ -85,8 +87,18 @@ const NewDebateCard = ({
     profileImage = '/static/images/avatars/default-profile.png';
   }
 
+  let abandoned;
+  if (new Date(debate.schedule) < Date.now()) abandoned = true;
+
+  let title;
+  if (abandoned) title = 'Abandoned';
+  else if (debate.status === 'new') title = 'Accepting Challengers';
+
   return (
     <Card>
+      <GridItem>
+        <h4 className={classes.cardTitle}>{title}</h4>
+      </GridItem>
       <GridItem>
         <GridContainer style={{ paddingTop: 10 }} spacing={0}>
           <GridItem xs={4} sm={2} xl={1}>
@@ -199,7 +211,7 @@ const NewDebateCard = ({
                     sm={9}
                     style={{
                       display: 'flex',
-                      alignItems: 'flex-end',
+                      alignItems: 'center',
                       paddingBottom: 15
                     }}
                   >
@@ -291,6 +303,9 @@ const NewDebateCard = ({
                       like={handleLike}
                       debate={debate}
                     />
+                    <h4>
+                      {debate.likes.length > 0 ? debate.likes.length : null}
+                    </h4>
                   </GridItem>
                 </GridContainer>
               </GridItem>

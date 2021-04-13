@@ -14,7 +14,7 @@ router
     debateController.createDebate
   );
 router.route('/user/:handler').get(debateController.getDebatesByHandler);
-router.route('/challengers/:id').get(debateController.getChallengers);
+router.route('/challengers/:debate').get(debateController.getChallengers);
 router.route('/debate/:id').get(debateController.getSingleDebate);
 //Protect all routes after this middleware
 router.use(authController.protect);
@@ -25,6 +25,7 @@ router.route('/withdraw/:debate').get(debateController.withdraw);
 router.route('/like/:debate').get(debateController.like);
 router.route('/unlike/:debate').get(debateController.unlike);
 router.route('/ready/:debate').get(debateController.setReady);
+router.route('/join/:debate').get(debateController.setJoined);
 router.route('/challengers/pick').post(debateController.pick);
 router.route('/challengers/unpick').post(debateController.unpick);
 

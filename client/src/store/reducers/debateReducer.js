@@ -16,6 +16,8 @@ import {
   GET_MY_DEBATES,
   GET_PROFILE_DEBATES,
   GET_SINGLE_DEBATE,
+  GET_LIVE_DEBATES,
+  DEBATE_JOINED,
   LOGOUT
 } from '../actions/Types';
 
@@ -24,6 +26,7 @@ const initialState = {
   readyDebates: [],
   myDebates: [],
   userDebates: [],
+  liveDebates: [],
   debate: null,
   error: null,
   loading: false,
@@ -40,6 +43,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         debates: [action.payload.data.debate, ...state.debates],
+        myDebates: [action.payload.data.debate, ...state.myDebates],
         loading: false,
         openModal: false,
         debate: null
@@ -77,6 +81,13 @@ export default (state = initialState, action) => {
         loading: false,
         debate: null
       };
+    case GET_LIVE_DEBATES:
+      return {
+        ...state,
+        liveDebates: action.payload.data.debates,
+        loading: false,
+        debate: null
+      };
     case DEBATE_READY:
       return {
         ...state,
@@ -92,7 +103,21 @@ export default (state = initialState, action) => {
         likeLoading: null,
         openModal: false
       };
-
+    case DEBATE_JOINED:
+      return {
+        ...state,
+        readyDebates: state.readyDebates.filter(
+          debate => debate._id !== action.payload.data.debate._id
+        ),
+        // debates: state.debates.map(debate =>
+        //   debate._id === action.payload.data.debate._id ? null : debate
+        // ),
+        liveDebates: [action.payload.data.debate, ...state.liveDebates],
+        loading: false,
+        challengeLoading: null,
+        likeLoading: null,
+        openModal: false
+      };
     case CHALLENGE_WITHDRAW:
     case LIKE_MODIFIED:
     case PICK_MODIFIED:
@@ -108,6 +133,11 @@ export default (state = initialState, action) => {
             ? action.payload.data.debate
             : debate
         ),
+        liveDebates: state.liveDebates.map(debate =>
+          debate._id === action.payload.data.debate._id
+            ? action.payload.data.debate
+            : debate
+        ),
         myDebates: state.myDebates.map(debate =>
           debate._id === action.payload.data.debate._id
             ? action.payload.data.debate
@@ -118,6 +148,10 @@ export default (state = initialState, action) => {
             ? action.payload.data.debate
             : debate
         ),
+        debate:
+          state.debate?._id === action.payload?.data.debate._id
+            ? action.payload?.data.debate
+            : state.debate,
         loading: false,
         challengeLoading: null,
         likeLoading: null

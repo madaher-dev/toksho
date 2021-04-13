@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import styles from '../../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
 import Challenges from './Challenges';
 import Upcomming from '../UpcommingDebates/Upcomming';
+import Live from '../UpcommingDebates/Live';
 import NavPills from '../../../components/NavPills/NavPills.js';
 import Camera from '@material-ui/icons/Camera';
 import Fab from '@material-ui/core/Fab';
@@ -57,20 +58,7 @@ const DebateWall = ({ width, openModal }) => {
           {
             tabButton: 'Live',
             tabIcon: Camera,
-            tabContent: (
-              <span>
-                <p>
-                  Completely synergize resource taxing relationships via premier
-                  niche markets. Professionally cultivate one-to-one customer
-                  service with robust ideas.{' '}
-                </p>
-                <br />
-                <p>
-                  Dynamically innovate resource-leveling customer service for
-                  state of the art customer service.
-                </p>
-              </span>
-            )
+            tabContent: <Live />
           }
         ]}
       />

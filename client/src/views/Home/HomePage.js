@@ -9,7 +9,6 @@ const HomePage = () => {
       <Grid item sm={12} md={9}>
         <DebateWall />
       </Grid>
-
       <Box
         component={Grid}
         item

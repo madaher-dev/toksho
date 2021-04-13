@@ -84,7 +84,7 @@ const ChallengerCard = ({
 };
 
 ChallengerCard.propTypes = {
-  debate: PropTypes.object.isRequired,
+  debate: PropTypes.object,
   setPickLoading: PropTypes.func.isRequired,
   pick: PropTypes.func.isRequired,
   challenger: PropTypes.object.isRequired,

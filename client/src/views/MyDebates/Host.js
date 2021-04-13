@@ -24,7 +24,7 @@ const Host = ({ debates, loading, user }) => {
         <GridItem xs={12}>
           {hostDebates.map(debate => (
             <div key={debate._id + 1}>
-              {debate.status === 'ready' ? (
+              {debate.status === 'ready' || debate.status === 'joined' ? (
                 <ReadyCard
                   key={debate._id + 1}
                   debate={debate}

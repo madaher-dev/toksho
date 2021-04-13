@@ -13,7 +13,8 @@ import { connect } from 'react-redux';
 import {
   setLikeLoading,
   like,
-  unlike
+  unlike,
+  setJoin
 } from '../../../store/actions/debateActions';
 
 import LikeButton from '../DebateWall/LikeButton';
@@ -23,9 +24,21 @@ import Guests from './Guests';
 import { Link } from 'react-router-dom';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { useHistory } from 'react-router-dom';
-const useStyles = makeStyles(styles);
+import { cardTitle } from '../../../assets/jss/material-kit-react.js';
 
-const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
+const cardstyles = {
+  cardTitle
+};
+const useStyles = makeStyles(styles, cardstyles);
+
+const DebateCard = ({
+  debate,
+  setLikeLoading,
+  like,
+  unlike,
+  user,
+  setJoin
+}) => {
   const classes = useStyles();
   const history = useHistory();
   const imageClasses = classNames(
@@ -52,7 +65,9 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
     setLikeLoading(debate._id);
     unlike(debate._id);
   };
-
+  const handleJoin = () => {
+    setJoin(debate._id);
+  };
   let profileImage;
   if (debate.user) {
     profileImage =
@@ -62,6 +77,23 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }
+  let myDebate;
+  if (debate.user._id === user._id || debate.guests.includes(user._id))
+    myDebate = true;
+
+  const live = debate.status === 'joined' ? true : false;
+
+  let abandoned;
+  if (new Date(debate.endDate) < Date.now() && debate.status === 'ready')
+    abandoned = true;
+
+  let title;
+  if (abandoned) title = 'Abandoned';
+  else if (debate.status === 'ready') title = 'Upcomming';
+  else if (debate.status === 'joined' && new Date(debate.endDate) < Date.now())
+    title = 'Ended';
+  else if (debate.status === 'joined' && new Date(debate.endDate) > Date.now())
+    title = 'Live';
 
   return (
     <Card>
@@ -70,6 +102,9 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
         onClick={() => history.push(`/debates/${debate._id}`)}
         disableRipple={true}
       >
+        <GridItem>
+          <h4 className={classes.cardTitle}>{title}</h4>
+        </GridItem>
         <GridContainer style={{ paddingTop: 10, width: '100%' }}>
           <GridItem>
             <GridContainer>
@@ -89,7 +124,7 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
                         <Link
                           onClick={event => {
                             event.stopPropagation();
-                            event.preventDefault();
+                            //event.preventDefault();
                           }}
                           to={`/${debate.user?.handler}`}
                           className={classes.link}
@@ -214,7 +249,7 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
                         sm={3}
                         style={{
                           display: 'flex',
-                          alignItems: 'flex-end',
+                          alignItems: 'center',
                           justifyContent: 'flex-end'
                         }}
                       >
@@ -286,12 +321,14 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
                             </FacebookShareButton>
                           </div>
                         </Popover>
-
                         <LikeButton
                           unlike={handleUnLike}
                           like={handleLike}
                           debate={debate}
                         />
+                        <h4>
+                          {debate.likes.length > 0 ? debate.likes.length : null}
+                        </h4>
                       </GridItem>
                     </GridContainer>
                   </GridItem>
@@ -300,7 +337,14 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
             </GridContainer>
           </GridItem>
           <GridItem style={{ marginLeft: 10 }}>
-            <Guests guests={debate.guests} />
+            <Guests
+              guests={debate.guests}
+              schedule={debate.schedule}
+              myDebate={myDebate}
+              handleJoin={handleJoin}
+              live={live}
+              abandoned={abandoned}
+            />
           </GridItem>
         </GridContainer>
       </CardActionArea>
@@ -310,18 +354,19 @@ const DebateCard = ({ debate, setLikeLoading, like, unlike }) => {
 
 DebateCard.propTypes = {
   debate: PropTypes.object.isRequired,
-
+  setJoin: PropTypes.func.isRequired,
   setLikeLoading: PropTypes.func.isRequired,
-
   unlike: PropTypes.func.isRequired,
   like: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  debates: state.debates.debates
+  debates: state.debates.debates,
+  user: state.users.user
 });
 export default connect(mapStateToProps, {
   setLikeLoading,
   like,
-  unlike
+  unlike,
+  setJoin
 })(DebateCard);
