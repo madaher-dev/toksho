@@ -4,6 +4,6 @@ const conferenceController = require('../controllers/conferenceController');
 
 router
   .route('/recording/available')
-  .get(conferenceController.recordingAvailable);
+  .post(conferenceController.recordingAvailable);
 
 module.exports = router;
