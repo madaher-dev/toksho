@@ -8,7 +8,7 @@ export const post = (body, url, type, typeFail) => async dispatch => {
   };
   try {
     const res = await axios.post(`${url}`, body, config);
-    console.log(res);
+    //console.log(res);
     dispatch({
       type,
       payload: res.data
@@ -24,7 +24,7 @@ export const post = (body, url, type, typeFail) => async dispatch => {
 export const get = (url, type, typeFail) => async dispatch => {
   try {
     const res = await axios.get(`${url}`);
-    console.log(res);
+    // console.log(res);
     dispatch({
       type,
       payload: res.data

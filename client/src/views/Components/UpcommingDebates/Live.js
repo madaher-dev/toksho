@@ -46,8 +46,8 @@ Live.propTypes = {
   getLiveDebates: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
-  debates: state.debates.liveDebates,
-  loading: state.debates.loading
+  loading: state.debates.loading,
+  debates: state.debates.liveDebates
 });
 
 export default connect(mapStateToProps, {

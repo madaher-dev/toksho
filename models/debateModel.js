@@ -59,6 +59,12 @@ const debateSchema = mongoose.Schema(
         ref: 'User'
       }
     ],
+    joinedUsers: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+      }
+    ],
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',

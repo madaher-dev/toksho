@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '../../../components/CustomButtons/Button.js';
 import Card from '../../../components/Card/Card.js';
-import CardHeader from '../../../components/Card/CardHeader.js';
 import Badge from '../../../components/Badge/Badge.js';
 import GridContainer from '../../../components/Grid/GridContainer.js';
 import GridItem from '../../../components/Grid/GridItem.js';

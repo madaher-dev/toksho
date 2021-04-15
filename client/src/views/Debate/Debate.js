@@ -4,8 +4,6 @@ import SideBar from '../Components/SideBar/SideBar';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import DebateCard from '../Components/DebateWall/DebateCard';
-import { default as ReadyCard } from '../Components/UpcommingDebates/DebateCard';
 import ReadyDebateCard from './ReadyDebateCard';
 import NewDebateCard from './NewDebateCard';
 import Challengers from '../Components/DebateWall/Challengers';
@@ -21,6 +19,7 @@ const Debate = ({ match, fullDebate, getMyDebates, setLoading, getDebate }) => {
     setLoading();
     //getMyDebates();
     getDebate(debate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [currentDebate, setCurrentDebate] = useState(null);
 

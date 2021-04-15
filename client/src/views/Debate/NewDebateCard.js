@@ -25,7 +25,8 @@ import Popover from '@material-ui/core/Popover';
 import { FacebookShareButton } from 'react-share';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
-
+import { ConferenceRoom } from '@voxeet/react-components';
+import '@voxeet/react-components/dist/voxeet-react-components.css';
 const cardstyles = {
   cardTitle
 };
@@ -93,7 +94,11 @@ const NewDebateCard = ({
   let title;
   if (abandoned) title = 'Abandoned';
   else if (debate.status === 'new') title = 'Accepting Challengers';
-
+  const settings = {
+    consumerKey: 'WZF9gs8QY4oQTcUKzZVqtQ==',
+    consumerSecret: 'NpAb23wMZD2X90ERBMOFD31vTSfIhTNJ_ML4tVgCLFg=',
+    conferenceAlias: debate._id
+  };
   return (
     <Card>
       <GridItem>

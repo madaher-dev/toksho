@@ -173,7 +173,7 @@ const CreatDebate = ({
                     placeholder={'Set Date & Time for your debate.'}
                     multiline
                     disablePast
-                    minutesStep={30}
+                    //minutesStep={30}
                     value={values.schedule}
                     onChange={v => setFieldValue('schedule', v)}
                   />

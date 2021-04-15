@@ -195,9 +195,11 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   // 1) Getting token and check if it's there
   let token;
-
+  let cookie;
   if (req.headers.cookie) {
-    token = req.headers.cookie.split('=')[1];
+    cookie = req.headers.cookie.split('jwt=')[1];
+    // token = req.headers.cookie.split('=')[1];
+    token = cookie?.split(';')[0];
   }
   if (!token) {
     return next(

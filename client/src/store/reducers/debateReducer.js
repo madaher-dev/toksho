@@ -33,7 +33,8 @@ const initialState = {
   added: null,
   openModal: false,
   challengeLoading: null,
-  likeLoading: null
+  likeLoading: null,
+  joined: null //Will hold ID of joined debate
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -104,6 +105,20 @@ export default (state = initialState, action) => {
         openModal: false
       };
     case DEBATE_JOINED:
+      function upsert(array, item) {
+        // (1)
+        const i = array.findIndex(_item => _item._id === item._id);
+        if (i > -1) {
+          array[i] = item;
+          return array;
+        }
+        // (2)
+        else {
+          console.log('hello');
+          array.push(item);
+          return array;
+        }
+      }
       return {
         ...state,
         readyDebates: state.readyDebates.filter(
@@ -112,11 +127,18 @@ export default (state = initialState, action) => {
         // debates: state.debates.map(debate =>
         //   debate._id === action.payload.data.debate._id ? null : debate
         // ),
-        liveDebates: [action.payload.data.debate, ...state.liveDebates],
+        //liveDebates: [action.payload.data.debate, ...state.liveDebates],
+        liveDebates: upsert(state.liveDebates, action.payload.data.debate),
+        myDebates: state.myDebates.map(debate =>
+          debate._id === action.payload.data.debate._id
+            ? action.payload.data.debate
+            : debate
+        ),
         loading: false,
         challengeLoading: null,
         likeLoading: null,
-        openModal: false
+        openModal: false,
+        joined: action.payload.data.debate._id
       };
     case CHALLENGE_WITHDRAW:
     case LIKE_MODIFIED:
@@ -207,7 +229,8 @@ export default (state = initialState, action) => {
         openModal: false,
         challengeLoading: null,
         likeLoading: null,
-        debate: null
+        debate: null,
+        joined: null
       };
     default:
       return state;

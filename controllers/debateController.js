@@ -162,7 +162,7 @@ exports.setReady = catchAsync(async (req, res, next) => {
 exports.setJoined = catchAsync(async (req, res, next) => {
   const updatedDebate = await Debate.findOneAndUpdate(
     { _id: req.params.debate },
-    { status: 'joined' },
+    { status: 'joined', $addToSet: { joinedUsers: req.user._id } },
     { new: true }
   );
   res.status(201).json({

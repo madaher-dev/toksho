@@ -24,6 +24,8 @@ import Guests from '../Components/UpcommingDebates/Guests';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
 
+import '@voxeet/react-components/dist/voxeet-react-components.css';
+import Conference from './Conference';
 const cardstyles = {
   cardTitle
 };
@@ -74,22 +76,33 @@ const ReadyDebateCard = ({
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }
+
+  const guestList = debate?.guests.map(guest => guest?._id);
+
+  let admin;
   let myDebate;
-  if (debate.user._id === user._id || debate.guests.includes(user._id))
-    myDebate = true;
+  if (debate.user._id === user._id)
+    if (admin || guestList?.includes(user?._id)) myDebate = true;
 
   const live = debate.status === 'joined' ? true : false;
+  const joined = debate.joinedUsers?.includes(user._id);
   let abandoned;
   if (new Date(debate.endDate) < Date.now() && debate.status === 'ready')
     abandoned = true;
 
   let title;
+  let showConference;
   if (abandoned) title = 'Abandoned';
   else if (debate.status === 'ready') title = 'Upcomming';
   else if (debate.status === 'joined' && new Date(debate.endDate) < Date.now())
     title = 'Ended';
-  else if (debate.status === 'joined' && new Date(debate.endDate) > Date.now())
+  else if (
+    debate.status === 'joined' &&
+    new Date(debate.endDate) > Date.now()
+  ) {
     title = 'Live';
+    showConference = true;
+  }
 
   return (
     <Card>
@@ -212,7 +225,11 @@ const ReadyDebateCard = ({
                     </GridItem>
                   </GridContainer>
                 </GridItem>
-
+                {joined && showConference && (
+                  <GridItem style={{ width: 600, height: 400 }}>
+                    <Conference debate={debate} admin={admin} user={user} />
+                  </GridItem>
+                )}
                 {/* Footer */}
                 <GridItem>
                   <GridContainer>
@@ -335,6 +352,7 @@ const ReadyDebateCard = ({
             handleJoin={handleJoin}
             live={live}
             abandoned={abandoned}
+            joined={joined}
           />
         </GridItem>
       </GridContainer>

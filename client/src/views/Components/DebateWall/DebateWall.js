@@ -13,10 +13,10 @@ import CreatDebate from './CreatDebate';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { openModal } from '../../../store/actions/debateActions';
-
+import { Redirect } from 'react-router';
 const useStyles = makeStyles(styles);
 
-const DebateWall = ({ width, openModal }) => {
+const DebateWall = ({ width, openModal, joined }) => {
   const classes = useStyles();
   // This is equivalent to theme.breakpoints.down("sm")
   const isSmallScreen = /xs|sm/.test(width);
@@ -29,7 +29,9 @@ const DebateWall = ({ width, openModal }) => {
   //   getAllDebates();
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, []);
-
+  if (joined) {
+    return <Redirect to={`/debates/${joined}`} />;
+  }
   return (
     <div>
       <Fab
@@ -62,6 +64,7 @@ const DebateWall = ({ width, openModal }) => {
           }
         ]}
       />
+
       <CreatDebate />
     </div>
   );
@@ -71,7 +74,9 @@ DebateWall.propTypes = {
   openModal: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  joined: state.debates.joined
+});
 
 export default connect(mapStateToProps, {
   openModal

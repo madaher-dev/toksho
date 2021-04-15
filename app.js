@@ -13,6 +13,7 @@ const resourceRouter = require('./routes/resourceRoutes');
 const userRouter = require('./routes/userRoutes');
 // const reviewRouter = require('./routes/reviewRoutes');
 const debateRouter = require('./routes/debateRoutes');
+const conferenceRouter = require('./routes/conferenseRoutes');
 // const transactionRouter = require('./routes/transactionRoutes');
 
 const app = express();
@@ -112,6 +113,7 @@ app.use(
 // app.use('/api/v1/resource', resourceRouter);
 app.use('/api/v1/debates', debateRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/conference', conferenceRouter);
 // app.use('/api/v1/tranactions', transactionRouter);
 // app.use('/api/v1/reviews', reviewRouter);
 

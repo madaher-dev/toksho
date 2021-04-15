@@ -1,7 +1,7 @@
 import React from 'react';
-
+import { Redirect } from 'react-router';
 const NotAuthProfile = () => {
-  return <div>Not Logged in Profile</div>;
+  return <Redirect to={`/`} />;
 };
 
 export default NotAuthProfile;

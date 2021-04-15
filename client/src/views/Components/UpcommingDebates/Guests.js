@@ -14,8 +14,8 @@ const Guests = ({
   schedule,
   myDebate,
   handleJoin,
-  live,
-  abandoned
+  abandoned,
+  joined
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -27,7 +27,7 @@ const Guests = ({
 
   const dateSchedul = new Date(schedule);
   const canJoin = new Date(dateSchedul?.getTime() - 15 * 60000);
-  const showJoin = Date.now() > canJoin && myDebate && !live && !abandoned;
+  const showJoin = Date.now() > canJoin && myDebate && !joined && !abandoned;
   return (
     <GridContainer>
       <GridItem style={{ textAlign: 'center', marginTop: 5 }}>
@@ -85,12 +85,14 @@ const Guests = ({
             marginTop: 'auto',
             marginBottom: 'auto'
           }}
-          onClick={() => handleJoin()}
+          onClick={event => {
+            event.stopPropagation();
+            handleJoin();
+          }}
         >
           <AlarmOnIcon /> Join Debate
         </Button>
       )}
-      <strong> {abandoned && 'ABANDONED'}</strong>
     </GridContainer>
   );
 };

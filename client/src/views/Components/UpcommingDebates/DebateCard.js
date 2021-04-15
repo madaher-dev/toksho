@@ -25,6 +25,7 @@ import { Link } from 'react-router-dom';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { useHistory } from 'react-router-dom';
 import { cardTitle } from '../../../assets/jss/material-kit-react.js';
+import { Redirect } from 'react-router';
 
 const cardstyles = {
   cardTitle
@@ -77,11 +78,19 @@ const DebateCard = ({
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }
+
+  const guestList = debate?.guests.map(guest => guest?._id);
+
   let myDebate;
-  if (debate.user._id === user._id || debate.guests.includes(user._id))
+  if (debate.user._id === user._id || guestList?.includes(user?._id))
     myDebate = true;
 
   const live = debate.status === 'joined' ? true : false;
+  const joined = debate.joinedUsers?.includes(user._id);
+
+  if (joined && new Date(debate.endDate) > Date.now()) {
+    return <Redirect to={`/debates/${debate._id}`} />;
+  }
 
   let abandoned;
   if (new Date(debate.endDate) < Date.now() && debate.status === 'ready')
@@ -344,6 +353,7 @@ const DebateCard = ({
               handleJoin={handleJoin}
               live={live}
               abandoned={abandoned}
+              joined={joined}
             />
           </GridItem>
         </GridContainer>
@@ -361,7 +371,6 @@ DebateCard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  debates: state.debates.debates,
   user: state.users.user
 });
 export default connect(mapStateToProps, {
