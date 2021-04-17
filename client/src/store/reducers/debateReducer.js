@@ -107,16 +107,20 @@ export default (state = initialState, action) => {
     case DEBATE_JOINED:
       function upsert(array, item) {
         // (1)
-        const i = array.findIndex(_item => _item._id === item._id);
+        // make a copy of the existing array
+        let newArray = array.slice();
+
+        const i = newArray.findIndex(_item => _item._id === item._id);
         if (i > -1) {
-          array[i] = item;
-          return array;
+          newArray[i] = item;
+          return newArray;
         }
         // (2)
         else {
-          console.log('hello');
-          array.push(item);
-          return array;
+          // make a copy of the existing array
+          let newArray = array.slice();
+          newArray.unshift(item);
+          return newArray;
         }
       }
       return {
@@ -124,10 +128,7 @@ export default (state = initialState, action) => {
         readyDebates: state.readyDebates.filter(
           debate => debate._id !== action.payload.data.debate._id
         ),
-        // debates: state.debates.map(debate =>
-        //   debate._id === action.payload.data.debate._id ? null : debate
-        // ),
-        //liveDebates: [action.payload.data.debate, ...state.liveDebates],
+        // Add to list only if item does not exist
         liveDebates: upsert(state.liveDebates, action.payload.data.debate),
         myDebates: state.myDebates.map(debate =>
           debate._id === action.payload.data.debate._id

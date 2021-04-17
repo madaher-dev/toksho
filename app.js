@@ -6,6 +6,8 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const Pusher = require('pusher');
 const compression = require('compression');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -14,6 +16,7 @@ const userRouter = require('./routes/userRoutes');
 // const reviewRouter = require('./routes/reviewRoutes');
 const debateRouter = require('./routes/debateRoutes');
 const conferenceRouter = require('./routes/conferenseRoutes');
+const commentRouter = require('./routes/commentRoutes');
 // const transactionRouter = require('./routes/transactionRoutes');
 
 const app = express();
@@ -98,6 +101,18 @@ var corsOption = {
 };
 app.use(cors(corsOption));
 
+// Pusher
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+  useTLS: true
+});
+
+// Body parser
+app.use(bodyParser.urlencoded({ extended: false }));
 //Logger
 
 app.use(
@@ -114,6 +129,7 @@ app.use(
 app.use('/api/v1/debates', debateRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/conference', conferenceRouter);
+app.use('/api/v1/comments', commentRouter);
 // app.use('/api/v1/tranactions', transactionRouter);
 // app.use('/api/v1/reviews', reviewRouter);
 

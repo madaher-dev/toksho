@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-logger": "^0.0.1",
     "cors": "^2.8.5",
@@ -30,6 +31,7 @@
     "mongoose": "^5.10.9",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.14",
+    "pusher": "^5.0.0",
     "sharp": "^0.28.0",
     "slugify": "^1.4.5",
     "validator": "^13.1.17",

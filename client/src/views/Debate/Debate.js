@@ -25,7 +25,7 @@ const Debate = ({ match, fullDebate, getMyDebates, setLoading, getDebate }) => {
 
   return (
     <Grid container>
-      <Grid item sm={12} md={9} style={{ paddingLeft: 10 }}>
+      <Grid item sm={12} md={9} style={{ paddingLeft: 10, paddingRight: 10 }}>
         {fullDebate?.status === 'ready' || fullDebate?.status === 'joined' ? (
           <ReadyDebateCard
             debate={fullDebate}

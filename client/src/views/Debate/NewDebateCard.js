@@ -25,8 +25,8 @@ import Popover from '@material-ui/core/Popover';
 import { FacebookShareButton } from 'react-share';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
-import { ConferenceRoom } from '@voxeet/react-components';
-import '@voxeet/react-components/dist/voxeet-react-components.css';
+import Comments from '../../components/Comments/Comments';
+
 const cardstyles = {
   cardTitle
 };
@@ -318,6 +318,7 @@ const NewDebateCard = ({
           </GridItem>
         </GridContainer>
       </GridItem>
+      <Comments debate={debate._id} />
     </Card>
   );
 };

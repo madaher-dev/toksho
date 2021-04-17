@@ -23,7 +23,7 @@ import { FacebookShareButton } from 'react-share';
 import Guests from '../Components/UpcommingDebates/Guests';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
-
+import Comments from '../../components/Comments/Comments';
 import '@voxeet/react-components/dist/voxeet-react-components.css';
 import Conference from './Conference';
 const cardstyles = {
@@ -356,6 +356,7 @@ const ReadyDebateCard = ({
           />
         </GridItem>
       </GridContainer>
+      <Comments debate={debate._id} />
     </Card>
   );
 };

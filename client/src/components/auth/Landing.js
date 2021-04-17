@@ -115,7 +115,8 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: 'white',
     transition: 'ease',
     '&:hover': {
-      backgroundColor: '#CEBCBC'
+      backgroundColor: '#CEBCBC',
+      color: '#A74A5A'
     },
 
     '&:disabled': {

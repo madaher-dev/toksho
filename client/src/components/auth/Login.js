@@ -158,7 +158,6 @@ const Login = ({
                   <Button
                     onClick={submitForm}
                     color="primary"
-                    disabled={loading}
                     className={classes.roundedButton}
                     fullWidth
                   >
