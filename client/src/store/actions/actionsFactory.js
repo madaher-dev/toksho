@@ -8,7 +8,7 @@ export const post = (body, url, type, typeFail) => async dispatch => {
   };
   try {
     const res = await axios.post(`${url}`, body, config);
-    //console.log(res);
+
     dispatch({
       type,
       payload: res.data
@@ -24,7 +24,7 @@ export const post = (body, url, type, typeFail) => async dispatch => {
 export const get = (url, type, typeFail) => async dispatch => {
   try {
     const res = await axios.get(`${url}`);
-    // console.log(res.data);
+
     dispatch({
       type,
       payload: res.data
@@ -52,10 +52,10 @@ export const patch = (body, url, type, typeFail) => async dispatch => {
       payload: res.data
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     dispatch({
-      type: typeFail
-      //payload: err.response.data.message
+      type: typeFail,
+      payload: err.response.data.message
     });
   }
 };

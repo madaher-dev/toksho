@@ -2,33 +2,29 @@ import React from 'react';
 import Button from '../../../components/CustomButtons/Button.js';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-//import { setChallengeLoading } from '../../../store/actions/debateActions';
+import { handleOpenModal } from '../../../store/actions/profileActions';
 const ChallengeButton = ({
   challenge,
   withdraw,
   user,
   debate,
   challengeLoading,
-  openChallengers,
-  setCurrentDebate
+  handleOpenModal
 }) => {
-  // let myDebate = false;
-  // if (debate.user && debate.user._id === user._id) myDebate = true;
   const myDebate = debate.user?._id === user._id ? true : false;
-  // let challenger;
-  // if (debate.challengers) challenger = debate.challengers.includes(user._id);
   const challenger = debate.challengers?.includes(user._id);
   let loading;
   if (challengeLoading === debate._id) loading = true;
 
+  let abandoned;
+  if (new Date(debate.schedule) < Date.now()) abandoned = true;
+
   const handleOpen = () => {
-    setCurrentDebate(debate);
-    openChallengers();
+    handleOpenModal(debate);
   };
   return (
     <div>
-      {myDebate && debate.challengers.length > 0 ? (
+      {myDebate && debate.challengers.length > 0 && !abandoned ? (
         <Button
           color="primary"
           round
@@ -42,7 +38,7 @@ const ChallengeButton = ({
         >
           Pick Guests
         </Button>
-      ) : myDebate ? null : challenger ? (
+      ) : myDebate ? null : challenger && !abandoned ? (
         <Button
           color="github"
           round
@@ -56,7 +52,7 @@ const ChallengeButton = ({
         >
           Withdraw
         </Button>
-      ) : (
+      ) : !abandoned ? (
         <Button
           color="primary"
           round
@@ -70,7 +66,7 @@ const ChallengeButton = ({
         >
           Challenge
         </Button>
-      )}
+      ) : null}
     </div>
   );
 };
@@ -80,11 +76,12 @@ ChallengeButton.propTypes = {
   challenge: PropTypes.func.isRequired,
   withdraw: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  challengeLoading: PropTypes.string
+  challengeLoading: PropTypes.string,
+  handleOpenModal: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.users.user,
   challengeLoading: state.debates.challengeLoading
 });
-export default connect(mapStateToProps, {})(ChallengeButton);
+export default connect(mapStateToProps, { handleOpenModal })(ChallengeButton);

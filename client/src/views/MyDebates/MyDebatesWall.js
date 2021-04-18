@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
-
+import Pusher from 'pusher-js';
 import Guest from './Guest';
 import Host from './Host';
 import NavPills from '../../components/NavPills/NavPills.js';
@@ -15,8 +15,13 @@ import PropTypes from 'prop-types';
 import {
   openModal,
   getMyDebates,
-  setLoading
+  setLoading,
+  pushLike,
+  pushChallenge,
+  pushReady,
+  pushLive
 } from '../../store/actions/debateActions';
+import { pushPick } from '../../store/actions/profileActions';
 
 const useStyles = makeStyles(styles);
 
@@ -27,7 +32,11 @@ const MyDebatesWall = ({
   setLoading,
   myDebates,
   loading,
-  user
+  user,
+  pushLike,
+  pushChallenge,
+  pushReady,
+  pushLive
 }) => {
   const classes = useStyles();
   // This is equivalent to theme.breakpoints.down("sm")
@@ -39,6 +48,40 @@ const MyDebatesWall = ({
   useEffect(() => {
     setLoading();
     getMyDebates();
+    const pusher = new Pusher('3112d5ae0257895cff95', {
+      cluster: 'eu',
+      encrypted: true
+    });
+
+    const channel = pusher.subscribe('debates');
+    channel.bind('like', data => {
+      let newData = {};
+      newData.data = data;
+      pushLike(newData);
+    });
+
+    channel.bind('challenge', data => {
+      let newData = {};
+      newData.data = data;
+      pushChallenge(newData);
+    });
+    channel.bind('pick', data => {
+      let newData = {};
+      newData.data = data;
+      pushPick(newData);
+    });
+    channel.bind('ready', data => {
+      let newData = {};
+      newData.data = data;
+      pushReady(newData);
+    });
+
+    channel.bind('joined', data => {
+      let newData = {};
+      newData.data = data;
+      pushLive(newData);
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -81,7 +124,12 @@ const MyDebatesWall = ({
 MyDebatesWall.propTypes = {
   openModal: PropTypes.func.isRequired,
   getMyDebates: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired
+  setLoading: PropTypes.func.isRequired,
+  pushLike: PropTypes.func.isRequired,
+  pushChallenge: PropTypes.func.isRequired,
+  pushPick: PropTypes.func.isRequired,
+  pushReady: PropTypes.func.isRequired,
+  pushLive: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -93,5 +141,10 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   openModal,
   getMyDebates,
-  setLoading
+  setLoading,
+  pushLike,
+  pushChallenge,
+  pushPick,
+  pushReady,
+  pushLive
 })(withWidth()(MyDebatesWall));

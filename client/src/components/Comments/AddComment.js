@@ -11,7 +11,7 @@ const AddComment = ({ addComment, debate }) => {
 
   const updateInput = event => {
     const { name, value } = event.target;
-    //console.log(value);
+
     setstate({
       [name]: value
     });

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import Pusher from 'pusher-js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from '../../../components/Grid/GridContainer.js';
 import GridItem from '../../../components/Grid/GridItem.js';
@@ -10,18 +11,74 @@ import { connect } from 'react-redux';
 import Challengers from './Challengers';
 import {
   setLoading,
-  getAllDebates
+  getAllDebates,
+  pushLike,
+  pushNewDebate,
+  pushChallenge,
+  pushReady,
+  pushLive
 } from '../../../store/actions/debateActions';
+import { pushPick } from '../../../store/actions/profileActions';
 const useStyles = makeStyles(styles);
 
-const Challenges = ({ debates, loading, setLoading, getAllDebates }) => {
+const Challenges = ({
+  debates,
+  loading,
+  setLoading,
+  getAllDebates,
+  pushLike,
+  pushNewDebate,
+  pushChallenge,
+  pushPick,
+  pushReady,
+  pushLive
+}) => {
   const classes = useStyles();
-
-  const [currentDebate, setCurrentDebate] = useState(null);
 
   useEffect(() => {
     setLoading();
     getAllDebates();
+
+    const pusher = new Pusher('3112d5ae0257895cff95', {
+      cluster: 'eu',
+      encrypted: true
+    });
+
+    const channel = pusher.subscribe('debates');
+    channel.bind('like', data => {
+      let newData = {};
+      newData.data = data;
+      pushLike(newData);
+    });
+
+    channel.bind('new-debate', data => {
+      let newData = {};
+      newData.data = data;
+      pushNewDebate(newData);
+    });
+
+    channel.bind('challenge', data => {
+      let newData = {};
+      newData.data = data;
+      pushChallenge(newData);
+    });
+
+    channel.bind('pick', data => {
+      let newData = {};
+      newData.data = data;
+      pushPick(newData);
+    });
+    channel.bind('ready', data => {
+      let newData = {};
+      newData.data = data;
+      pushReady(newData);
+    });
+    channel.bind('joined', data => {
+      let newData = {};
+      newData.data = data;
+      pushLive(newData);
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -30,11 +87,7 @@ const Challenges = ({ debates, loading, setLoading, getAllDebates }) => {
       {debates !== [] && !loading ? (
         <GridItem xs={12}>
           {debates.map(debate => (
-            <DebateCard
-              key={debate._id + 1}
-              debate={debate}
-              setCurrentDebate={setCurrentDebate}
-            />
+            <DebateCard key={debate._id + 1} debate={debate} />
           ))}
         </GridItem>
       ) : loading ? (
@@ -42,7 +95,7 @@ const Challenges = ({ debates, loading, setLoading, getAllDebates }) => {
       ) : (
         <GridItem xs={12}> </GridItem>
       )}
-      <Challengers debate={currentDebate} />
+      <Challengers />
     </GridContainer>
   );
 };
@@ -50,7 +103,13 @@ const Challenges = ({ debates, loading, setLoading, getAllDebates }) => {
 Challenges.propTypes = {
   debates: PropTypes.array.isRequired,
   setLoading: PropTypes.func.isRequired,
-  getAllDebates: PropTypes.func.isRequired
+  getAllDebates: PropTypes.func.isRequired,
+  pushLike: PropTypes.func.isRequired,
+  pushNewDebate: PropTypes.func.isRequired,
+  pushChallenge: PropTypes.func.isRequired,
+  pushPick: PropTypes.func.isRequired,
+  pushReady: PropTypes.func.isRequired,
+  pushLive: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   debates: state.debates.debates,
@@ -59,5 +118,11 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   setLoading,
-  getAllDebates
+  getAllDebates,
+  pushLike,
+  pushNewDebate,
+  pushChallenge,
+  pushPick,
+  pushReady,
+  pushLive
 })(Challenges);

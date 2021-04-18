@@ -146,6 +146,22 @@ const debateWallStyle = theme => ({
 
       textDecoration: 'none'
     }
+  },
+
+  linkButton: {
+    '&,&:focus,&:hover,&:visited': {
+      color: '#A74A5A',
+      background: 'transparent',
+      boxShadow: 'none',
+      //margin: 0,
+      //padding: 0,
+      marginLeft: 0,
+      marginRight: 0,
+      paddingLeft: 5,
+      paddingRight: 5,
+      fontSize: '14px',
+      textTransform: 'capitalize'
+    }
   }
 });
 

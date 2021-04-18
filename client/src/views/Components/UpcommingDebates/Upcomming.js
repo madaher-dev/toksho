@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Pusher from 'pusher-js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from '../../../components/Grid/GridContainer.js';
 import GridItem from '../../../components/Grid/GridItem.js';
@@ -10,16 +11,49 @@ import { connect } from 'react-redux';
 
 import {
   setLoading,
-  getReadyDebates
+  getReadyDebates,
+  pushLike,
+  pushReady,
+  pushLive
 } from '../../../store/actions/debateActions';
 const useStyles = makeStyles(styles);
 
-const Upcomming = ({ debates, loading, setLoading, getReadyDebates }) => {
+const Upcomming = ({
+  debates,
+  loading,
+  setLoading,
+  getReadyDebates,
+  pushLike,
+  pushReady,
+  pushLive
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
     setLoading();
     getReadyDebates();
+
+    const pusher = new Pusher('3112d5ae0257895cff95', {
+      cluster: 'eu',
+      encrypted: true
+    });
+
+    const channel = pusher.subscribe('debates');
+    channel.bind('like', data => {
+      let newData = {};
+      newData.data = data;
+      pushLike(newData);
+    });
+    channel.bind('ready', data => {
+      let newData = {};
+      newData.data = data;
+      pushReady(newData);
+    });
+    channel.bind('joined', data => {
+      let newData = {};
+      newData.data = data;
+      pushLive(newData);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -43,7 +77,10 @@ const Upcomming = ({ debates, loading, setLoading, getReadyDebates }) => {
 Upcomming.propTypes = {
   debates: PropTypes.array.isRequired,
   setLoading: PropTypes.func.isRequired,
-  getReadyDebates: PropTypes.func.isRequired
+  getReadyDebates: PropTypes.func.isRequired,
+  pushLike: PropTypes.func.isRequired,
+  pushReady: PropTypes.func.isRequired,
+  pushLive: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   debates: state.debates.readyDebates,
@@ -52,5 +89,8 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   setLoading,
-  getReadyDebates
+  getReadyDebates,
+  pushLike,
+  pushReady,
+  pushLive
 })(Upcomming);

@@ -45,7 +45,6 @@ exports.getAllComments = catchAsync(async (req, res, next) => {
 // Add comment to a debate
 
 exports.addComment = catchAsync(async (req, res, next) => {
-  // console.log(req.body);
   req.body.user = req.user._id;
   req.body.debate = req.params.debate;
   const newComment = await Comment.create(req.body);
@@ -55,7 +54,7 @@ exports.addComment = catchAsync(async (req, res, next) => {
     select: 'name photo handler'
   });
 
-  pusher.trigger('debates', 'new-comment', {
+  pusher.trigger('comments', 'new-comment', {
     comment: comment
   });
 
@@ -75,7 +74,7 @@ exports.deleteComment = catchAsync(async (req, res, next) => {
     return next(new AppError('No comment found with that ID', 404));
   }
 
-  pusher.trigger('debates', 'delete-comment', {
+  pusher.trigger('comments', 'delete-comment', {
     comment: comment
   });
 

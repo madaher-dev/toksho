@@ -6,7 +6,8 @@ import {
   SET_PICK_LOADING,
   OPEN_CHALLENGERS_MODAL,
   CLOSE_CHALLENGERS_MODAL,
-  SET_READY_LOADING
+  SET_READY_LOADING,
+  PICK_MODIFIED
 } from './Types';
 import axios from 'axios';
 // const FormData = require('form-data');
@@ -62,12 +63,16 @@ export const getChallengers = debate =>
     'NO_PROFILE'
   );
 
+// Get Likers Details
+export const getLikers = debate =>
+  factory.get(`/api/v1/debates/likers/${debate}`, 'GET_LIKERS', 'NO_PROFILE');
+
 // Pick
 
 export const pick = (debate, challenger) =>
   factory.post(
     { debate, challenger },
-    `/api/v1/debates/challengers/pick`,
+    `/api/v1/debates/pickChallengers`,
     'PICK_MODIFIED',
     'PROFILE_ERROR'
   );
@@ -77,10 +82,16 @@ export const pick = (debate, challenger) =>
 export const unpick = (debate, challenger) =>
   factory.post(
     { debate, challenger },
-    `/api/v1/debates/challengers/unpick`,
+    `/api/v1/debates/unpickChallengers`,
     'PICK_MODIFIED',
     'PROFILE_ERROR'
   );
+
+// Push New Pick - Unpick
+export const pushPick = debate => ({
+  type: PICK_MODIFIED,
+  payload: debate
+});
 
 // Set Loading
 export const setChallengersLoading = () => ({ type: CHALLENGERS_LOADING });
@@ -95,7 +106,10 @@ export const setPickLoading = challenger => ({
 export const handleCloseModal = () => ({ type: CLOSE_CHALLENGERS_MODAL });
 
 //Open  Challengers Modal
-export const handleOpenModal = () => ({ type: OPEN_CHALLENGERS_MODAL });
+export const handleOpenModal = debate => ({
+  type: OPEN_CHALLENGERS_MODAL,
+  payload: debate
+});
 
 //Set ready Loading
 export const setReadyLoading = () => ({ type: SET_READY_LOADING });

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Pusher from 'pusher-js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from '../../../components/Grid/GridContainer.js';
 import GridItem from '../../../components/Grid/GridItem.js';
@@ -10,16 +11,30 @@ import { connect } from 'react-redux';
 
 import {
   setLoading,
-  getLiveDebates
+  getLiveDebates,
+  pushLike
 } from '../../../store/actions/debateActions';
 const useStyles = makeStyles(styles);
 
-const Live = ({ debates, loading, setLoading, getLiveDebates }) => {
+const Live = ({ debates, loading, setLoading, getLiveDebates, pushLike }) => {
   const classes = useStyles();
 
   useEffect(() => {
     setLoading();
     getLiveDebates();
+
+    const pusher = new Pusher('3112d5ae0257895cff95', {
+      cluster: 'eu',
+      encrypted: true
+    });
+
+    const channel = pusher.subscribe('debates');
+    channel.bind('like', data => {
+      let newData = {};
+      newData.data = data;
+      pushLike(newData);
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -43,7 +58,8 @@ const Live = ({ debates, loading, setLoading, getLiveDebates }) => {
 Live.propTypes = {
   debates: PropTypes.array.isRequired,
   setLoading: PropTypes.func.isRequired,
-  getLiveDebates: PropTypes.func.isRequired
+  getLiveDebates: PropTypes.func.isRequired,
+  pushLike: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   loading: state.debates.loading,
@@ -52,5 +68,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   setLoading,
-  getLiveDebates
+  getLiveDebates,
+  pushLike
 })(Live);

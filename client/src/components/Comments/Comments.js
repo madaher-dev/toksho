@@ -10,7 +10,6 @@ import {
   setLoading,
   pullComments
 } from '../../store/actions/commentActions';
-import GridContainer from '../../components/Grid/GridContainer.js';
 import GridItem from '../../components/Grid/GridItem.js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CommentCard from './CommentCard';
@@ -41,7 +40,7 @@ const Comments = ({
     setLoading();
     getComments(debate);
 
-    const channel = pusher.subscribe('debates');
+    const channel = pusher.subscribe('comments');
     channel.bind('new-comment', data => {
       if (data.comment.debate === debate) pushComments(data.comment);
     });

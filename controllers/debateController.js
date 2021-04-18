@@ -4,10 +4,25 @@ const User = require('./../models/userModel');
 const APIFeatures = require('./../utils/APIFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
+const Pusher = require('pusher');
+
+// Pusher
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+  useTLS: true
+});
 
 exports.createDebate = catchAsync(async (req, res, next) => {
   req.body.user = req.user;
   const newDebate = await Debate.create(req.body);
+
+  pusher.trigger('debates', 'new-debate', {
+    debate: newDebate
+  });
 
   res.status(201).json({
     status: 'success',
@@ -99,6 +114,11 @@ exports.challenge = catchAsync(async (req, res, next) => {
     { $addToSet: { challengers: req.user._id } },
     { new: true }
   );
+
+  pusher.trigger('debates', 'challenge', {
+    debate: updatedDebate
+  });
+
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -117,6 +137,10 @@ exports.withdraw = catchAsync(async (req, res, next) => {
     { new: true }
   );
 
+  pusher.trigger('debates', 'challenge', {
+    debate: updatedDebate
+  });
+
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -133,6 +157,11 @@ exports.like = catchAsync(async (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   );
+
+  pusher.trigger('debates', 'like', {
+    debate: updatedDebate
+  });
+
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -149,6 +178,10 @@ exports.setReady = catchAsync(async (req, res, next) => {
     { status: 'ready' },
     { new: true }
   );
+
+  pusher.trigger('debates', 'ready', {
+    debate: updatedDebate
+  });
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -165,6 +198,11 @@ exports.setJoined = catchAsync(async (req, res, next) => {
     { status: 'joined', $addToSet: { joinedUsers: req.user._id } },
     { new: true }
   );
+
+  pusher.trigger('debates', 'joined', {
+    debate: updatedDebate
+  });
+
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -180,6 +218,10 @@ exports.unlike = catchAsync(async (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true }
   );
+
+  pusher.trigger('debates', 'like', {
+    debate: updatedDebate
+  });
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -199,6 +241,10 @@ exports.pick = catchAsync(async (req, res, next) => {
 
   if (updatedDebate.user._id.toString() != req.user._id.toString())
     return next(new AppError('You do not own this debate', 400));
+
+  pusher.trigger('debates', 'pick', {
+    debate: updatedDebate
+  });
 
   res.status(201).json({
     status: 'success',
@@ -231,7 +277,6 @@ exports.unpick = catchAsync(async (req, res, next) => {
 //Get debate Challengers
 
 exports.getChallengers = catchAsync(async (req, res, next) => {
-  console.log(req.params.debate);
   const debate = await Debate.findById(req.params.debate).populate({
     path: 'challengers',
     select: 'name email bio photo handler'
@@ -240,6 +285,20 @@ exports.getChallengers = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: debate.challengers
+  });
+});
+
+//Get debate Likes
+
+exports.getLikers = catchAsync(async (req, res, next) => {
+  const debate = await Debate.findById(req.params.debate).populate({
+    path: 'likes',
+    select: 'name email bio photo handler'
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: debate.likes
   });
 });
 

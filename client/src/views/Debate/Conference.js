@@ -36,6 +36,7 @@ const Conference = ({ debate, admin, user }) => {
       invitedUsers={invitedUsers}
       isAdmin={admin}
       liveRecordingEnabled={true}
+      autoRecording
       userInfo={userInfo}
       //conferenceReplayId={debate._id}
     />

@@ -18,7 +18,7 @@ import {
   like,
   unlike
 } from '../../../store/actions/debateActions';
-import { handleOpenModal } from '../../../store/actions/profileActions';
+//import { handleOpenModal } from '../../../store/actions/profileActions';
 import ChallengeButton from './ChallengeButton';
 import LikeButton from './LikeButton';
 import Popover from '@material-ui/core/Popover';
@@ -41,8 +41,7 @@ const DebateCard = ({
   setLikeLoading,
   like,
   unlike,
-  setCurrentDebate, //for challengers modal
-  handleOpenModal
+  user
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -95,6 +94,10 @@ const DebateCard = ({
   let title;
   if (abandoned) title = 'Abandoned';
   else if (debate.status === 'new') title = 'Accepting Challengers';
+
+  const guestList = debate?.guests.map(guest => guest?._id);
+
+  let guest = guestList?.includes(user?._id);
 
   return (
     <Card>
@@ -183,12 +186,20 @@ const DebateCard = ({
                     >
                       <GridContainer spacing={0}>
                         <GridItem className={classes.duration}>
+                          {guest && (
+                            <p
+                              style={{
+                                color: '#A74A5A',
+                                alignSelf: 'center'
+                              }}
+                            >
+                              Picked!
+                            </p>
+                          )}
                           <ChallengeButton
                             challenge={handleChallenge}
                             withdraw={handleWithdraw}
                             debate={debate}
-                            openChallengers={handleOpenModal}
-                            setCurrentDebate={setCurrentDebate}
                           />
 
                           <p>
@@ -340,16 +351,19 @@ DebateCard.propTypes = {
   setChallengeLoading: PropTypes.func.isRequired,
   unlike: PropTypes.func.isRequired,
   like: PropTypes.func.isRequired,
-  handleOpenModal: PropTypes.func.isRequired
+  user: PropTypes.object.isRequired
+  // handleOpenModal: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  user: state.users.user
+});
 export default connect(mapStateToProps, {
   challenge,
   withdraw,
   setChallengeLoading,
   setLikeLoading,
   like,
-  unlike,
-  handleOpenModal
+  unlike
+  // handleOpenModal
 })(DebateCard);

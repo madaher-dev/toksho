@@ -16,7 +16,7 @@ import {
   unlike,
   setJoin
 } from '../../store/actions/debateActions';
-
+import ChallengersList from './ChallengersList';
 import LikeButton from '../Components/DebateWall/LikeButton';
 import Popover from '@material-ui/core/Popover';
 import { FacebookShareButton } from 'react-share';
@@ -24,6 +24,8 @@ import Guests from '../Components/UpcommingDebates/Guests';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
 import Comments from '../../components/Comments/Comments';
+import LikesList from './LikesList';
+import Helmet from 'react-helmet';
 import '@voxeet/react-components/dist/voxeet-react-components.css';
 import Conference from './Conference';
 const cardstyles = {
@@ -46,6 +48,8 @@ const ReadyDebateCard = ({
     classes.imgFluid
   );
   const [anchorElRight, setAnchorElRight] = React.useState(null);
+  const [openChallengers, setOpenChallengers] = React.useState(false);
+  const [openLikers, setOpenLikers] = React.useState(false);
 
   var now = Moment(); //todays date
   // var sched = Moment(debate.schedule); // schedule date
@@ -67,6 +71,14 @@ const ReadyDebateCard = ({
   const handleJoin = () => {
     setJoin(debate._id);
   };
+  const handleCloseChallengersModal = () => {
+    setOpenChallengers(false);
+  };
+
+  const handleCloseLikesModal = () => {
+    setOpenLikers(false);
+  };
+
   let profileImage;
   if (debate.user) {
     profileImage =
@@ -106,6 +118,37 @@ const ReadyDebateCard = ({
 
   return (
     <Card>
+      <Helmet>
+        <title>{debate.title} - Toksho </title>
+        <meta name="description" content={debate.synopsis} />
+
+        <meta itemprop="name" content={`${debate.title} - Toksho`} />
+        <meta itemprop="description" content={debate.synopsis} />
+        <meta
+          itemprop="image"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+
+        <meta
+          property="og:url"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${debate.title} - Toksho`} />
+        <meta property="og:description" content={debate.synopsis} />
+        <meta
+          property="og:image"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${debate.title} - Toksho`} />
+        <meta name="twitter:description" content={debate.synopsis} />
+        <meta
+          name="twitter:image"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+      </Helmet>
       <GridItem>
         <h4 className={classes.cardTitle}>{title}</h4>
       </GridItem>
@@ -214,12 +257,22 @@ const ReadyDebateCard = ({
                               ? '1 hr'
                               : null}
                           </p>
-                          <p>
-                            <strong>
-                              {debate.challengers && debate.challengers.length}{' '}
-                            </strong>
-                            Challengers
-                          </p>
+                          {debate.challengers &&
+                          debate.challengers.length > 0 ? (
+                            <Button
+                              onClick={() => setOpenChallengers(true)}
+                              className={classes.linkButton}
+                            >
+                              <strong>
+                                {debate.challengers.length} Challengers{' '}
+                              </strong>{' '}
+                            </Button>
+                          ) : (
+                            <p>
+                              <strong>0 </strong>
+                              Challengers
+                            </p>
+                          )}
                         </GridItem>
                       </GridContainer>
                     </GridItem>
@@ -334,9 +387,12 @@ const ReadyDebateCard = ({
                         like={handleLike}
                         debate={debate}
                       />
-                      <h4>
+                      <Button
+                        onClick={() => setOpenLikers(true)}
+                        className={classes.linkButton}
+                      >
                         {debate.likes.length > 0 ? debate.likes.length : null}
-                      </h4>
+                      </Button>
                     </GridItem>
                   </GridContainer>
                 </GridItem>
@@ -357,6 +413,16 @@ const ReadyDebateCard = ({
         </GridItem>
       </GridContainer>
       <Comments debate={debate._id} />
+      <ChallengersList
+        open={openChallengers}
+        debate={debate}
+        handleCloseModal={handleCloseChallengersModal}
+      />
+      <LikesList
+        open={openLikers}
+        debate={debate}
+        handleCloseModal={handleCloseLikesModal}
+      />
     </Card>
   );
 };

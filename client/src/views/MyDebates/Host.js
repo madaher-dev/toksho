@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from '../../components/Grid/GridContainer.js';
 import GridItem from '../../components/Grid/GridItem.js';
@@ -14,8 +14,6 @@ const useStyles = makeStyles(styles);
 const Host = ({ debates, loading, user }) => {
   const classes = useStyles();
 
-  const [currentDebate, setCurrentDebate] = useState(null);
-
   const hostDebates = debates.filter(debate => debate.user._id === user);
 
   return (
@@ -25,17 +23,9 @@ const Host = ({ debates, loading, user }) => {
           {hostDebates.map(debate => (
             <div key={debate._id + 1}>
               {debate.status === 'ready' || debate.status === 'joined' ? (
-                <ReadyCard
-                  key={debate._id + 1}
-                  debate={debate}
-                  setCurrentDebate={setCurrentDebate}
-                />
+                <ReadyCard key={debate._id + 1} debate={debate} />
               ) : (
-                <DebateCard
-                  key={debate._id + 1}
-                  debate={debate}
-                  setCurrentDebate={setCurrentDebate}
-                />
+                <DebateCard key={debate._id + 1} debate={debate} />
               )}
             </div>
           ))}
@@ -45,7 +35,7 @@ const Host = ({ debates, loading, user }) => {
       ) : (
         <GridItem xs={12}> </GridItem>
       )}
-      <Challengers debate={currentDebate} sourcePage={'host'} />
+      <Challengers sourcePage={'host'} />
     </GridContainer>
   );
 };

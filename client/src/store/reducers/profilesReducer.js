@@ -10,7 +10,9 @@ import {
   CLOSE_CHALLENGERS_MODAL,
   DEBATE_READY,
   SET_READY_LOADING,
-  LOGOUT
+  LOGOUT,
+  CHALLENGE_WITHDRAW,
+  GET_LIKERS
 } from '../actions/Types';
 
 const initialState = {
@@ -18,10 +20,12 @@ const initialState = {
   error: null,
   noProfile: false,
   challengers: [],
+  likers: [],
   loading: false,
   pickLoading: null,
   challengersModal: false,
-  readyLoading: false
+  readyLoading: false,
+  currentDebateForChallengers: null
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -54,6 +58,13 @@ export default (state = initialState, action) => {
         noProfile: false,
         loading: false
       };
+    case GET_LIKERS:
+      return {
+        ...state,
+        likers: action.payload.data,
+        noProfile: false,
+        loading: false
+      };
     case PICK_MODIFIED:
       return {
         ...state,
@@ -71,17 +82,24 @@ export default (state = initialState, action) => {
         ...state,
         pickLoading: action.payload
       };
+    case CHALLENGE_WITHDRAW:
+      return {
+        ...state,
+        currentDebateForChallengers: action.payload.data.debate
+      };
     case OPEN_CHALLENGERS_MODAL:
       return {
         ...state,
-        challengersModal: true
+        challengersModal: true,
+        currentDebateForChallengers: action.payload
       };
     case CLOSE_CHALLENGERS_MODAL:
     case DEBATE_READY:
       return {
         ...state,
         challengersModal: false,
-        readyLoading: false
+        readyLoading: false,
+        currentDebateForChallengers: null
       };
     case SET_READY_LOADING:
       return {

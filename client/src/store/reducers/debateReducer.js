@@ -39,12 +39,30 @@ const initialState = {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initialState, action) => {
+  function upsert(array, item) {
+    // (1)
+    // make a copy of the existing array
+    let newArray = array.slice();
+
+    const i = newArray.findIndex(_item => _item._id === item._id);
+    if (i > -1) {
+      newArray[i] = item;
+      return newArray;
+    }
+    // (2)
+    else {
+      // make a copy of the existing array
+      let newArray = array.slice();
+      newArray.unshift(item);
+      return newArray;
+    }
+  }
   switch (action.type) {
     case DEBATE_ADDED:
       return {
         ...state,
-        debates: [action.payload.data.debate, ...state.debates],
-        myDebates: [action.payload.data.debate, ...state.myDebates],
+        debates: upsert(state.debates, action.payload.data.debate),
+        myDebates: upsert(state.myDebates, action.payload.data.debate),
         loading: false,
         openModal: false,
         debate: null
@@ -105,24 +123,6 @@ export default (state = initialState, action) => {
         openModal: false
       };
     case DEBATE_JOINED:
-      function upsert(array, item) {
-        // (1)
-        // make a copy of the existing array
-        let newArray = array.slice();
-
-        const i = newArray.findIndex(_item => _item._id === item._id);
-        if (i > -1) {
-          newArray[i] = item;
-          return newArray;
-        }
-        // (2)
-        else {
-          // make a copy of the existing array
-          let newArray = array.slice();
-          newArray.unshift(item);
-          return newArray;
-        }
-      }
       return {
         ...state,
         readyDebates: state.readyDebates.filter(

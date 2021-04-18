@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '../../components/CustomButtons/Button.js';
 import Card from '../../components/Card/Card.js';
 import Badge from '../../components/Badge/Badge.js';
@@ -18,14 +18,18 @@ import {
   like,
   unlike
 } from '../../store/actions/debateActions';
-import { handleOpenModal } from '../../store/actions/profileActions';
+//import { handleOpenModal } from '../../store/actions/profileActions';
 import ChallengeButton from '../Components/DebateWall/ChallengeButton';
 import LikeButton from '../Components/DebateWall/LikeButton';
 import Popover from '@material-ui/core/Popover';
-import { FacebookShareButton } from 'react-share';
+import { FacebookShareButton, FacebookIcon } from 'react-share';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
 import Comments from '../../components/Comments/Comments';
+import ChallengersList from './ChallengersList';
+import LikesList from './LikesList';
+import Helmet from 'react-helmet';
+import { useLocation } from 'react-router-dom';
 
 const cardstyles = {
   cardTitle
@@ -39,18 +43,18 @@ const NewDebateCard = ({
   setChallengeLoading,
   setLikeLoading,
   like,
-  unlike,
-  setCurrentDebate, //for challengers modal
-  handleOpenModal
+  unlike
 }) => {
   const classes = useStyles();
-
+  const location = useLocation();
   const imageClasses = classNames(
     classes.imgRaised,
     classes.imgRoundedCircle,
     classes.imgFluid
   );
-  const [anchorElRight, setAnchorElRight] = React.useState(null);
+  const [anchorElRight, setAnchorElRight] = useState(null);
+  const [openChallengers, setOpenChallengers] = useState(false);
+  const [openLikers, setOpenLikers] = useState(false);
 
   var now = Moment(); //todays date
   //var sched = Moment(debate.schedule); // schedule date
@@ -78,6 +82,13 @@ const NewDebateCard = ({
     unlike(debate._id);
   };
 
+  const handleCloseChallengersModal = () => {
+    setOpenChallengers(false);
+  };
+  const handleCloseLikesModal = () => {
+    setOpenLikers(false);
+  };
+
   let profileImage;
   if (debate.user) {
     profileImage =
@@ -94,13 +105,40 @@ const NewDebateCard = ({
   let title;
   if (abandoned) title = 'Abandoned';
   else if (debate.status === 'new') title = 'Accepting Challengers';
-  const settings = {
-    consumerKey: 'WZF9gs8QY4oQTcUKzZVqtQ==',
-    consumerSecret: 'NpAb23wMZD2X90ERBMOFD31vTSfIhTNJ_ML4tVgCLFg=',
-    conferenceAlias: debate._id
-  };
+
   return (
     <Card>
+      <Helmet>
+        <title>{debate.title} - Toksho </title>
+        <meta name="description" content={debate.synopsis} />
+
+        <meta itemprop="name" content={`${debate.title} - Toksho`} />
+        <meta itemprop="description" content={debate.synopsis} />
+        <meta
+          itemprop="image"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+
+        <meta
+          property="og:url"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${debate.title} - Toksho`} />
+        <meta property="og:description" content={debate.synopsis} />
+        <meta
+          property="og:image"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${debate.title} - Toksho`} />
+        <meta name="twitter:description" content={debate.synopsis} />
+        <meta
+          name="twitter:image"
+          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+        />
+      </Helmet>
       <GridItem>
         <h4 className={classes.cardTitle}>{title}</h4>
       </GridItem>
@@ -182,8 +220,6 @@ const NewDebateCard = ({
                           challenge={handleChallenge}
                           withdraw={handleWithdraw}
                           debate={debate}
-                          openChallengers={handleOpenModal}
-                          setCurrentDebate={setCurrentDebate}
                         />
 
                         <p>
@@ -196,12 +232,21 @@ const NewDebateCard = ({
                             ? '1 hr'
                             : null}
                         </p>
-                        <p>
-                          <strong>
-                            {debate.challengers && debate.challengers.length}{' '}
-                          </strong>
-                          Challengers
-                        </p>
+                        {debate.challengers && debate.challengers.length > 0 ? (
+                          <Button
+                            onClick={() => setOpenChallengers(true)}
+                            className={classes.linkButton}
+                          >
+                            <strong>
+                              {debate.challengers.length} Challengers{' '}
+                            </strong>{' '}
+                          </Button>
+                        ) : (
+                          <p>
+                            <strong>0 </strong>
+                            Challengers
+                          </p>
+                        )}
                       </GridItem>
                     </GridContainer>
                   </GridItem>
@@ -268,21 +313,10 @@ const NewDebateCard = ({
                     >
                       <div>
                         <FacebookShareButton
-                          url="/test"
+                          url={window.location.href}
                           beforeOnClick={() => setAnchorElRight(null)}
                         >
-                          <Button
-                            justIcon
-                            color="transparent"
-                            className={classes.margin5}
-                            onClick={event => {
-                              event.stopPropagation();
-                              event.preventDefault();
-                              setAnchorElRight(event.currentTarget);
-                            }}
-                          >
-                            <i className={classes.socials + ' fas fa-share'} />
-                          </Button>
+                          <FacebookIcon size={32} round={true} />
                         </FacebookShareButton>
                       </div>
                       <div>
@@ -308,9 +342,12 @@ const NewDebateCard = ({
                       like={handleLike}
                       debate={debate}
                     />
-                    <h4>
+                    <Button
+                      onClick={() => setOpenLikers(true)}
+                      className={classes.linkButton}
+                    >
                       {debate.likes.length > 0 ? debate.likes.length : null}
-                    </h4>
+                    </Button>
                   </GridItem>
                 </GridContainer>
               </GridItem>
@@ -319,6 +356,16 @@ const NewDebateCard = ({
         </GridContainer>
       </GridItem>
       <Comments debate={debate._id} />
+      <ChallengersList
+        open={openChallengers}
+        debate={debate}
+        handleCloseModal={handleCloseChallengersModal}
+      />
+      <LikesList
+        open={openLikers}
+        debate={debate}
+        handleCloseModal={handleCloseLikesModal}
+      />
     </Card>
   );
 };
@@ -330,8 +377,8 @@ NewDebateCard.propTypes = {
   setLikeLoading: PropTypes.func.isRequired,
   setChallengeLoading: PropTypes.func.isRequired,
   unlike: PropTypes.func.isRequired,
-  like: PropTypes.func.isRequired,
-  handleOpenModal: PropTypes.func.isRequired
+  like: PropTypes.func.isRequired
+  //handleOpenModal: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -343,6 +390,6 @@ export default connect(mapStateToProps, {
   setChallengeLoading,
   setLikeLoading,
   like,
-  unlike,
-  handleOpenModal
+  unlike
+  //handleOpenModal
 })(NewDebateCard);

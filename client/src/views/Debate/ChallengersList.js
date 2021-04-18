@@ -3,9 +3,8 @@ import Slide from '@material-ui/core/Slide';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '../../../components/CustomButtons/Button.js';
-import modalStyle from '../../../assets/jss/material-kit-react/modalStyle.js';
+import Button from '../../components/CustomButtons/Button.js';
+import modalStyle from '../../assets/jss/material-kit-react/modalStyle.js';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
@@ -14,11 +13,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   setChallengersLoading,
-  getChallengers,
-  handleCloseModal,
-  setReadyLoading
-} from '../../../store/actions/profileActions';
-import { setReady } from '../../../store/actions/debateActions';
+  getChallengers
+} from '../../store/actions/profileActions';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -26,20 +23,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(modalStyle);
 
-const Challengers = ({
+const ChallengersList = ({
   open,
   debate,
   setChallengersLoading,
   getChallengers,
   challengers,
   loading,
-  debates,
-  setReady,
-  handleCloseModal,
-  readyLoading,
-  setReadyLoading,
-  sourcePage,
-  myDebates
+  handleCloseModal
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -52,17 +43,6 @@ const Challengers = ({
     }
   }, [debate, setChallengersLoading, getChallengers]);
 
-  // This is used to refresh ready button when no picks
-  let currentDebate;
-  if (sourcePage === 'host' && myDebates.length > 0) {
-    currentDebate = myDebates.find(newDebate => newDebate._id === debate?._id);
-  } else if (debates.length > 0)
-    currentDebate = debates.find(newDebate => newDebate._id === debate?._id);
-
-  const handleReady = () => {
-    setReadyLoading();
-    setReady(debate._id);
-  };
   return (
     <Dialog
       classes={{
@@ -81,7 +61,7 @@ const Challengers = ({
     >
       <DialogTitle id="signup-title" className={classes.modalHeader}>
         <div className={classes.header}>
-          <div>Choose your Guests</div>
+          <div>Challengers</div>
           <div>
             <Button justIcon color="transparent" onClick={handleCloseModal}>
               <i className={classes.closeButton + ' far fa-window-close'} />
@@ -92,69 +72,32 @@ const Challengers = ({
       <DialogContent className={classes.modalBody}>
         {!loading ? (
           challengers.map(challenger => (
-            <ChallengerCard
-              key={challenger._id + 1}
-              challenger={challenger}
-              debate={debate}
-              sourcePage={sourcePage}
-            />
+            <ChallengerCard key={challenger._id + 1} challenger={challenger} />
           ))
         ) : (
           <CircularProgress className={classes.loading} />
         )}
       </DialogContent>
-
-      <DialogActions className={classes.modalFooter}>
-        <Button
-          color="github"
-          round
-          className={classes.submit}
-          onClick={handleCloseModal}
-          disabled={readyLoading}
-        >
-          Continue Accepting
-        </Button>
-        {currentDebate?.guests?.length > 0 ? (
-          <Button
-            color="primary"
-            round
-            className={classes.submit}
-            onClick={handleReady}
-            disabled={readyLoading}
-          >
-            Ready
-          </Button>
-        ) : null}
-      </DialogActions>
     </Dialog>
   );
 };
 
-Challengers.propTypes = {
+ChallengersList.propTypes = {
   setChallengersLoading: PropTypes.func.isRequired,
-  setReadyLoading: PropTypes.func.isRequired,
+
   getChallengers: PropTypes.func.isRequired,
   handleCloseModal: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  setReady: PropTypes.func.isRequired,
-  challengers: PropTypes.array,
-  sourcePage: PropTypes.string
+
+  challengers: PropTypes.array
 };
 
 const mapStateToProps = state => ({
   challengers: state.profiles.challengers,
-  loading: state.profiles.loading,
-  debates: state.debates.debates,
-  myDebates: state.debates.myDebates,
-  open: state.profiles.challengersModal,
-  debate: state.profiles.currentDebateForChallengers,
-  readyLoading: state.profiles.readyLoading
+  loading: state.profiles.loading
 });
 
 export default connect(mapStateToProps, {
   setChallengersLoading,
-  getChallengers,
-  setReady,
-  handleCloseModal,
-  setReadyLoading
-})(Challengers);
+  getChallengers
+})(ChallengersList);

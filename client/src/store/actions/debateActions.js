@@ -6,7 +6,11 @@ import {
   SET_CHALLENGE_LOADING,
   SET_LIKE_LOADING,
   DEBATE_ADDED,
-  DEBATE_ERROR
+  DEBATE_ERROR,
+  LIKE_MODIFIED,
+  CHALLENGE_WITHDRAW,
+  DEBATE_READY,
+  DEBATE_JOINED
 } from './Types';
 import axios from 'axios';
 
@@ -161,5 +165,35 @@ export const setChallengeLoading = debate => ({
 // Set CHALLENGE Loading
 export const setLikeLoading = debate => ({
   type: SET_LIKE_LOADING,
+  payload: debate
+});
+
+// Push Like
+export const pushLike = debate => ({
+  type: LIKE_MODIFIED,
+  payload: debate
+});
+
+// Push New Debate
+export const pushNewDebate = debate => ({
+  type: DEBATE_ADDED,
+  payload: debate
+});
+
+// Push New Challenge - Withdraw
+export const pushChallenge = debate => ({
+  type: CHALLENGE_WITHDRAW,
+  payload: debate
+});
+
+// Push New Ready
+export const pushReady = debate => ({
+  type: DEBATE_READY,
+  payload: debate
+});
+
+// Push New Ready
+export const pushLive = debate => ({
+  type: DEBATE_JOINED,
   payload: debate
 });
