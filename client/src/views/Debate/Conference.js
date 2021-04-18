@@ -21,8 +21,8 @@ const Conference = ({ debate, admin, user }) => {
     avatarUrl: `/static/images/avatars/${user.photo}`
   };
   const settings = {
-    consumerKey: 'WZF9gs8QY4oQTcUKzZVqtQ==',
-    consumerSecret: 'NpAb23wMZD2X90ERBMOFD31vTSfIhTNJ_ML4tVgCLFg=',
+    consumerKey: process.env.REACT_APP_VOXEET_CONSUMER_KEY,
+    consumerSecret: process.env.REACT_APP_VOXEET_CONSUMER_SECRET,
     conferenceAlias: debate._id
   };
 
@@ -33,7 +33,7 @@ const Conference = ({ debate, admin, user }) => {
       consumerSecret={settings.consumerSecret}
       conferenceAlias={settings.conferenceAlias}
       isWidget={false}
-      invitedUsers={invitedUsers}
+      //invitedUsers={invitedUsers}
       isAdmin={admin}
       liveRecordingEnabled={true}
       autoRecording
