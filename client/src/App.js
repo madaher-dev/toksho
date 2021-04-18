@@ -16,6 +16,7 @@ import NotVerified from './pages/NotVerified';
 import Forgot from './components/auth/Forgot';
 import ResetPassword from './components/auth/ResetPassword';
 import Profile from './pages/Profile';
+import HelmetMeta from './HelmetMeta';
 import Voxeet from './pages/Voxeet';
 import { VoxeetProvider } from '@voxeet/react-components';
 import './assets/scss/material-kit-react.scss?v=1.9.0';
@@ -49,6 +50,7 @@ function App() {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Router>
                 <Alerts />
+                <HelmetMeta />
                 <Switch>
                   <Route exact path="/" component={Landing} />
                   <Route exact path="/voxeet" component={Voxeet} />

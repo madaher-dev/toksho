@@ -116,27 +116,30 @@ const NewDebateCard = ({
         <meta itemprop="description" content={debate.synopsis} />
         <meta
           itemprop="image"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
 
         <meta
           property="og:url"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={`${debate.title} - Toksho`} />
         <meta property="og:description" content={debate.synopsis} />
         <meta
           property="og:image"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
 
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:card"
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
+        />
         <meta name="twitter:title" content={`${debate.title} - Toksho`} />
         <meta name="twitter:description" content={debate.synopsis} />
         <meta
           name="twitter:image"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
       </Helmet>
       <GridItem>
