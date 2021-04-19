@@ -48,18 +48,6 @@ const streamConference = async conference => {
   let data = qs.stringify({
     grant_type: 'client_credentials'
   });
-  let config = {
-    method: 'post',
-    url: 'https://api.voxeet.com/v1/auth/token',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    auth: {
-      username: username,
-      password: password
-    },
-    data: data
-  };
 
   try {
     // await axios.post(session_url, body, {
@@ -76,6 +64,18 @@ const streamConference = async conference => {
     //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     //   }
     // );
+    let config = {
+      method: 'post',
+      url: 'https://api.voxeet.com/v1/auth/token',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      auth: {
+        username: username,
+        password: password
+      },
+      data: data
+    };
 
     const res1 = await axios(config);
 
