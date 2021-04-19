@@ -18,6 +18,7 @@ import {
   GET_SINGLE_DEBATE,
   GET_LIVE_DEBATES,
   DEBATE_JOINED,
+  SET_ENDED,
   LOGOUT
 } from '../actions/Types';
 
@@ -115,6 +116,10 @@ export default (state = initialState, action) => {
         //   debate._id === action.payload.data.debate._id ? null : debate
         // ),
         readyDebates: upsert(state.readyDebates, action.payload.data.debate),
+        debate:
+          state.debate?._id === action.payload.data.debate._id
+            ? action.payload.data.debate
+            : state.debate,
         loading: false,
         challengeLoading: null,
         likeLoading: null,
@@ -142,6 +147,10 @@ export default (state = initialState, action) => {
         likeLoading: null,
         openModal: false,
         joined: action.payload.data.debate._id
+      };
+    case SET_ENDED:
+      return {
+        joined: null
       };
     case CHALLENGE_WITHDRAW:
     case LIKE_MODIFIED:

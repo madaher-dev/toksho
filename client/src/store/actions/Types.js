@@ -59,6 +59,7 @@ export const GET_PROFILE_DEBATES = 'GET_PROFILE_DEBATES';
 export const GET_SINGLE_DEBATE = 'GET_SINGLE_DEBATE';
 export const DEBATE_JOINED = 'DEBATE_JOINED';
 export const GET_LIVE_DEBATES = 'GET_LIVE_DEBATES';
+export const SET_ENDED = 'SET_ENDED';
 
 // Comment
 

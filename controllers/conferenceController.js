@@ -50,12 +50,13 @@ const streamConference = async conference => {
     // });
     const res1 = await axios.post(
       token_url,
-      {},
+      { grant_type: 'client_credentials' },
       {
         auth: {
           username: username,
           password: password
-        }
+        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }
     );
     console.log('Token Log Log', res1);

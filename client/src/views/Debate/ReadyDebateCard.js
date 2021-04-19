@@ -14,7 +14,8 @@ import {
   setLikeLoading,
   like,
   unlike,
-  setJoin
+  setJoin,
+  setEnded
 } from '../../store/actions/debateActions';
 import ChallengersList from './ChallengersList';
 import LikeButton from '../Components/DebateWall/LikeButton';
@@ -44,7 +45,8 @@ const ReadyDebateCard = ({
   like,
   unlike,
   user,
-  setJoin
+  setJoin,
+  setEnded
 }) => {
   const classes = useStyles();
   const imageClasses = classNames(
@@ -111,9 +113,13 @@ const ReadyDebateCard = ({
   let showConference;
   if (abandoned) title = 'Abandoned';
   else if (debate.status === 'ready') title = 'Upcomming';
-  else if (debate.status === 'joined' && new Date(debate.endDate) < Date.now())
-    title = 'Ended';
   else if (
+    debate.status === 'joined' &&
+    new Date(debate.endDate) < Date.now()
+  ) {
+    setEnded(debate._id);
+    title = 'Ended';
+  } else if (
     debate.status === 'joined' &&
     new Date(debate.endDate) > Date.now()
   ) {
@@ -417,7 +423,8 @@ ReadyDebateCard.propTypes = {
   setJoin: PropTypes.func.isRequired,
   setLikeLoading: PropTypes.func.isRequired,
   unlike: PropTypes.func.isRequired,
-  like: PropTypes.func.isRequired
+  like: PropTypes.func.isRequired,
+  setEnded: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -428,5 +435,6 @@ export default connect(mapStateToProps, {
   setLikeLoading,
   like,
   unlike,
-  setJoin
+  setJoin,
+  setEnded
 })(ReadyDebateCard);

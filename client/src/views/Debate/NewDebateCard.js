@@ -111,6 +111,10 @@ const NewDebateCard = ({
   if (abandoned) title = 'Abandoned';
   else if (debate.status === 'new') title = 'Accepting Challengers';
 
+  const guestList = debate?.guests.map(guest => guest?._id);
+
+  let guest = guestList?.includes(user?._id);
+
   return (
     <Card>
       <Helmet>
@@ -224,6 +228,16 @@ const NewDebateCard = ({
                   >
                     <GridContainer spacing={0}>
                       <GridItem className={classes.duration}>
+                        {guest && (
+                          <p
+                            style={{
+                              color: '#A74A5A',
+                              alignSelf: 'center'
+                            }}
+                          >
+                            Picked!
+                          </p>
+                        )}
                         <ChallengeButton
                           challenge={handleChallenge}
                           withdraw={handleWithdraw}

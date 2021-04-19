@@ -10,7 +10,8 @@ import {
   LIKE_MODIFIED,
   CHALLENGE_WITHDRAW,
   DEBATE_READY,
-  DEBATE_JOINED
+  DEBATE_JOINED,
+  SET_ENDED
 } from './Types';
 import axios from 'axios';
 
@@ -144,6 +145,12 @@ export const getDebate = debate =>
     'GET_SINGLE_DEBATE',
     'DEBATE_ERROR'
   );
+
+// Set Debate ended (removed joined and stop redirect -- need to implement backend?)
+export const setEnded = debate => ({
+  type: SET_ENDED,
+  payload: debate
+});
 // Clear Errors
 export const clearErrors = () => ({ type: CLEAR_ERRORS });
 
