@@ -79,9 +79,8 @@ const streamConference = async conference => {
 
     const res1 = await axios(config);
 
-    console.log('Token Log Log', res1);
-
-    const token = res1.access_token;
+    const token = res1.data.access_token;
+    console.log('token:', token);
 
     const config2 = {
       headers: { Authorization: `Bearer ${token}` }
