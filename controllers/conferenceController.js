@@ -34,6 +34,7 @@ exports.recordingAvailable = catchAsync(async (req, res, next) => {
 });
 
 const streamConference = async conference => {
+  var token_url = 'https://api.voxeet.com/v1/auth/token';
   var session_url = `https://api.voxeet.com/v2/conferences/mix/${conference.confId}/rtmp/start`;
   var username = process.env.VOXEET_CONSUMER_KEY;
   var password = process.env.VOXEET_CONSUMER_SECRET;
@@ -47,13 +48,26 @@ const streamConference = async conference => {
     // await axios.post(session_url, body, {
     //   headers: { Authorization: +basicAuth }
     // });
-    const res1 = await axios.post(session_url, body, {
-      auth: {
-        username: username,
-        password: password
+    const res1 = await axios.post(
+      token_url,
+      {},
+      {
+        auth: {
+          username: username,
+          password: password
+        }
       }
-    });
-    console.log('Stream Log', res1);
+    );
+    console.log('Token Log Log', res1);
+
+    const token = res1.access_token;
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
+    const res2 = await Axios.post(session_url, body, config);
+    console.log(res2);
   } catch (error) {
     console.log(error);
   }
