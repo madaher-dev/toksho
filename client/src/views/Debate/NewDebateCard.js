@@ -48,7 +48,8 @@ const NewDebateCard = ({
   setChallengeLoading,
   setLikeLoading,
   like,
-  unlike
+  unlike,
+  user
 }) => {
   const classes = useStyles();
   //const location = useLocation();
@@ -391,12 +392,14 @@ NewDebateCard.propTypes = {
   setLikeLoading: PropTypes.func.isRequired,
   setChallengeLoading: PropTypes.func.isRequired,
   unlike: PropTypes.func.isRequired,
-  like: PropTypes.func.isRequired
+  like: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
   //handleOpenModal: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  debates: state.debates.debates
+  debates: state.debates.debates,
+  user: state.users.user
 });
 export default connect(mapStateToProps, {
   challenge,
