@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import Helmet from 'react-helmet';
 
 const HelmetMeta = () => {
   return (
@@ -25,7 +25,10 @@ const HelmetMeta = () => {
         content={`${process.env.REACT_APP_WEBSITE_NAME}/favicon.ico`}
       />
 
-      <meta name="twitter:card" content="summary_large_image" />
+      <meta
+        name="twitter:card"
+        content={`${process.env.REACT_APP_WEBSITE_NAME}/favicon.ico`}
+      />
       <meta name="twitter:title" content="TokSho" />
       <meta name="twitter:description" content="An online debate platform" />
       <meta

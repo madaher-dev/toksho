@@ -33,7 +33,7 @@ import { cardTitle } from '../../assets/jss/material-kit-react.js';
 import Comments from '../../components/Comments/Comments';
 import ChallengersList from './ChallengersList';
 import LikesList from './LikesList';
-import { Helmet } from 'react-helmet-async';
+import Helmet from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 
 const cardstyles = {

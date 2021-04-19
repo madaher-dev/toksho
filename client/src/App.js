@@ -17,7 +17,6 @@ import Forgot from './components/auth/Forgot';
 import ResetPassword from './components/auth/ResetPassword';
 import Profile from './pages/Profile';
 import HelmetMeta from './HelmetMeta';
-import { HelmetProvider } from 'react-helmet-async';
 import Voxeet from './pages/Voxeet';
 import { VoxeetProvider } from '@voxeet/react-components';
 import './assets/scss/material-kit-react.scss?v=1.9.0';
@@ -43,60 +42,56 @@ const theme = createMuiTheme({
 });
 
 function App() {
-  const helmetContext = {};
-
   return (
     <div className="App">
-      <HelmetProvider context={helmetContext}>
-        <VoxeetProvider store={store}>
-          <Provider store={store}>
-            <MuiThemeProvider theme={theme}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Router>
-                  <Alerts />
-                  <HelmetMeta />
-                  <Switch>
-                    <Route exact path="/" component={Landing} />
-                    <Route exact path="/voxeet" component={Voxeet} />
-                    <Route path="/signup/:id" component={Landing} />
-                    <Route exact path="/login" component={Login} />
-                    <PrivateRoute
-                      exact
-                      path="/home"
-                      component={Welcome}
-                      page="home"
-                    />
-                    <PrivateRoute
-                      exact
-                      path="/mydebates"
-                      component={Welcome}
-                      page="mydebates"
-                    />
-                    <DebateRoute
-                      exact
-                      path="/debates/:debate"
-                      component={Welcome}
-                      page="debate"
-                    />
-                    <Route exact path="/notverified" component={NotVerified} />
-                    <Route exact path="/forgot" component={Forgot} />
-                    <Route
-                      exact
-                      path="/reset/:email_token"
-                      component={ResetPassword}
-                    />
-                    <Route exact path="/profile" component={Profile} />
-                    <Route exact path="/404" component={NotFound} />
-                    <Route exact path="/:handler" component={Profile} />
+      <VoxeetProvider store={store}>
+        <Provider store={store}>
+          <MuiThemeProvider theme={theme}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Router>
+                <Alerts />
+                <HelmetMeta />
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+                  <Route exact path="/voxeet" component={Voxeet} />
+                  <Route path="/signup/:id" component={Landing} />
+                  <Route exact path="/login" component={Login} />
+                  <PrivateRoute
+                    exact
+                    path="/home"
+                    component={Welcome}
+                    page="home"
+                  />
+                  <PrivateRoute
+                    exact
+                    path="/mydebates"
+                    component={Welcome}
+                    page="mydebates"
+                  />
+                  <DebateRoute
+                    exact
+                    path="/debates/:debate"
+                    component={Welcome}
+                    page="debate"
+                  />
+                  <Route exact path="/notverified" component={NotVerified} />
+                  <Route exact path="/forgot" component={Forgot} />
+                  <Route
+                    exact
+                    path="/reset/:email_token"
+                    component={ResetPassword}
+                  />
+                  <Route exact path="/profile" component={Profile} />
+                  <Route exact path="/404" component={NotFound} />
+                  <Route exact path="/:handler" component={Profile} />
 
-                    <Route component={NotFound} />
-                  </Switch>
-                </Router>
-              </MuiPickersUtilsProvider>
-            </MuiThemeProvider>
-          </Provider>
-        </VoxeetProvider>
-      </HelmetProvider>
+                  <Route component={NotFound} />
+                </Switch>
+              </Router>
+            </MuiPickersUtilsProvider>
+          </MuiThemeProvider>
+        </Provider>
+      </VoxeetProvider>
     </div>
   );
 }
