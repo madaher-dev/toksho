@@ -22,13 +22,18 @@ import {
 import ChallengeButton from '../Components/DebateWall/ChallengeButton';
 import LikeButton from '../Components/DebateWall/LikeButton';
 import Popover from '@material-ui/core/Popover';
-import { FacebookShareButton, FacebookIcon } from 'react-share';
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon
+} from 'react-share';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
 import Comments from '../../components/Comments/Comments';
 import ChallengersList from './ChallengersList';
 import LikesList from './LikesList';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 const cardstyles = {
@@ -323,20 +328,12 @@ const NewDebateCard = ({
                         </FacebookShareButton>
                       </div>
                       <div>
-                        <FacebookShareButton url="/test">
-                          <Button
-                            justIcon
-                            color="transparent"
-                            className={classes.margin5}
-                            onClick={event => {
-                              event.stopPropagation();
-                              event.preventDefault();
-                              setAnchorElRight(event.currentTarget);
-                            }}
-                          >
-                            <i className={classes.socials + ' fas fa-share'} />
-                          </Button>
-                        </FacebookShareButton>
+                        <TwitterShareButton
+                          url={window.location.href}
+                          beforeOnClick={() => setAnchorElRight(null)}
+                        >
+                          <TwitterIcon size={32} round={true} />
+                        </TwitterShareButton>
                       </div>
                     </Popover>
 

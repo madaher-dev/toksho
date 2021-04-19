@@ -19,7 +19,12 @@ import {
 import ChallengersList from './ChallengersList';
 import LikeButton from '../Components/DebateWall/LikeButton';
 import Popover from '@material-ui/core/Popover';
-import { FacebookShareButton } from 'react-share';
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon
+} from 'react-share';
 import Guests from '../Components/UpcommingDebates/Guests';
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
@@ -126,27 +131,30 @@ const ReadyDebateCard = ({
         <meta itemprop="description" content={debate.synopsis} />
         <meta
           itemprop="image"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
 
         <meta
           property="og:url"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={`${debate.title} - Toksho`} />
         <meta property="og:description" content={debate.synopsis} />
         <meta
           property="og:image"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
 
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:card"
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
+        />
         <meta name="twitter:title" content={`${debate.title} - Toksho`} />
         <meta name="twitter:description" content={debate.synopsis} />
         <meta
           name="twitter:image"
-          content={`%PUBLIC_URL%/static/images/avatars/${profileImage}`}
+          content={`${process.env.REACT_APP_WEBSITE_NAME}${profileImage}`}
         />
       </Helmet>
       <GridItem>
@@ -343,42 +351,19 @@ const ReadyDebateCard = ({
                       >
                         <div>
                           <FacebookShareButton
-                            url="/test"
+                            url={window.location.href}
                             beforeOnClick={() => setAnchorElRight(null)}
                           >
-                            <Button
-                              justIcon
-                              color="transparent"
-                              className={classes.margin5}
-                              onClick={event => {
-                                event.stopPropagation();
-                                event.preventDefault();
-                                setAnchorElRight(event.currentTarget);
-                              }}
-                            >
-                              <i
-                                className={classes.socials + ' fas fa-share'}
-                              />
-                            </Button>
+                            <FacebookIcon size={32} round={true} />
                           </FacebookShareButton>
                         </div>
                         <div>
-                          <FacebookShareButton url="/test">
-                            <Button
-                              justIcon
-                              color="transparent"
-                              className={classes.margin5}
-                              onClick={event => {
-                                event.stopPropagation();
-                                event.preventDefault();
-                                setAnchorElRight(event.currentTarget);
-                              }}
-                            >
-                              <i
-                                className={classes.socials + ' fas fa-share'}
-                              />
-                            </Button>
-                          </FacebookShareButton>
+                          <TwitterShareButton
+                            url={window.location.href}
+                            beforeOnClick={() => setAnchorElRight(null)}
+                          >
+                            <TwitterIcon size={32} round={true} />
+                          </TwitterShareButton>
                         </div>
                       </Popover>
 
