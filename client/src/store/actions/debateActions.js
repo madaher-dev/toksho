@@ -51,7 +51,7 @@ export const createDebate = values => async dispatch => {
 export const getAllDebates = () =>
   factory.get(
     `/api/v1/debates?status=new&schedule[gte]=${date}`,
-    'GET_ALL_DEBATES',
+    'GET_NEW_DEBATES',
     'DEBATE_ERROR'
   );
 

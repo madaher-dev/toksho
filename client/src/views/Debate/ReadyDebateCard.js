@@ -74,6 +74,7 @@ const ReadyDebateCard = ({
     unlike(debate._id);
   };
   const handleJoin = () => {
+    console.log(debate);
     setJoin(debate._id);
   };
   const handleCloseChallengersModal = () => {
@@ -83,7 +84,7 @@ const ReadyDebateCard = ({
   const handleCloseLikesModal = () => {
     setOpenLikers(false);
   };
-
+  console.log(debate);
   let profileImage;
   if (debate.user) {
     profileImage =

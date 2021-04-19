@@ -5,7 +5,7 @@ import {
   SET_DEBATE_LOADING,
   OPEN_CREATE_DEBATE,
   CLOSE_CREATE_DEBATE,
-  GET_ALL_DEBATES,
+  GET_NEW_DEBATES,
   CHALLENGE_WITHDRAW,
   SET_CHALLENGE_LOADING,
   SET_LIKE_LOADING,
@@ -51,8 +51,6 @@ export default (state = initialState, action) => {
     }
     // (2)
     else {
-      // make a copy of the existing array
-      let newArray = array.slice();
       newArray.unshift(item);
       return newArray;
     }
@@ -68,7 +66,7 @@ export default (state = initialState, action) => {
         debate: null
       };
     //Only Challenges
-    case GET_ALL_DEBATES:
+    case GET_NEW_DEBATES:
       return {
         ...state,
         debates: action.payload.data.debates,
@@ -116,7 +114,7 @@ export default (state = initialState, action) => {
         // debates: state.debates.map(debate =>
         //   debate._id === action.payload.data.debate._id ? null : debate
         // ),
-        readyDebates: [action.payload.data.debate, ...state.readyDebates],
+        readyDebates: upsert(state.readyDebates, action.payload.data.debate),
         loading: false,
         challengeLoading: null,
         likeLoading: null,
@@ -135,6 +133,10 @@ export default (state = initialState, action) => {
             ? action.payload.data.debate
             : debate
         ),
+        debate:
+          state.debate?._id === action.payload.data.debate._id
+            ? action.payload.data.debate
+            : state.debate,
         loading: false,
         challengeLoading: null,
         likeLoading: null,

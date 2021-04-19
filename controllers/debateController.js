@@ -265,6 +265,10 @@ exports.unpick = catchAsync(async (req, res, next) => {
   if (updatedDebate.user._id.toString() != req.user._id.toString())
     return next(new AppError('You do not own this debate', 400));
 
+  pusher.trigger('debates', 'pick', {
+    debate: updatedDebate
+  });
+
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,

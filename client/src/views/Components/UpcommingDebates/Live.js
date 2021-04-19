@@ -12,11 +12,19 @@ import { connect } from 'react-redux';
 import {
   setLoading,
   getLiveDebates,
-  pushLike
+  pushLike,
+  pushLive
 } from '../../../store/actions/debateActions';
 const useStyles = makeStyles(styles);
 
-const Live = ({ debates, loading, setLoading, getLiveDebates, pushLike }) => {
+const Live = ({
+  debates,
+  loading,
+  setLoading,
+  getLiveDebates,
+  pushLike,
+  pushLive
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -33,6 +41,11 @@ const Live = ({ debates, loading, setLoading, getLiveDebates, pushLike }) => {
       let newData = {};
       newData.data = data;
       pushLike(newData);
+    });
+    channel.bind('joined', data => {
+      let newData = {};
+      newData.data = data;
+      pushLive(newData);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +72,8 @@ Live.propTypes = {
   debates: PropTypes.array.isRequired,
   setLoading: PropTypes.func.isRequired,
   getLiveDebates: PropTypes.func.isRequired,
-  pushLike: PropTypes.func.isRequired
+  pushLike: PropTypes.func.isRequired,
+  pushLive: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   loading: state.debates.loading,
@@ -69,5 +83,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   setLoading,
   getLiveDebates,
-  pushLike
+  pushLike,
+  pushLive
 })(Live);
