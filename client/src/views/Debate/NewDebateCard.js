@@ -34,7 +34,7 @@ import Comments from '../../components/Comments/Comments';
 import ChallengersList from './ChallengersList';
 import LikesList from './LikesList';
 import Helmet from 'react-helmet';
-import { useLocation } from 'react-router-dom';
+//import { useLocation } from 'react-router-dom';
 
 const cardstyles = {
   cardTitle

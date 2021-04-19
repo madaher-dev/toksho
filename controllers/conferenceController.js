@@ -3,6 +3,7 @@ const APIFeatures = require('./../utils/APIFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 const axios = require('axios').default;
+const qs = require('qs');
 
 // Webhooks on events
 exports.recordingAvailable = catchAsync(async (req, res, next) => {
@@ -44,21 +45,40 @@ const streamConference = async conference => {
     uri: `rtmp://a.rtmp.youtube.com/live2/${process.env.YOUTUBE_STREAM_KEY}`
   };
 
+  let data = qs.stringify({
+    grant_type: 'client_credentials'
+  });
+  let config = {
+    method: 'post',
+    url: 'https://api.voxeet.com/v1/auth/token',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    auth: {
+      username: username,
+      password: password
+    },
+    data: data
+  };
+
   try {
     // await axios.post(session_url, body, {
     //   headers: { Authorization: +basicAuth }
     // });
-    const res1 = await axios.post(
-      token_url,
-      { grant_type: 'client_credentials' },
-      {
-        auth: {
-          username: username,
-          password: password
-        },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }
-    );
+    // const res1 = await axios.post(
+    //   token_url,
+    //   { grant_type: 'client_credentials' },
+    //   {
+    //     auth: {
+    //       username: username,
+    //       password: password
+    //     },
+    //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    //   }
+    // );
+
+    const res1 = await axios(config);
+
     console.log('Token Log Log', res1);
 
     const token = res1.access_token;
