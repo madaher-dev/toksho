@@ -11,7 +11,7 @@ import '@voxeet/react-components/dist/voxeet-react-components.css';
 const reducers = combineReducers({
   voxeet: voxeetReducer
 });
-
+//test
 const configureStore = () =>
   createStore(reducers, applyMiddleware(thunkMidleware));
 
