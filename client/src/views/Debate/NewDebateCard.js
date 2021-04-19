@@ -51,7 +51,7 @@ const NewDebateCard = ({
   unlike
 }) => {
   const classes = useStyles();
-  const location = useLocation();
+  //const location = useLocation();
   const imageClasses = classNames(
     classes.imgRaised,
     classes.imgRoundedCircle,
