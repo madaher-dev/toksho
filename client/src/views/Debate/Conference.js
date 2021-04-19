@@ -26,6 +26,8 @@ const Conference = ({ debate, admin, user }) => {
     conferenceAlias: debate._id
   };
 
+  console.log(settings);
+
   return (
     <ConferenceRoom
       autoJoin

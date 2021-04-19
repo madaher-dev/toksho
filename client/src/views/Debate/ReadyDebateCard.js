@@ -98,8 +98,8 @@ const ReadyDebateCard = ({
 
   let admin;
   let myDebate;
-  if (debate.user._id === user._id)
-    if (admin || guestList?.includes(user?._id)) myDebate = true;
+  if (debate.user._id === user._id) admin = true;
+  if (admin || guestList?.includes(user?._id)) myDebate = true;
 
   const live = debate.status === 'joined' ? true : false;
   const joined = debate.joinedUsers?.includes(user._id);
