@@ -83,11 +83,11 @@ const streamConference = async conference => {
 
     const token = res1.access_token;
 
-    const config = {
+    const config2 = {
       headers: { Authorization: `Bearer ${token}` }
     };
 
-    const res2 = await Axios.post(session_url, body, config);
+    const res2 = await Axios.post(session_url, body, config2);
     console.log(res2);
   } catch (error) {
     console.log(error);
