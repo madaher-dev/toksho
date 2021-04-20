@@ -41,7 +41,7 @@ const cardstyles = {
 };
 const useStyles = makeStyles(styles, cardstyles);
 
-const NewDebateCard = ({
+const NewDebateView = ({
   debate,
   challenge,
   withdraw,
@@ -385,7 +385,7 @@ const NewDebateCard = ({
   );
 };
 
-NewDebateCard.propTypes = {
+NewDebateView.propTypes = {
   debate: PropTypes.object.isRequired,
   challenge: PropTypes.func.isRequired,
   withdraw: PropTypes.func.isRequired,
@@ -409,4 +409,4 @@ export default connect(mapStateToProps, {
   like,
   unlike
   //handleOpenModal
-})(NewDebateCard);
+})(NewDebateView);

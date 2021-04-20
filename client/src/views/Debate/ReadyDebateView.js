@@ -43,7 +43,7 @@ const cardstyles = {
 };
 const useStyles = makeStyles(styles, cardstyles);
 
-const ReadyDebateCard = ({
+const ReadyDebateView = ({
   debate,
   setLikeLoading,
   like,
@@ -391,7 +391,7 @@ const ReadyDebateCard = ({
   );
 };
 
-ReadyDebateCard.propTypes = {
+ReadyDebateView.propTypes = {
   debate: PropTypes.object.isRequired,
   setJoin: PropTypes.func.isRequired,
   setLikeLoading: PropTypes.func.isRequired,
@@ -410,4 +410,4 @@ export default connect(mapStateToProps, {
   unlike,
   setJoin,
   setEnded
-})(ReadyDebateCard);
+})(ReadyDebateView);

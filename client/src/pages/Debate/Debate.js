@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
-import ReadyDebateCard from '../../views/Debate/ReadyDebateView';
-import NewDebateCard from '../../views/Debate/NewDebateView';
+import ReadyDebateView from '../../views/Debate/ReadyDebateView';
+import NewDebateView from '../../views/Debate/NewDebateView';
 import Challengers from '../../views/Debate/Challengers';
 import SideBar from '../../views/SideBar/SideBar';
 
@@ -77,9 +77,9 @@ const Debate = ({
     <Grid container>
       <Grid item sm={12} md={9} style={{ paddingLeft: 10, paddingRight: 10 }}>
         {fullDebate?.status === 'ready' || fullDebate?.status === 'joined' ? (
-          <ReadyDebateCard debate={fullDebate} />
+          <ReadyDebateView debate={fullDebate} />
         ) : fullDebate ? (
-          <NewDebateCard debate={fullDebate} />
+          <NewDebateView debate={fullDebate} />
         ) : null}
       </Grid>
 
