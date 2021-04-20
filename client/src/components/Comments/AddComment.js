@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import GridContainer from '../../components/Grid/GridContainer.js';
-import GridItem from '../../components/Grid/GridItem.js';
+import GridContainer from '../../material/Grid/GridContainer.js';
+import GridItem from '../../material/Grid/GridItem.js';
 import TextField from '@material-ui/core/TextField';
-import Button from '../../components/CustomButtons/Button.js';
+import Button from '../../material/CustomButtons/Button.js';
 
 const AddComment = ({ addComment, debate }) => {
   const [state, setstate] = useState({
@@ -36,10 +36,6 @@ const AddComment = ({ addComment, debate }) => {
           fullWidth
           name="comment"
           type="text"
-          //className={classes.textField}
-          // InputProps={{
-          //   className: classes.input
-          // }}
         />
       </GridItem>
       <GridItem

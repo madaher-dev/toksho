@@ -3,18 +3,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useParams, Redirect, Link } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
+
 import { Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  checkToken,
-  resetPass,
-  setLoading
-} from '../../store/actions/userActions';
 import Box from '@material-ui/core/Box';
 import { TextField } from 'formik-material-ui';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
+
+import {
+  checkToken,
+  resetPass,
+  setLoading
+} from '../../store/actions/userActions';
 
 const useStyles = makeStyles(theme => ({
   root: {

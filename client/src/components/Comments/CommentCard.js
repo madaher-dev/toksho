@@ -1,12 +1,13 @@
 import React from 'react';
-import GridContainer from '../Grid/GridContainer';
-import GridItem from '../Grid/GridItem';
-import { makeStyles } from '@material-ui/core/styles';
-import styles from '../../assets/jss/material-kit-react/components/commentStyle';
-import classNames from 'classnames';
+
+import GridContainer from '../../material/Grid/GridContainer';
+import GridItem from '../../material/Grid/GridItem';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
+import classNames from 'classnames';
 
+import { makeStyles } from '@material-ui/core/styles';
+import styles from '../../assets/jss/material-kit-react/components/commentStyle';
 const useStyles = makeStyles(styles);
 
 const CommentCard = ({ comment, user, deleteComment }) => {

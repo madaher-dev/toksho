@@ -2,23 +2,25 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
-import store from './Store';
-import Landing from './components/auth/Landing';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { VoxeetProvider } from '@voxeet/react-components';
+
+import store from './Store';
 import PrivateRoute from './components/routing/PrivateRoute';
 import DebateRoute from './components/routing/DebateRoute';
+import HelmetMeta from './meta/AppMeta';
+
+import Landing from './pages/Home/Landing';
 import Alerts from './components/layout/Alerts';
 import Welcome from './pages/Welcome';
 import NotFound from './pages/NotFound';
-import Login from './components/auth/Login';
-import NotVerified from './pages/NotVerified';
-import Forgot from './components/auth/Forgot';
+import Login from './pages/Home/Login';
+import NotVerified from './components/auth/NotVerified';
+import Forgot from './pages/Home/Forgot';
 import ResetPassword from './components/auth/ResetPassword';
-import Profile from './pages/Profile';
-import HelmetMeta from './HelmetMeta';
-import Voxeet from './pages/Voxeet';
-import { VoxeetProvider } from '@voxeet/react-components';
+import Profile from './pages/Profile/Profile';
+
 import './assets/scss/material-kit-react.scss?v=1.9.0';
 import '@voxeet/react-components/dist/voxeet-react-components.css';
 const theme = createMuiTheme({
@@ -53,8 +55,7 @@ function App() {
                 <HelmetMeta />
                 <Switch>
                   <Route exact path="/" component={Landing} />
-                  <Route exact path="/voxeet" component={Voxeet} />
-                  <Route path="/signup/:id" component={Landing} />
+                  <Route path="/signup/:open" component={Landing} />
                   <Route exact path="/login" component={Login} />
                   <PrivateRoute
                     exact

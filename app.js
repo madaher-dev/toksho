@@ -11,13 +11,10 @@ const Pusher = require('pusher');
 const compression = require('compression');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-const resourceRouter = require('./routes/resourceRoutes');
 const userRouter = require('./routes/userRoutes');
-// const reviewRouter = require('./routes/reviewRoutes');
 const debateRouter = require('./routes/debateRoutes');
 const conferenceRouter = require('./routes/conferenseRoutes');
 const commentRouter = require('./routes/commentRoutes');
-// const transactionRouter = require('./routes/transactionRoutes');
 
 const app = express();
 // 1- Global Middleware
@@ -125,13 +122,11 @@ app.use(
 // app.get('/', (req, res) =>
 //   res.json({ msg: 'Welcome to the Delivery App API' })
 // );
-// app.use('/api/v1/resource', resourceRouter);
+
 app.use('/api/v1/debates', debateRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/conference', conferenceRouter);
 app.use('/api/v1/comments', commentRouter);
-// app.use('/api/v1/tranactions', transactionRouter);
-// app.use('/api/v1/reviews', reviewRouter);
 
 // 3-Serving static assets in production
 if (process.env.NODE_ENV === 'production') {

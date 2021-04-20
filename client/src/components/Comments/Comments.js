@@ -2,6 +2,14 @@ import React, { useEffect } from 'react';
 import Pusher from 'pusher-js';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import GridItem from '../../material/Grid/GridItem.js';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
+
+import AddComment from './AddComment';
+import CommentCard from './CommentCard';
+
 import {
   getComments,
   deleteComment,
@@ -10,12 +18,8 @@ import {
   setLoading,
   pullComments
 } from '../../store/actions/commentActions';
-import GridItem from '../../components/Grid/GridItem.js';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import CommentCard from './CommentCard';
-import { makeStyles } from '@material-ui/core/styles';
+
 import styles from '../../assets/jss/material-kit-react/components/commentStyle';
-import AddComment from './AddComment';
 const useStyles = makeStyles(styles);
 
 const Comments = ({

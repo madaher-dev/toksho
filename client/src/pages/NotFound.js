@@ -34,10 +34,10 @@ export default function NotFound() {
           <CardActionArea>
             <CardMedia
               component="img"
-              alt="Contemplative Reptile"
+              alt="404 Not Found!"
               height="140"
               image="/resources/images/login.jpg"
-              title="Contemplative Reptile"
+              title="404 Not Found!"
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import AvatarModal from '../components/auth/AvatarModal';
 import UserDrawer from '../components/layout/UserDrawer';
-import HomePage from '../views/Home/HomePage';
+import HomePage from './Lounge/HomePage';
 import NotFound from './NotFound';
-import { makeStyles } from '@material-ui/core/styles';
 import AuthProfile from '../views/ProfilePage/ProfilePage.js';
-import MyDebates from '../views/MyDebates/MyDebates';
-import Debate from '../views/Debate/Debate';
+import MyDebates from './MyDebates/MyDebates';
+import Debate from './Debate/Debate';
+
+import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'

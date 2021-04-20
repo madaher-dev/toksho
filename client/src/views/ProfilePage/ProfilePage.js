@@ -8,14 +8,14 @@ import Camera from '@material-ui/icons/Camera';
 import Palette from '@material-ui/icons/Palette';
 import Favorite from '@material-ui/icons/Favorite';
 // core components
-import Header from '../../components/Header/Header.js';
-import Footer from '../../components/Footer/Footer.js';
-import Button from '../../components/CustomButtons/Button.js';
-import GridContainer from '../../components/Grid/GridContainer.js';
-import GridItem from '../../components/Grid/GridItem.js';
-import HeaderLinks from '../../components/Header/HeaderLinks.js';
-import NavPills from '../../components/NavPills/NavPills.js';
-import Parallax from '../../components/Parallax/Parallax.js';
+import Header from '../../material/Header/Header.js';
+import Footer from '../../material/Footer/Footer.js';
+import Button from '../../material/CustomButtons/Button.js';
+import GridContainer from '../../material/Grid/GridContainer.js';
+import GridItem from '../../material/Grid/GridItem.js';
+import HeaderLinks from '../../material/Header/HeaderLinks.js';
+import NavPills from '../../material/NavPills/NavPills.js';
+import Parallax from '../../material/Parallax/Parallax.js';
 
 import studio1 from '../../assets/img/examples/studio-1.jpg';
 import studio3 from '../../assets/img/examples/studio-3.jpg';
@@ -32,7 +32,7 @@ import {
   setLoading,
   getMyDebates
 } from '../../store/actions/debateActions';
-import NoProfile from '../../pages/NoProfile';
+import NoProfile from './NoProfile';
 import Host from '../MyDebates/Host';
 import Guest from '../MyDebates/Guest';
 const useStyles = makeStyles(styles);

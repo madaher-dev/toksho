@@ -1,11 +1,12 @@
 import React, { useState, createRef } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
 import VoiceChatIcon from '@material-ui/icons/VoiceChat';
 import { Avatar, Button as MuiButton, Typography } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
@@ -14,16 +15,17 @@ import {
   Delete as MuiDelete
 } from '@material-ui/icons';
 import { spacing } from '@material-ui/system';
-import styled from 'styled-components';
+import TextField from '@material-ui/core/TextField';
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import {
   uploadAvatar,
   setLoading,
   updateBio
 } from '../../store/actions/userActions';
-import TextField from '@material-ui/core/TextField';
+
+import styled from 'styled-components';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 
 const Button = styled(MuiButton)(spacing);
