@@ -19,7 +19,12 @@ exports.recordingAvailable = catchAsync(async (req, res, next) => {
       streamConference(conference);
       break;
     case 'Conference.Ended':
-      debate.setEnded(confAlias, conference.confId, ownerId, duration);
+      debate.setEnded(
+        conference.confAlias,
+        conference.confId,
+        ownerId,
+        duration
+      );
       break;
 
     case 'Recording.MP4.Available':
@@ -58,14 +63,9 @@ const streamConference = async conference => {
 
 const uploadVideo = async (url, debateId) => {
   try {
-    console.log('url:', url);
-    console.log('debateId:', debateId);
     const debate = await Debate.findById(debateId);
-
-    console.log('debate:', debate);
     const title = debate.title;
     const description = debate.synopisis;
-
     const downloadResult = await google.downloadVideo(url, title, description);
     const youtubeVideoID = downloadResult.data.id;
     debate.storeVideo(debateId, youtubeVideoID);

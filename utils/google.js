@@ -42,11 +42,16 @@ exports.downloadVideo = async (url, title, description) => {
   //const { tokens } = await oauth2Client.getToken(process.env.GOOGLE_AUTH_CODE);
   //console.log('s2:', tokens);
 
-  const tokens = {
-    access_token: process.env.GOOGLE_ACCESS_TOKEN,
+  // const tokens = {
+  //   access_token: process.env.GOOGLE_ACCESS_TOKEN,
+  //   refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+  // };
+  //oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
+
+  oAuth2Client.setCredentials({
+    //access_token: process.env.GOOGLE_ACCESS_TOKEN,
     refresh_token: process.env.GOOGLE_REFRESH_TOKEN
-  };
-  oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
+  });
 
   console.log(oauth2Client);
   google.options({ auth: oauth2Client });
