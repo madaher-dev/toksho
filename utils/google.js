@@ -116,4 +116,5 @@ exports.downloadVideo = async (url, title, description) => {
   );
   console.log('\n\n');
   console.log(res.data);
+  return res.data;
 };

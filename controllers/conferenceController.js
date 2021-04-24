@@ -67,7 +67,7 @@ const uploadVideo = async (url, debateId) => {
     const title = debate.title;
     const description = debate.synopisis;
     const downloadResult = await google.downloadVideo(url, title, description);
-    const youtubeVideoID = downloadResult.data.id;
+    const youtubeVideoID = downloadResult.id;
     debate.storeVideo(debateId, youtubeVideoID);
   } catch (error) {
     console.log(error);
