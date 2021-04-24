@@ -48,7 +48,7 @@ exports.downloadVideo = async (url, title, description) => {
   // };
   //oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
 
-  oAuth2Client.setCredentials({
+  oauth2Client.setCredentials({
     //access_token: process.env.GOOGLE_ACCESS_TOKEN,
     refresh_token: process.env.GOOGLE_REFRESH_TOKEN
   });

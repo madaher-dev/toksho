@@ -25,7 +25,6 @@ const LiveStream = ({ schedule }) => {
   const youtubeChannelId = process.env.REACT_APP_YOUTUBE_CHANNEL_ID;
 
   React.useEffect(() => {
-    console.log('hello');
     processYoutubeStream();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -54,7 +53,6 @@ const LiveStream = ({ schedule }) => {
     )
       .then(async res => {
         const response = await res.json();
-        console.log('hello2');
         console.log(response);
         if (response.items && response.items.length > 0) {
           const streamInfo = response.items[0];
@@ -68,7 +66,6 @@ const LiveStream = ({ schedule }) => {
   }
   function processYoutubeStream() {
     if (youtubeChannelId && youtubeApiKey) {
-      console.log('hello3');
       fetchYoutubeData();
     } else {
       console.error(
