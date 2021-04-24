@@ -5,6 +5,7 @@ const APIFeatures = require('./../utils/APIFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 const Pusher = require('pusher');
+//const google = require('../utils/google');
 
 // Pusher
 
@@ -162,6 +163,7 @@ exports.like = catchAsync(async (req, res, next) => {
     debate: updatedDebate
   });
 
+  //await google.getChannelList();
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -189,6 +191,28 @@ exports.setReady = catchAsync(async (req, res, next) => {
       debate: updatedDebate
     }
   });
+});
+
+// Set debate as Ended and store voxeet info
+exports.setEnded = catchAsync(async (id, voxeetID, voxeetOwnerId, duration) => {
+  const updatedDebate = await Debate.findOneAndUpdate(
+    { _id: id },
+    { status: 'ended', voxeetOwnerId, voxeetID, voxeetDuration: duration },
+    { new: true }
+  );
+
+  pusher.trigger('debates', 'ended', {
+    debate: updatedDebate
+  });
+});
+
+// Store Youtube upload result in DB
+exports.storeVideo = catchAsync(async (id, video) => {
+  const updatedDebate = await Debate.findOneAndUpdate(
+    { _id: id },
+    { status: 'videoReady', youtubeVideURL: video },
+    { new: true }
+  );
 });
 
 // Set debate as joined (Live)

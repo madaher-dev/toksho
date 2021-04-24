@@ -1,6 +1,6 @@
 node_modules/
 *.env
-
+/utils/googleAPI.json
 /client/build
 .DS_Store
 /client/.env.local

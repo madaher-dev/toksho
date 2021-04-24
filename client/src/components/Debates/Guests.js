@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import GridContainer from '../../material/Grid/GridContainer.js';
@@ -30,6 +30,18 @@ const Guests = ({
   const dateSchedul = new Date(schedule);
   const canJoin = new Date(dateSchedul?.getTime() - 15 * 60000);
   const showJoin = Date.now() > canJoin && myDebate && !joined && !abandoned;
+
+  // eslint-disable-next-line no-unused-vars
+  const [timer, setTimer] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer(new Date());
+    }, 30000); //refresh every 30 seconds
+    // This is important, you must clear your interval when component unmounts
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <GridContainer>
       <GridItem style={{ textAlign: 'center', marginTop: 5 }}>

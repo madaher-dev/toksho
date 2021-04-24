@@ -69,7 +69,11 @@ const debateSchema = mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: [true, 'Debate must belong to a user']
-    }
+    },
+    voxeetID: String,
+    voxeetOwnerId: String,
+    voxeetDuration: Number,
+    youtubeVideURL: String
   },
   {
     toJson: { virtuals: true },

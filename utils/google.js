@@ -1,0 +1,114 @@
+const { google } = require('googleapis');
+//const { auth } = require('google-auth-library');
+const fetch = require('node-fetch');
+const fs = require('fs');
+const path = require('path');
+const readline = require('readline');
+//const https = require('https');
+
+// This part loads key from env rather than file
+
+// const keysEnvVar = process.env['GOOGLE_CREDS'];
+// if (!keysEnvVar) {
+//   throw new Error('The $CREDS environment variable was not found!');
+// }
+// const keys = JSON.parse(keysEnvVar);
+
+// This part authenticates from file
+
+// const authentication = new google.auth.GoogleAuth({
+//   keyFile: `./${process.env.GOOGLE_APPLICATION_CREDENTIALS}`,
+//   scopes: [
+//     'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtube'
+//   ]
+// });
+
+exports.downloadVideo = async (url, title, description) => {
+  // Authenticate from file (KEY File)
+  // const authClient = await authentication.getClient();
+  // console.log(authClient);
+  // google.options({
+  //   auth: authClient
+  // });
+
+  // Authenticate from file (Not Key File)
+
+  const oauth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    'http://localhost:8000/callback'
+  );
+
+  //const { tokens } = await oauth2Client.getToken(process.env.GOOGLE_AUTH_CODE);
+  //console.log('s2:', tokens);
+
+  const tokens = {
+    access_token: process.env.GOOGLE_ACCESS_TOKEN,
+    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+  };
+  oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
+
+  console.log(oauth2Client);
+  google.options({ auth: oauth2Client });
+
+  // Authenticate from env
+  // const client = auth.fromJSON(keys);
+  // client.scopes = [
+  //   'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload'
+  // ];
+
+  // google.options({
+  //   auth: client
+  // });
+
+  // Initiate Api
+  var youtube = google.youtube('v3');
+
+  // Download Video
+
+  const response = await fetch(url);
+  const buffer = await response.buffer();
+
+  fs.writeFile(`temp.mp4`, buffer, () =>
+    console.log('finished downloading video!')
+  );
+
+  // var myChannels = await youtube.channels.list({
+  //   part: 'id,snippet,status',
+  //   mine: true
+  // });
+  // console.log(myChannels);
+  // Upload Video
+  const fileName = 'temp.mp4';
+  const fileSize = fs.statSync(fileName).size;
+  const res = await youtube.videos.insert(
+    {
+      part: 'id,snippet,status',
+      notifySubscribers: true,
+      requestBody: {
+        snippet: {
+          title,
+          description
+        },
+        status: {
+          privacyStatus: 'public'
+        }
+      },
+      media: {
+        body: fs.createReadStream(fileName)
+      }
+    },
+    {
+      // Use the `onUploadProgress` event from Axios to track the
+      // number of bytes uploaded to this point.
+      onUploadProgress: evt => {
+        const progress = (evt.bytesRead / fileSize) * 100;
+        readline.clearLine(process.stdout, 0);
+        readline.cursorTo(process.stdout, 0, null);
+        process.stdout.write(`${Math.round(progress)}% complete`);
+      }
+    }
+  );
+  console.log('\n\n');
+  console.log(res.data);
+};

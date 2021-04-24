@@ -1,0 +1,10 @@
+{
+  "client_id": "932174475425-0dce0nnherqs3ni23dve61tlqajohqaq.apps.googleusercontent.com",
+  "project_id": "toksho",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_secret": "66YH2TnsXNlNZEyPE7RUfSyD",
+  "redirect_uris": ["https://developers.google.com/oauthplayground"],
+  "javascript_origins": ["https://toksho.herokuapp.com"]
+}

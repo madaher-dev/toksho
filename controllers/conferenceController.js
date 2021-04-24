@@ -4,23 +4,34 @@ const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 const axios = require('axios').default;
 const qs = require('qs');
+const debate = require('../controllers/debateController');
+const google = require('../utils/google');
+const Debate = require('../models/debateModel');
 
 // Webhooks on events
 exports.recordingAvailable = catchAsync(async (req, res, next) => {
   console.log(req.body);
 
-  const { eventType, conference } = req.body;
+  const {
+    eventType,
+    conference,
+    confId,
+    confAlias,
+    ownerId,
+    duration,
+    url
+  } = req.body;
 
   switch (eventType) {
     case 'Conference.Created':
       streamConference(conference);
       break;
     case 'Conference.Ended':
-      //snackIcon = <Icon className={classes.icon}>{props.icon}</Icon>;
+      debate.setEnded(confAlias, confId, ownerId, duration);
       break;
 
     case 'Recording.MP4.Available':
-      //snackIcon = <Icon className={classes.icon}>{props.icon}</Icon>;
+      uploadVideo(url, confAlias);
       break;
     default:
       snackIcon = null;
@@ -48,6 +59,20 @@ const streamConference = async conference => {
     };
     const res2 = await axios.post(session_url, body, config);
     console.log(res2);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const uploadVideo = async (url, debateId) => {
+  try {
+    const debate = await Debate.findById(debateId);
+    const title = debate.title;
+    const description = debate.synopisis;
+
+    const downloadResult = await google.downloadVideo(url, title, description);
+    const youtubeVideoID = downloadResult.data.id;
+    debate.storeVideo(debateId, youtubeVideoID);
   } catch (error) {
     console.log(error);
   }
