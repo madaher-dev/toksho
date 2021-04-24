@@ -12,26 +12,18 @@ const Debate = require('../models/debateModel');
 exports.recordingAvailable = catchAsync(async (req, res, next) => {
   console.log(req.body);
 
-  const {
-    eventType,
-    conference,
-    confId,
-    confAlias,
-    ownerId,
-    duration,
-    url
-  } = req.body;
+  const { eventType, conference, ownerId, duration, url } = req.body;
 
   switch (eventType) {
     case 'Conference.Created':
       streamConference(conference);
       break;
     case 'Conference.Ended':
-      debate.setEnded(confAlias, confId, ownerId, duration);
+      debate.setEnded(confAlias, conference.confId, ownerId, duration);
       break;
 
     case 'Recording.MP4.Available':
-      uploadVideo(url, confAlias);
+      uploadVideo(url, conference.confAlias);
       break;
     default:
       snackIcon = null;

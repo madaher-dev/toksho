@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box';
 
 import ReadyDebateView from '../../views/Debate/ReadyDebateView';
 import NewDebateView from '../../views/Debate/NewDebateView';
+import EndedDebateView from '../../views/Debate/EndedDebateView';
 import Challengers from '../../views/Debate/Challengers';
 import SideBar from '../../views/SideBar/SideBar';
 
@@ -18,7 +19,8 @@ import {
   pushLike,
   pushChallenge,
   pushReady,
-  pushLive
+  pushLive,
+  pushEnded
 } from '../../store/actions/debateActions';
 import { pushPick } from '../../store/actions/profileActions';
 
@@ -30,7 +32,8 @@ const Debate = ({
   getDebate,
   pushLike,
   pushChallenge,
-  pushLive
+  pushLive,
+  pushEnded
 }) => {
   const debate = match.params.debate;
   useEffect(() => {
@@ -70,6 +73,11 @@ const Debate = ({
       pushLive(newData);
     });
 
+    channel.bind('ended', data => {
+      let newData = {};
+      newData.data = data;
+      pushEnded(newData);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,6 +86,8 @@ const Debate = ({
       <Grid item sm={12} md={9} style={{ paddingLeft: 10, paddingRight: 10 }}>
         {fullDebate?.status === 'ready' || fullDebate?.status === 'joined' ? (
           <ReadyDebateView debate={fullDebate} />
+        ) : fullDebate?.status === 'ended' ? (
+          <EndedDebateView debate={fullDebate} />
         ) : fullDebate ? (
           <NewDebateView debate={fullDebate} />
         ) : null}
@@ -105,7 +115,8 @@ Debate.propTypes = {
   pushChallenge: PropTypes.func.isRequired,
   pushPick: PropTypes.func.isRequired,
   pushReady: PropTypes.func.isRequired,
-  pushLive: PropTypes.func.isRequired
+  pushLive: PropTypes.func.isRequired,
+  pushEnded: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -119,5 +130,6 @@ export default connect(mapStateToProps, {
   pushChallenge,
   pushPick,
   pushReady,
-  pushLive
+  pushLive,
+  pushEnded
 })(Debate);

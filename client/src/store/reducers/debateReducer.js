@@ -19,6 +19,7 @@ import {
   GET_LIVE_DEBATES,
   DEBATE_JOINED,
   SET_ENDED,
+  DEBATE_ENDED,
   LOGOUT
 } from '../actions/Types';
 
@@ -28,6 +29,7 @@ const initialState = {
   myDebates: [],
   userDebates: [],
   liveDebates: [],
+  endedDebates: [],
   debate: null,
   error: null,
   loading: false,
@@ -147,6 +149,32 @@ export default (state = initialState, action) => {
         likeLoading: null,
         openModal: false,
         joined: action.payload.data.debate._id
+      };
+    case DEBATE_ENDED:
+      return {
+        ...state,
+        readyDebates: state.readyDebates.filter(
+          debate => debate._id !== action.payload.data.debate._id
+        ),
+        liveDebates: state.readyDebates.filter(
+          debate => debate._id !== action.payload.data.debate._id
+        ),
+        // Add to list only if item does not exist
+        endedDebates: upsert(state.liveDebates, action.payload.data.debate),
+        myDebates: state.myDebates.map(debate =>
+          debate._id === action.payload.data.debate._id
+            ? action.payload.data.debate
+            : debate
+        ),
+        debate:
+          state.debate?._id === action.payload.data.debate._id
+            ? action.payload.data.debate
+            : state.debate,
+        loading: false,
+        challengeLoading: null,
+        likeLoading: null,
+        openModal: false,
+        joined: null
       };
     case SET_ENDED:
       return {

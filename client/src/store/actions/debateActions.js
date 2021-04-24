@@ -11,7 +11,8 @@ import {
   CHALLENGE_WITHDRAW,
   DEBATE_READY,
   DEBATE_JOINED,
-  SET_ENDED
+  SET_ENDED,
+  DEBATE_ENDED
 } from './Types';
 import axios from 'axios';
 
@@ -202,5 +203,11 @@ export const pushReady = debate => ({
 // Push New Ready
 export const pushLive = debate => ({
   type: DEBATE_JOINED,
+  payload: debate
+});
+
+// Push New Ended Debate
+export const pushEnded = debate => ({
+  type: DEBATE_ENDED,
   payload: debate
 });
