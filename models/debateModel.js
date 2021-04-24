@@ -72,7 +72,7 @@ const debateSchema = mongoose.Schema(
     },
     voxeetID: String,
     voxeetOwnerId: String,
-    voxeetDuration: Number,
+    voxeetDuration: String,
     youtubeVideURL: String
   },
   {

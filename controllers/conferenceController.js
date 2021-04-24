@@ -66,7 +66,11 @@ const streamConference = async conference => {
 
 const uploadVideo = async (url, debateId) => {
   try {
+    console.log('url:', url);
+    console.log('debateId:', debateId);
     const debate = await Debate.findById(debateId);
+
+    console.log('debate:', debate);
     const title = debate.title;
     const description = debate.synopisis;
 

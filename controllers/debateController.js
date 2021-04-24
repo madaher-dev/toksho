@@ -195,6 +195,7 @@ exports.setReady = catchAsync(async (req, res, next) => {
 
 // Set debate as Ended and store voxeet info
 exports.setEnded = catchAsync(async (id, voxeetID, voxeetOwnerId, duration) => {
+  console.log('duration:', duration);
   const updatedDebate = await Debate.findOneAndUpdate(
     { _id: id },
     { status: 'ended', voxeetOwnerId, voxeetID, voxeetDuration: duration },
