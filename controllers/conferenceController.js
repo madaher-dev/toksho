@@ -63,9 +63,9 @@ const streamConference = async conference => {
 
 const uploadVideo = async (url, debateId) => {
   try {
-    const debate = await Debate.findById(debateId);
-    const title = debate.title;
-    const description = debate.synopisis;
+    const currentDebate = await Debate.findById(debateId);
+    const title = currentDebate.title;
+    const description = currentDebate.synopsis;
     const downloadResult = await google.downloadVideo(url, title, description);
     const youtubeVideoID = downloadResult.id;
     debate.storeVideo(debateId, youtubeVideoID);
