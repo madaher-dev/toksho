@@ -164,8 +164,13 @@ const UserDrawer = ({ logout }) => {
             </ListItemIcon>
             <ListItemText primary={'My Debates'} />
           </ListItem>
-          <ListItem button key={'watch'} className={classes.parentHover}>
-            <ListItemIcon className={classes.childHover}>
+          <ListItem
+            component={Link}
+            to="/watch"
+            key={'watch'}
+            className={isActiveParent('/watch')}
+          >
+            <ListItemIcon className={isActiveChild('/watch')}>
               <VideoLibraryIcon />
             </ListItemIcon>
             <ListItemText primary={'Watch'} />

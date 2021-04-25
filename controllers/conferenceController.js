@@ -19,6 +19,7 @@ exports.recordingAvailable = catchAsync(async (req, res, next) => {
       streamConference(conference);
       break;
     case 'Conference.Ended':
+      console.log('duration:', duration);
       debate.setEnded(
         conference.confAlias,
         conference.confId,
@@ -66,9 +67,15 @@ const uploadVideo = async (url, debateId) => {
     const currentDebate = await Debate.findById(debateId);
     const title = currentDebate.title;
     const description = currentDebate.synopsis;
-    const downloadResult = await google.downloadVideo(url, title, description);
+    const language = currentDebate.language;
+    const downloadResult = await google.downloadVideo(
+      url,
+      title,
+      description,
+      language
+    );
     const youtubeVideoID = downloadResult.id;
-    debate.storeVideo(debateId, youtubeVideoID);
+    debate.storeVideo(debateId, youtubeVideoID, url);
   } catch (error) {
     console.log(error);
   }

@@ -73,7 +73,8 @@ const debateSchema = mongoose.Schema(
     voxeetID: String,
     voxeetOwnerId: String,
     voxeetDuration: String,
-    youtubeVideURL: String
+    voxeetVideoURL: String,
+    youtubeVideoURL: String
   },
   {
     toJson: { virtuals: true },

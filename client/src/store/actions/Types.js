@@ -61,6 +61,7 @@ export const DEBATE_JOINED = 'DEBATE_JOINED';
 export const GET_LIVE_DEBATES = 'GET_LIVE_DEBATES';
 export const SET_ENDED = 'SET_ENDED'; //Only to set title
 export const DEBATE_ENDED = 'DEBATE_ENDED';
+export const GET_ENDED_DEBATES = 'GET_ENDED_DEBATES';
 
 // Comment
 

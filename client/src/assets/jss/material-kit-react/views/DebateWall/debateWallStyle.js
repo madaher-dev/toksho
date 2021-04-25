@@ -91,6 +91,12 @@ const debateWallStyle = theme => ({
     },
     alignItems: 'flex-end'
   },
+  playerContainer: {
+    [theme.breakpoints.down('md')]: {
+      height: 150
+    },
+    height: 450
+  },
   cta: {
     //position: 'absolute',
     // top: '0',

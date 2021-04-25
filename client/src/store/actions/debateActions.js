@@ -66,12 +66,19 @@ export const getReadyDebates = () =>
     'DEBATE_ERROR'
   );
 
-// Get Ready debates
+// Get Live debates
 
 export const getLiveDebates = () =>
   factory.get(
     `/api/v1/debates?status=joined&endDate[gte]=${date}`,
     'GET_LIVE_DEBATES',
+    'DEBATE_ERROR'
+  );
+
+export const getEndedDebates = () =>
+  factory.get(
+    `/api/v1/debates?status=videoReady`,
+    'GET_ENDED_DEBATES',
     'DEBATE_ERROR'
   );
 

@@ -23,52 +23,51 @@ const readline = require('readline');
 //   ]
 // });
 
-exports.downloadVideo = async (url, title, description) => {
-  // Authenticate from file (KEY File)
-  // const authClient = await authentication.getClient();
-  // console.log(authClient);
-  // google.options({
-  //   auth: authClient
-  // });
+// Authenticate from file (KEY File)
+// const authClient = await authentication.getClient();
+// console.log(authClient);
+// google.options({
+//   auth: authClient
+// });
 
-  // Authenticate from file (Not Key File)
+// Authenticate from file (Not Key File)
 
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-    'http://localhost:8000/callback'
-  );
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  'http://localhost:8000/callback'
+);
 
-  //const { tokens } = await oauth2Client.getToken(process.env.GOOGLE_AUTH_CODE);
-  //console.log('s2:', tokens);
+//const { tokens } = await oauth2Client.getToken(process.env.GOOGLE_AUTH_CODE);
+//console.log('s2:', tokens);
 
-  // const tokens = {
-  //   access_token: process.env.GOOGLE_ACCESS_TOKEN,
-  //   refresh_token: process.env.GOOGLE_REFRESH_TOKEN
-  // };
-  //oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
+// const tokens = {
+//   access_token: process.env.GOOGLE_ACCESS_TOKEN,
+//   refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+// };
+//oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
 
-  oauth2Client.setCredentials({
-    //access_token: process.env.GOOGLE_ACCESS_TOKEN,
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
-  });
+oauth2Client.setCredentials({
+  //access_token: process.env.GOOGLE_ACCESS_TOKEN,
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+});
 
-  console.log(oauth2Client);
-  google.options({ auth: oauth2Client });
+google.options({ auth: oauth2Client });
 
-  // Authenticate from env
-  // const client = auth.fromJSON(keys);
-  // client.scopes = [
-  //   'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload'
-  // ];
+// Authenticate from env
+// const client = auth.fromJSON(keys);
+// client.scopes = [
+//   'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube.upload'
+// ];
 
-  // google.options({
-  //   auth: client
-  // });
+// google.options({
+//   auth: client
+// });
 
-  // Initiate Api
-  var youtube = google.youtube('v3');
+// Initiate Api
+var youtube = google.youtube('v3');
 
+exports.downloadVideo = async (url, title, description, defaultLanguage) => {
   // Download Video
 
   const response = await fetch(url);
@@ -93,10 +92,11 @@ exports.downloadVideo = async (url, title, description) => {
       requestBody: {
         snippet: {
           title,
-          description
+          description,
+          defaultLanguage
         },
         status: {
-          privacyStatus: 'public'
+          privacyStatus: 'private'
         }
       },
       media: {
@@ -117,4 +117,20 @@ exports.downloadVideo = async (url, title, description) => {
   console.log('\n\n');
   console.log(res.data);
   return res.data;
+};
+
+exports.scheduleBroadcast = async snippet => {
+  try {
+    const res = await youtube.liveBroadcasts.insert({
+      part: 'id,snippet,status,contentDetails',
+      requestBody: {
+        snippet,
+        contentDetails: { monitorStream: { enableMonitorStream: false } },
+        status: { privacyStatus: 'public' }
+      }
+    });
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
 };

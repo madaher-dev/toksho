@@ -86,7 +86,8 @@ const Debate = ({
       <Grid item sm={12} md={9} style={{ paddingLeft: 10, paddingRight: 10 }}>
         {fullDebate?.status === 'ready' || fullDebate?.status === 'joined' ? (
           <ReadyDebateView debate={fullDebate} />
-        ) : fullDebate?.status === 'ended' ? (
+        ) : fullDebate?.status === 'ended' ||
+          fullDebate?.status === 'videoReady' ? (
           <EndedDebateView debate={fullDebate} />
         ) : fullDebate ? (
           <NewDebateView debate={fullDebate} />

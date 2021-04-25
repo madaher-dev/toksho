@@ -9,6 +9,7 @@ import NotFound from './NotFound';
 import AuthProfile from '../views/ProfilePage/ProfilePage.js';
 import MyDebates from './MyDebates/MyDebates';
 import Debate from './Debate/Debate';
+import Watch from './Watch/Watch';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
@@ -53,6 +54,8 @@ const Welcome = ({ user, page, profile, match }) => {
         <MyDebates />
       ) : page === 'debate' ? (
         <Debate match={match} />
+      ) : page === 'watch' ? (
+        <Watch />
       ) : (
         <NotFound />
       )}

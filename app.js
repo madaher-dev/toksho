@@ -17,6 +17,20 @@ const conferenceRouter = require('./routes/conferenseRoutes');
 const commentRouter = require('./routes/commentRoutes');
 
 const app = express();
+
+//Let's Encrypt
+
+var pkg = require('./package.json');
+var Greenlock = require('greenlock-express');
+var greenlock = Greenlock.init({
+  packageRoot: __dirname,
+  configDir: './greenlock.d',
+
+  maintainerEmail: 'madaher@gmail.com',
+
+  cluster: false
+}).serve(app);
+
 // 1- Global Middleware
 // Enable Proxy
 app.enable('trust proxy');
@@ -119,9 +133,7 @@ app.use(
 );
 
 // 2-Routes
-// app.get('/', (req, res) =>
-//   res.json({ msg: 'Welcome to the Delivery App API' })
-// );
+app.get('/', (req, res) => res.json({ msg: 'Welcome to Toksho API' }));
 
 app.use('/api/v1/debates', debateRouter);
 app.use('/api/v1/users', userRouter);

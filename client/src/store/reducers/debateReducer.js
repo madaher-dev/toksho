@@ -20,6 +20,7 @@ import {
   DEBATE_JOINED,
   SET_ENDED,
   DEBATE_ENDED,
+  GET_ENDED_DEBATES,
   LOGOUT
 } from '../actions/Types';
 
@@ -105,6 +106,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         liveDebates: action.payload.data.debates,
+        loading: false,
+        debate: null
+      };
+    case GET_ENDED_DEBATES:
+      return {
+        ...state,
+        endedDebates: action.payload.data.debates,
         loading: false,
         debate: null
       };
@@ -200,6 +208,11 @@ export default (state = initialState, action) => {
             ? action.payload.data.debate
             : debate
         ),
+        endedDebates: state.endedDebates.map(debate =>
+          debate._id === action.payload.data.debate._id
+            ? action.payload.data.debate
+            : debate
+        ),
         myDebates: state.myDebates.map(debate =>
           debate._id === action.payload.data.debate._id
             ? action.payload.data.debate
@@ -263,6 +276,7 @@ export default (state = initialState, action) => {
         debates: [],
         readyDebates: [],
         myDebates: [],
+        endedDebates: [],
         error: null,
         loading: false,
         added: null,

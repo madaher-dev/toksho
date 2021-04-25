@@ -5,7 +5,7 @@ const APIFeatures = require('./../utils/APIFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 const Pusher = require('pusher');
-//const google = require('../utils/google');
+const google = require('../utils/google');
 
 // Pusher
 
@@ -158,7 +158,13 @@ exports.like = catchAsync(async (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   );
+  // let snippet = {};
+  // snippet.title = updatedDebate.title;
+  // snippet.description = updatedDebate.synopsis;
+  // snippet.scheduledStartTime = updatedDebate.schedule;
 
+  // const broadcast = await google.scheduleBroadcast(snippet);
+  // console.log(broadcast);
   pusher.trigger('debates', 'like', {
     debate: updatedDebate
   });
@@ -195,7 +201,6 @@ exports.setReady = catchAsync(async (req, res, next) => {
 
 // Set debate as Ended and store voxeet info
 exports.setEnded = catchAsync(async (id, voxeetID, voxeetOwnerId, duration) => {
-  console.log('duration:', duration);
   const updatedDebate = await Debate.findOneAndUpdate(
     { _id: id },
     { status: 'ended', voxeetOwnerId, voxeetID, voxeetDuration: duration },
@@ -208,10 +213,10 @@ exports.setEnded = catchAsync(async (id, voxeetID, voxeetOwnerId, duration) => {
 });
 
 // Store Youtube upload result in DB
-exports.storeVideo = catchAsync(async (id, video) => {
+exports.storeVideo = catchAsync(async (id, video, url) => {
   const updatedDebate = await Debate.findOneAndUpdate(
     { _id: id },
-    { status: 'videoReady', youtubeVideURL: video },
+    { status: 'videoReady', youtubeVideoURL: video, voxeetVidoURL: url },
     { new: true }
   );
 });
