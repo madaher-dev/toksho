@@ -18,19 +18,6 @@ const commentRouter = require('./routes/commentRoutes');
 
 const app = express();
 
-//Let's Encrypt
-
-var pkg = require('./package.json');
-var Greenlock = require('greenlock-express');
-var greenlock = Greenlock.init({
-  packageRoot: __dirname,
-  configDir: './greenlock.d',
-
-  maintainerEmail: 'madaher@gmail.com',
-
-  cluster: false
-}).serve(app);
-
 // 1- Global Middleware
 // Enable Proxy
 app.enable('trust proxy');
@@ -46,7 +33,14 @@ app.enable('trust proxy');
 //for patch and delete
 //app.options('*', cors());
 
+// Let's Encrypt
+if (process.env.LE_URL && process.env.LE_CONTENT) {
+  app.get(process.env.LE_URL, function(req, res) {
+    return res.send(process.env.LE_CONTENT);
+  });
+}
 // Set security HTTP headers
+
 app.use(
   helmet({
     contentSecurityPolicy: false
@@ -133,7 +127,7 @@ app.use(
 );
 
 // 2-Routes
-app.get('/', (req, res) => res.json({ msg: 'Welcome to Toksho API' }));
+// app.get('/', (req, res) => res.json({ msg: 'Welcome to Toksho API' }));
 
 app.use('/api/v1/debates', debateRouter);
 app.use('/api/v1/users', userRouter);
