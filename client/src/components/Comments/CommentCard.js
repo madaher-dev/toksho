@@ -25,7 +25,7 @@ const CommentCard = ({ comment, user, deleteComment }) => {
     profileImage =
       comment.user.photo === 'null'
         ? '/static/images/avatars/default-profile.png'
-        : `/static/images/avatars/${comment.user.photo}`;
+        : comment.user.photo;
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }

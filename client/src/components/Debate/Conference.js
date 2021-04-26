@@ -18,7 +18,7 @@ const Conference = ({ debate, admin, user }) => {
   const userInfo = {
     name: user.name,
     externalId: user._id,
-    avatarUrl: `/static/images/avatars/${user.photo}`
+    avatarUrl: user.photo
   };
   const settings = {
     consumerKey: process.env.REACT_APP_VOXEET_CONSUMER_KEY,

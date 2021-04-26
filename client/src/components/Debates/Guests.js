@@ -60,7 +60,7 @@ const Guests = ({
             <img
               src={
                 guest.photo && guest.photo !== 'null'
-                  ? `/static/images/avatars/${guest.photo}`
+                  ? guest.photo
                   : '/static/images/avatars/default-profile.png'
               }
               alt="..."

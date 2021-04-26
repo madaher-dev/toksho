@@ -81,13 +81,13 @@ const ProfilePage = props => {
   const myProfileImage =
     user.photo === 'null'
       ? '/static/images/avatars/default-profile.png'
-      : `/static/images/avatars/${user.photo}`;
+      : user.photo;
   let userProfileImage;
   if (userProfile) {
     userProfileImage =
       userProfile.photo === 'null'
         ? '/static/images/avatars/default-profile.png'
-        : `/static/images/avatars/${userProfile.photo}`;
+        : userProfile.photo;
   }
 
   if (noProfile) {

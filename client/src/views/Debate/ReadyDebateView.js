@@ -95,7 +95,7 @@ const ReadyDebateView = ({
     profileImage =
       debate.user.photo === 'null'
         ? '/static/images/avatars/default-profile.png'
-        : `/static/images/avatars/${debate.user.photo}`;
+        : debate.user.photo;
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }

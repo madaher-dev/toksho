@@ -1,11 +1,34 @@
 const multer = require('multer');
-const sharp = require('sharp');
+const aws = require('aws-sdk');
+var multerS3 = require('multer-sharp-s3');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
 
-const multerStorage = multer.memoryStorage();
+const s3 = new aws.S3();
+aws.config.update({
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  region: 'eu-west-3'
+});
+
+const storage = multerS3({
+  s3: s3,
+  ACL: 'public-read',
+  Bucket: 'toksho-profile-pictures',
+  Metadata: function(req, file, cb) {
+    cb(null, { Name: req.user.name });
+  },
+  Key: function(req, file, cb) {
+    cb(null, req.user._id + '.' + 'jpg');
+  },
+  resize: {
+    width: 500,
+    height: 500
+  },
+  max: true
+});
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
@@ -16,24 +39,16 @@ const multerFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage: multerStorage,
+  storage: storage,
   fileFilter: multerFilter
 });
 
 exports.uploadUserPhoto = upload.single('photo');
-
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
-  const fileName = `user-${req.user._id}.jpeg`;
+  req.body.photo = req.file.Location;
 
-  await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`assets/images/avatars/${fileName}`);
-
-  req.body.photo = fileName;
   next();
 });
 

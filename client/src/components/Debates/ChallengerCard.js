@@ -37,7 +37,7 @@ const ChallengerCard = ({
     profileImage =
       challenger.photo === 'null'
         ? '/static/images/avatars/default-profile.png'
-        : `/static/images/avatars/${challenger.photo}`;
+        : challenger.photo;
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }

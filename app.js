@@ -34,11 +34,11 @@ app.enable('trust proxy');
 //app.options('*', cors());
 
 // Let's Encrypt
-if (process.env.LE_URL && process.env.LE_CONTENT) {
-  app.get(process.env.LE_URL, function(req, res) {
-    return res.send(process.env.LE_CONTENT);
-  });
-}
+// if (process.env.LE_URL && process.env.LE_CONTENT) {
+//   app.get(process.env.LE_URL, function(req, res) {
+//     return res.send(process.env.LE_CONTENT);
+//   });
+// }
 // Set security HTTP headers
 
 app.use(
