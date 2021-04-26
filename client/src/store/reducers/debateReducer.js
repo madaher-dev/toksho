@@ -186,6 +186,7 @@ export default (state = initialState, action) => {
       };
     case SET_ENDED:
       return {
+        ...state,
         joined: null
       };
     case CHALLENGE_WITHDRAW:
