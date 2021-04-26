@@ -4,7 +4,6 @@ import GridContainer from '../../material/Grid/GridContainer.js';
 import GridItem from '../../material/Grid/GridItem.js';
 import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
 import { makeStyles } from '@material-ui/core/styles';
-import DebateCard from '../Cards/NewDebateCard';
 import { default as ReadyCard } from '../Cards/UpcommingDebateCard';
 import PropTypes from 'prop-types';
 import Challengers from '../Debate/Challengers';

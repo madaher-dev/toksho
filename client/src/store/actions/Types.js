@@ -26,6 +26,7 @@ export const AVATAR_UPLOADED = 'AVATAR_UPLOADED';
 export const AVATAR_FAIL = 'AVATAR_FAIL';
 export const UPDATE_BIO = 'UPDATE_BIO';
 export const BIO_FAIL = 'BIO_FAIL';
+export const SET_PUSHER = 'SET_PUSHER';
 
 //Profile
 export const GET_PROFILE = 'GET_PROFILE';

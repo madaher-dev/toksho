@@ -9,7 +9,7 @@ import SignupModal from '../../components/auth/SignupModal';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { checkUser } from '../../store/actions/userActions';
+import { checkUser, setPusher } from '../../store/actions/userActions';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -133,9 +133,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Landing = ({ isAuthenticated, checkUser, match }) => {
+const Landing = ({ isAuthenticated, checkUser, match, setPusher }) => {
   useEffect(() => {
     checkUser();
+
     //Open the signup modal in case of /signup/open
     if (match.params.open === 'open') setOpen(true);
     // eslint-disable-next-line
@@ -230,4 +231,4 @@ const mapStateToProps = state => ({
   isAuthenticated: state.users.isAuthenticated
 });
 
-export default connect(mapStateToProps, { checkUser })(Landing);
+export default connect(mapStateToProps, { checkUser, setPusher })(Landing);

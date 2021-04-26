@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Pusher from 'pusher-js';
 import PropTypes from 'prop-types';
-import { checkUser } from '../../store/actions/userActions';
+import { checkUser, setPusher } from '../../store/actions/userActions';
 import NoAuthDebate from '../../views/Debate/NoAuthDebate';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -20,6 +21,8 @@ const DebateRoute = ({
   loading,
   page,
   checkUser,
+  setPusher,
+  pusher,
   component: Component,
   ...rest
 }) => {
@@ -27,6 +30,15 @@ const DebateRoute = ({
     if (!isAuthenticated) {
       checkUser();
     }
+    if (!pusher) {
+      console.log('Pusher Connection Created!');
+      const pusher = new Pusher('3112d5ae0257895cff95', {
+        cluster: 'eu',
+        encrypted: true
+      });
+      setPusher(pusher);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,7 +69,8 @@ DebateRoute.propTypes = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.users.isAuthenticated,
-  loading: state.users.loading
+  loading: state.users.loading,
+  pusher: state.users.pusher
 });
 
-export default connect(mapStateToProps, { checkUser })(DebateRoute);
+export default connect(mapStateToProps, { checkUser, setPusher })(DebateRoute);

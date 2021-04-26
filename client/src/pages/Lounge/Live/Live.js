@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Pusher from 'pusher-js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from '../../../material/Grid/GridContainer.js';
 import GridItem from '../../../material/Grid/GridItem.js';
@@ -23,7 +22,8 @@ const Live = ({
   setLoading,
   getLiveDebates,
   pushLike,
-  pushLive
+  pushLive,
+  pusher
 }) => {
   const classes = useStyles();
 
@@ -31,10 +31,10 @@ const Live = ({
     setLoading();
     getLiveDebates();
 
-    const pusher = new Pusher('3112d5ae0257895cff95', {
-      cluster: 'eu',
-      encrypted: true
-    });
+    // const pusher = new Pusher('3112d5ae0257895cff95', {
+    //   cluster: 'eu',
+    //   encrypted: true
+    // });
 
     const channel = pusher.subscribe('debates');
     channel.bind('like', data => {
@@ -77,7 +77,8 @@ Live.propTypes = {
 };
 const mapStateToProps = state => ({
   loading: state.debates.loading,
-  debates: state.debates.liveDebates
+  debates: state.debates.liveDebates,
+  pusher: state.users.pusher
 });
 
 export default connect(mapStateToProps, {

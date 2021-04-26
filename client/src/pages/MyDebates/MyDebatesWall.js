@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Pusher from 'pusher-js';
 
 import NavPills from '../../material/NavPills/NavPills.js';
 import Camera from '@material-ui/icons/Camera';
@@ -39,7 +38,8 @@ const MyDebatesWall = ({
   pushLike,
   pushChallenge,
   pushReady,
-  pushLive
+  pushLive,
+  pusher
 }) => {
   const classes = useStyles();
   // This is equivalent to theme.breakpoints.down("sm")
@@ -51,10 +51,10 @@ const MyDebatesWall = ({
   useEffect(() => {
     setLoading();
     getMyDebates();
-    const pusher = new Pusher('3112d5ae0257895cff95', {
-      cluster: 'eu',
-      encrypted: true
-    });
+    // const pusher = new Pusher('3112d5ae0257895cff95', {
+    //   cluster: 'eu',
+    //   encrypted: true
+    // });
 
     const channel = pusher.subscribe('debates');
     channel.bind('like', data => {
@@ -138,7 +138,8 @@ MyDebatesWall.propTypes = {
 const mapStateToProps = state => ({
   myDebates: state.debates.myDebates,
   loading: state.debates.loading,
-  user: state.users.user
+  user: state.users.user,
+  pusher: state.users.pusher
 });
 
 export default connect(mapStateToProps, {

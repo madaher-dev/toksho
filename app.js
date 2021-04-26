@@ -7,7 +7,6 @@ const hpp = require('hpp');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const Pusher = require('pusher');
 const compression = require('compression');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -34,11 +33,11 @@ app.enable('trust proxy');
 //app.options('*', cors());
 
 // Let's Encrypt
-// if (process.env.LE_URL && process.env.LE_CONTENT) {
-//   app.get(process.env.LE_URL, function(req, res) {
-//     return res.send(process.env.LE_CONTENT);
-//   });
-// }
+if (process.env.LE_URL && process.env.LE_CONTENT) {
+  app.get(process.env.LE_URL, function(req, res) {
+    return res.send(process.env.LE_CONTENT);
+  });
+}
 // Set security HTTP headers
 
 app.use(
@@ -105,16 +104,6 @@ var corsOption = {
   exposedHeaders: ['x-auth-token']
 };
 app.use(cors(corsOption));
-
-// Pusher
-
-const pusher = new Pusher({
-  appId: process.env.PUSHER_APP_ID,
-  key: process.env.PUSHER_APP_KEY,
-  secret: process.env.PUSHER_APP_SECRET,
-  cluster: process.env.PUSHER_APP_CLUSTER,
-  useTLS: true
-});
 
 // Body parser
 app.use(bodyParser.urlencoded({ extended: false }));

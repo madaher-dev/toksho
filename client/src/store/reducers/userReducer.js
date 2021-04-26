@@ -19,7 +19,8 @@ import {
   AVATAR_UPLOADED,
   AVATAR_FAIL,
   BIO_FAIL,
-  UPDATE_BIO
+  UPDATE_BIO,
+  SET_PUSHER
 } from '../actions/Types';
 
 const initialState = {
@@ -29,7 +30,8 @@ const initialState = {
   error: null,
   step: 1, //Step is used for signup Modal - Step 1 for email/pass/dob - Step 2 for Email Validation - Step 3 for set handler
   avatarStep: 1, // Step for the avatar page
-  emailSent: false //Validation Email Sent
+  emailSent: false, //Validation Email Sent
+  pusher: null
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -77,6 +79,11 @@ export default (state = initialState, action) => {
         ...state,
         user: action.payload.data.user,
         loading: false
+      };
+    case SET_PUSHER:
+      return {
+        ...state,
+        pusher: action.payload
       };
     case LOGIN_FAIL:
     case LOGOUT:

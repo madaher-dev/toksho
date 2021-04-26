@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Pusher from 'pusher-js';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -30,7 +29,8 @@ const WatchDebatesWall = ({
   loading,
   pushLike,
   pushEnded,
-  getEndedDebates
+  getEndedDebates,
+  pusher
 }) => {
   const classes = useStyles();
   // This is equivalent to theme.breakpoints.down("sm")
@@ -42,10 +42,10 @@ const WatchDebatesWall = ({
   useEffect(() => {
     setLoading();
     getEndedDebates();
-    const pusher = new Pusher('3112d5ae0257895cff95', {
-      cluster: 'eu',
-      encrypted: true
-    });
+    // const pusher = new Pusher('3112d5ae0257895cff95', {
+    //   cluster: 'eu',
+    //   encrypted: true
+    // });
 
     const channel = pusher.subscribe('debates');
     channel.bind('like', data => {
@@ -92,7 +92,8 @@ WatchDebatesWall.propTypes = {
 
 const mapStateToProps = state => ({
   endedDebates: state.debates.endedDebates,
-  loading: state.debates.loading
+  loading: state.debates.loading,
+  pusher: state.users.pusher
 });
 
 export default connect(mapStateToProps, {

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Pusher from 'pusher-js';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -35,6 +34,7 @@ const Challenges = ({
   pushChallenge,
   pushPick,
   pushReady,
+  pusher,
   pushLive
 }) => {
   const classes = useStyles();
@@ -43,10 +43,10 @@ const Challenges = ({
     setLoading();
     getAllDebates();
 
-    const pusher = new Pusher('3112d5ae0257895cff95', {
-      cluster: 'eu',
-      encrypted: true
-    });
+    // const pusher = new Pusher('3112d5ae0257895cff95', {
+    //   cluster: 'eu',
+    //   encrypted: true
+    // });
 
     const channel = pusher.subscribe('debates');
     channel.bind('like', data => {
@@ -117,7 +117,8 @@ Challenges.propTypes = {
 };
 const mapStateToProps = state => ({
   debates: state.debates.debates,
-  loading: state.debates.loading
+  loading: state.debates.loading,
+  pusher: state.users.pusher
 });
 
 export default connect(mapStateToProps, {

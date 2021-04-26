@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Pusher from 'pusher-js';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -32,15 +31,16 @@ const Comments = ({
   comments,
   loading,
   setLoading,
-  user
+  user,
+  pusher
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    const pusher = new Pusher('3112d5ae0257895cff95', {
-      cluster: 'eu',
-      encrypted: true
-    });
+    // const pusher = new Pusher('3112d5ae0257895cff95', {
+    //   cluster: 'eu',
+    //   encrypted: true
+    // });
     setLoading();
     getComments(debate);
 
@@ -109,7 +109,8 @@ Comments.propTypes = {
 const mapStateToProps = state => ({
   loading: state.comments.loading,
   comments: state.comments.comments,
-  user: state.users.user._id
+  user: state.users.user._id,
+  pusher: state.users.pusher
 });
 export default connect(mapStateToProps, {
   getComments,

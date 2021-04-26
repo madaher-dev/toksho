@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 56
   }
 }));
-const Welcome = ({ user, page, profile, match }) => {
+const Welcome = ({ user, page, profile, match, setPusher }) => {
   const classes = useStyles();
 
   const [openAvatarModal, setOpenAvatarModal] = useState(false);
@@ -37,6 +37,7 @@ const Welcome = ({ user, page, profile, match }) => {
       setOpenAvatarModal(true);
     }
   }, [user]);
+
   const handleClose = () => {
     setOpenAvatarModal(false);
   };

@@ -8,7 +8,8 @@ import {
   LOGIN_FAIL,
   HANDLER_ADDED,
   AVATAR_UPLOADED,
-  AVATAR_FAIL
+  AVATAR_FAIL,
+  SET_PUSHER
 } from './Types';
 import axios from 'axios';
 // const FormData = require('form-data');
@@ -171,3 +172,6 @@ export const clearErrors = () => ({ type: CLEAR_ERRORS });
 
 // Set Loading
 export const setLoading = () => ({ type: SET_USER_LOADING });
+
+//Set Pusher
+export const setPusher = pusher => ({ type: SET_PUSHER, payload: pusher });
