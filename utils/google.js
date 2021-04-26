@@ -93,8 +93,8 @@ exports.downloadVideo = async (url, title, description, defaultLanguage) => {
       requestBody: {
         snippet: {
           title,
-          description,
-          defaultLanguage
+          description
+          //defaultLanguage
         },
         status: {
           privacyStatus: 'private'

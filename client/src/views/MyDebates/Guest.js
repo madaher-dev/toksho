@@ -24,7 +24,10 @@ const Guest = ({ debates, loading, user }) => {
         <GridItem xs={12}>
           {hostDebates?.map(debate => (
             <div key={debate._id + 1}>
-              {debate.status === 'ready' || debate.status === 'joined' ? (
+              {debate.status === 'ready' ||
+              debate.status === 'joined' ||
+              debate.status === 'ended' ||
+              debate.status === 'videoReady' ? (
                 <ReadyCard key={debate._id + 1} debate={debate} />
               ) : (
                 <DebateCard key={debate._id + 1} debate={debate} />
