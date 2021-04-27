@@ -77,6 +77,7 @@ const uploadVideo = async (url, debateId) => {
       debateID
     );
     //const youtubeVideoID = downloadResult.id;
+    console.log('DL result', downloadResult);
     const s3Location = downloadResult;
     debate.storeVideo(debateId, s3Location, url);
   } catch (error) {

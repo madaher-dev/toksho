@@ -143,7 +143,7 @@ const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
                       </GridContainer>
                     </GridItem>
                     <GridItem className={classes.playerContainer}>
-                      <PlayerFrame url={debate.voxeetVideoUrl} />
+                      <PlayerFrame url={debate.youtubeVideoURL} />
                     </GridItem>
                   </GridContainer>
                 </GridItem>

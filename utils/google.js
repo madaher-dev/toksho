@@ -120,8 +120,9 @@ exports.downloadVideo = async (
     }
     console.log(`File uploaded successfully. ${data.Location}`);
     result = data.location;
+    return result;
   });
-
+  console.log(result);
   return result;
   //UPLOADING VIDEO TO YOUTUBE
   //const fileName = 'temp.mp4';
