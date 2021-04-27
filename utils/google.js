@@ -87,10 +87,10 @@ exports.downloadVideo = async (
 ) => {
   // Download Video
 
-  const response = await fetch(url);
-  const buffer = await response.buffer();
+  const response2 = await fetch(url);
+  const buffer = await response2.buffer();
 
-  fs.writeFile(`temp.mp4`, buffer, () =>
+  fs.writeFileSync(`temp.mp4`, buffer, () =>
     console.log('finished downloading video!')
   );
 
@@ -102,28 +102,23 @@ exports.downloadVideo = async (
   // Upload Video TO
   const fileName = 'temp.mp4';
   const fileSize = fs.statSync(fileName).size;
-  const fileContent = fs.readFileSync(fileName);
+  const fileContent = fs.createReadStream(fileName);
 
   // Setting up S3 upload parameters
   const params = {
     Bucket: 'toksho-videos',
-    // Metadata: { Title: title, Description: description },
+    Metadata: { Title: title, Description: description },
     Key: debate + '.' + 'mp4',
-    Body: fileContent
+    Body: fileContent,
+    ContentLength: fileSize,
+    ContentType: 'video/mp4'
   };
 
   // Uploading files to the bucket
 
-  const location = s3.upload(params, function(err, data) {
-    if (err) {
-      throw err;
-    }
-    console.log(`File uploaded successfully. ${data.Location}`);
-    result = data.location;
-    return result;
-  });
+  var s3upload = await s3.upload(params).promise();
 
-  return location;
+  return s3upload.Location;
   //UPLOADING VIDEO TO YOUTUBE
   //const fileName = 'temp.mp4';
   //const fileSize = fs.statSync(fileName).size;

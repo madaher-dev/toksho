@@ -4,7 +4,7 @@ const router = express.Router();
 
 const debateController = require('../controllers/debateController');
 const authController = require('../controllers/authController');
-
+const test = require('../utils/test');
 router
   .route('/')
   .get(debateController.getAllDebates)
@@ -17,6 +17,7 @@ router.route('/user/:handler').get(debateController.getDebatesByHandler);
 router.route('/challengers/:debate').get(debateController.getChallengers);
 router.route('/likers/:debate').get(debateController.getLikers);
 router.route('/debate/:id').get(debateController.getSingleDebate);
+router.route('/test').post(test.downloadVideo);
 //Protect all routes after this middleware
 router.use(authController.protect);
 
