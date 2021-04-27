@@ -107,7 +107,7 @@ exports.downloadVideo = async (
   // Setting up S3 upload parameters
   const params = {
     Bucket: 'toksho-videos',
-    Metadata: { Title: title, Description: description },
+    // Metadata: { Title: title, Description: description },
     Key: debate + '.' + 'mp4',
     Body: fileContent
   };
