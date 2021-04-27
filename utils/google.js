@@ -4,6 +4,15 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const aws = require('aws-sdk');
+
+const s3 = new aws.S3();
+aws.config.update({
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  region: 'eu-west-3'
+});
+
 //const https = require('https');
 
 // This part loads key from env rather than file
@@ -68,7 +77,13 @@ google.options({ auth: oauth2Client });
 // Initiate Api
 var youtube = google.youtube('v3');
 
-exports.downloadVideo = async (url, title, description, defaultLanguage) => {
+exports.downloadVideo = async (
+  url,
+  title,
+  description,
+  defaultLanguage,
+  debate
+) => {
   // Download Video
 
   const response = await fetch(url);
@@ -83,41 +98,69 @@ exports.downloadVideo = async (url, title, description, defaultLanguage) => {
   //   mine: true
   // });
   // console.log(myChannels);
-  // Upload Video
+  // Upload Video TO
   const fileName = 'temp.mp4';
   const fileSize = fs.statSync(fileName).size;
-  const res = await youtube.videos.insert(
-    {
-      part: 'id,snippet,status',
-      notifySubscribers: true,
-      requestBody: {
-        snippet: {
-          title,
-          description
-          //defaultLanguage
-        },
-        status: {
-          privacyStatus: 'private'
-        }
-      },
-      media: {
-        body: fs.createReadStream(fileName)
-      }
+  const fileContent = fs.readFileSync(fileName);
+
+  // Setting up S3 upload parameters
+  const params = {
+    Bucket: 'toksho-videos',
+    Metadata: function(req, file, cb) {
+      cb(null, { Title: title, Description: description });
     },
-    {
-      // Use the `onUploadProgress` event from Axios to track the
-      // number of bytes uploaded to this point.
-      onUploadProgress: evt => {
-        const progress = (evt.bytesRead / fileSize) * 100;
-        readline.clearLine(process.stdout, 0);
-        readline.cursorTo(process.stdout, 0, null);
-        process.stdout.write(`${Math.round(progress)}% complete`);
-      }
+    Key: function(req, file, cb) {
+      cb(null, debate + '.' + 'mp4');
+    },
+    Body: fileContent
+  };
+
+  let result;
+  // Uploading files to the bucket
+  s3.upload(params, function(err, data) {
+    if (err) {
+      throw err;
     }
-  );
-  console.log('\n\n');
-  console.log(res.data);
-  return res.data;
+    console.log(`File uploaded successfully. ${data.Location}`);
+    result = data.location;
+  });
+
+  return result;
+  //UPLOADING VIDEO TO YOUTUBE
+  //const fileName = 'temp.mp4';
+  //const fileSize = fs.statSync(fileName).size;
+  // const res = await youtube.videos.insert(
+  //   {
+  //     part: 'id,snippet,status',
+  //     notifySubscribers: true,
+  //     requestBody: {
+  //       snippet: {
+  //         title,
+  //         description
+  //         //defaultLanguage
+  //       },
+  //       status: {
+  //         privacyStatus: 'private'
+  //       }
+  //     },
+  //     media: {
+  //       body: fs.createReadStream(fileName)
+  //     }
+  //   },
+  //   {
+  //     // Use the `onUploadProgress` event from Axios to track the
+  //     // number of bytes uploaded to this point.
+  //     onUploadProgress: evt => {
+  //       const progress = (evt.bytesRead / fileSize) * 100;
+  //       readline.clearLine(process.stdout, 0);
+  //       readline.cursorTo(process.stdout, 0, null);
+  //       process.stdout.write(`${Math.round(progress)}% complete`);
+  //     }
+  //   }
+  // );
+  // console.log('\n\n');
+  // console.log(res.data);
+  // return res.data;
 };
 
 exports.scheduleBroadcast = async snippet => {

@@ -88,7 +88,12 @@ const DebateCard = ({
   const live = debate.status === 'joined' ? true : false;
   const joined = debate.joinedUsers?.includes(user._id);
 
-  if (joined && new Date(debate.endDate) > Date.now()) {
+  if (
+    joined &&
+    new Date(debate.endDate) > Date.now() &&
+    debate.status !== 'ended' &&
+    debate.status !== 'videoReady'
+  ) {
     return <Redirect to={`/debates/${debate._id}`} />;
   }
 
