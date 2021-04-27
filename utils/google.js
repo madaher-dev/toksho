@@ -87,12 +87,31 @@ exports.downloadVideo = async (
 ) => {
   // Download Video
 
-  const response = await fetch(url);
-  const buffer = await response.buffer();
+  try {
+    const response = await fetch(url);
+    const buffer = await response.buffer();
 
-  fs.writeFile(`temp.mp4`, buffer, () =>
-    console.log('finished downloading video!')
-  );
+    fs.writeFile(`temp.mp4`, buffer, () =>
+      console.log('finished downloading video!')
+    );
+    const fileName = 'temp.mp4';
+    const fileSize = fs.statSync(fileName).size;
+    const fileContent = fs.readFileSync(fileName);
+
+    // Setting up S3 upload parameters
+    const params = {
+      Bucket: 'toksho-videos',
+      Metadata: { Title: title, Description: description },
+      Key: debate + '.' + 'mp4',
+      Body: fileContent
+    };
+
+    const result = await s3.upload(params);
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
 
   // var myChannels = await youtube.channels.list({
   //   part: 'id,snippet,status',
@@ -100,30 +119,19 @@ exports.downloadVideo = async (
   // });
   // console.log(myChannels);
   // Upload Video TO
-  const fileName = 'temp.mp4';
-  const fileSize = fs.statSync(fileName).size;
-  const fileContent = fs.readFileSync(fileName);
 
-  // Setting up S3 upload parameters
-  const params = {
-    Bucket: 'toksho-videos',
-    Metadata: { Title: title, Description: description },
-    Key: debate + '.' + 'mp4',
-    Body: fileContent
-  };
-
-  let result;
   // Uploading files to the bucket
-  s3.upload(params, function(err, data) {
-    if (err) {
-      throw err;
-    }
-    console.log(`File uploaded successfully. ${data.Location}`);
-    result = data.location;
-    return result;
-  });
-  console.log(result);
-  return result;
+
+  // s3.upload(params, function(err, data) {
+  //   if (err) {
+  //     throw err;
+  //   }
+  //   console.log(`File uploaded successfully. ${data.Location}`);
+  //   result = data.location;
+  //   return result;
+  // });
+  // console.log(result);
+  // return result;
   //UPLOADING VIDEO TO YOUTUBE
   //const fileName = 'temp.mp4';
   //const fileSize = fs.statSync(fileName).size;
