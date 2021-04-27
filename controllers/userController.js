@@ -6,12 +6,13 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
 
-const s3 = new aws.S3();
 aws.config.update({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   region: 'eu-west-3'
 });
+
+const s3 = new aws.S3();
 
 const storage = multerS3({
   s3: s3,
