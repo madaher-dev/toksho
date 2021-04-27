@@ -17,7 +17,6 @@ const storage = multerS3({
   s3: s3,
   ACL: 'public-read',
   Bucket: 'toksho-profile-pictures',
-  Metadata: { Name: req.user.name },
   Key: function(req, file, cb) {
     cb(null, req.user._id + '.' + 'jpg');
   },
