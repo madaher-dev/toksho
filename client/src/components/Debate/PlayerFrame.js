@@ -1,13 +1,10 @@
 import React from 'react';
-import { Player } from 'video-react';
-import '../../assets/scss/styles/scss/video-react.scss';
+//import { Player } from 'video-react';
+import ReactPlayer from 'react-player';
+//import '../../assets/scss/styles/scss/video-react.scss';
 
 const PlayerFrame = ({ url }) => {
-  return (
-    <Player>
-      <source src={url} />
-    </Player>
-  );
+  return <ReactPlayer url={url} controls playing />;
 };
 
 export default PlayerFrame;
