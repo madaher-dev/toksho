@@ -9,7 +9,10 @@ import {
   HANDLER_ADDED,
   AVATAR_UPLOADED,
   AVATAR_FAIL,
-  SET_PUSHER
+  SET_PUSHER,
+  INFO_UPDATED,
+  SET_SETTINGS_LOADING,
+  HANDLER_ERROR
 } from './Types';
 import axios from 'axios';
 // const FormData = require('form-data');
@@ -55,7 +58,7 @@ export const uploadAvatar = image => async dispatch => {
   const form = new FormData();
   form.append('photo', image);
   try {
-    const res = await axios.patch('/api/v1/users/uploadAvatar', form, config);
+    const res = await axios.patch('/api/v1/users/updateInfo', form, config);
 
     dispatch({
       type: AVATAR_UPLOADED,
@@ -173,5 +176,65 @@ export const clearErrors = () => ({ type: CLEAR_ERRORS });
 // Set Loading
 export const setLoading = () => ({ type: SET_USER_LOADING });
 
+// Set Setting Loading
+export const setSettingsLoading = () => ({ type: SET_SETTINGS_LOADING });
 //Set Pusher
 export const setPusher = pusher => ({ type: SET_PUSHER, payload: pusher });
+
+//Update Info
+
+export const updateInfo = (values, image) => async dispatch => {
+  const config = {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  };
+  const form = new FormData();
+  if (image) form.append('photo', image);
+  form.append('name', values.name);
+  form.append('bio', values.bio);
+  form.append('dob', values.dob);
+
+  try {
+    const res = await axios.patch('/api/v1/users/updateInfo', form, config);
+
+    dispatch({
+      type: INFO_UPDATED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: HANDLER_ERROR,
+      payload: err.response.data.message
+    });
+  }
+};
+
+//Update Social
+
+export const updateSocial = values => async dispatch => {
+  const config = {
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  try {
+    const res = await axios.patch('/api/v1/users/updateInfo', values, config);
+
+    dispatch({
+      type: INFO_UPDATED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: HANDLER_ERROR,
+      payload: err.response.data.message
+    });
+  }
+};
+
+// Update Password
+export const updatePassword = user =>
+  factory.patch(
+    user,
+    '/api/v1/users/updatePassword',
+    'PASSWORD_UPDATED',
+    'PASSWORD_ERROR'
+  );

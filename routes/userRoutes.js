@@ -20,21 +20,16 @@ router.get('/profiles/:profile', userController.getProfile);
 router.use(authController.protect);
 
 router.post('/setHandler', authController.setHandler);
-router.patch(
-  '/updateMyPassword',
-  authController.protect,
-  authController.updatePassword
-);
+router.patch('/updatePassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
-router.patch('/updateMe', userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe); //actually patching
 router.patch(
-  '/uploadAvatar',
+  '/updateInfo',
   userController.uploadUserPhoto,
   userController.resizeUserPhoto,
-  userController.updateMe
+  userController.updateInfo
 );
-router.patch('/updateBio', userController.updateMe);
+router.patch('/updateBio', userController.updateInfo);
 
 //Restrict all the middleware after this point to admin
 router.use(authController.restrictTo('admin'));

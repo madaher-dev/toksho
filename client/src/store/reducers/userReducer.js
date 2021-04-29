@@ -20,18 +20,24 @@ import {
   AVATAR_FAIL,
   BIO_FAIL,
   UPDATE_BIO,
-  SET_PUSHER
+  SET_PUSHER,
+  INFO_UPDATED,
+  PASSWORD_UPDATED,
+  SET_SETTINGS_LOADING,
+  PASSWORD_ERROR
 } from '../actions/Types';
 
 const initialState = {
   isAuthenticated: null,
   loading: true, //Initialize to true to avoid redirect to landing while checking user
+  settingsLoading: false,
   user: null,
   error: null,
   step: 1, //Step is used for signup Modal - Step 1 for email/pass/dob - Step 2 for Email Validation - Step 3 for set handler
   avatarStep: 1, // Step for the avatar page
   emailSent: false, //Validation Email Sent
-  pusher: null
+  pusher: null,
+  passwordUpdated: false
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -52,6 +58,15 @@ export default (state = initialState, action) => {
         loading: false,
         step: 1
       };
+    case PASSWORD_UPDATED:
+      return {
+        ...state,
+        user: action.payload.data.user,
+        isAuthenticated: true,
+        settingsLoading: false,
+        passwordUpdated: true
+      };
+
     case RESET_PASS_SUCCESSS: //checks if email verified and handler set (step 2 and 3)
       if (
         !action.payload.data.user.verified ||
@@ -62,6 +77,7 @@ export default (state = initialState, action) => {
           ...state,
           user: action.payload.data.user,
           loading: false,
+
           step: 1
         };
       } else {
@@ -71,9 +87,11 @@ export default (state = initialState, action) => {
           user: action.payload.data.user,
           isAuthenticated: true,
           loading: false,
+
           step: 1
         };
       }
+
     case LOGIN_SUCCESS: //Will Login Unconfirmed email
       return {
         ...state,
@@ -91,12 +109,14 @@ export default (state = initialState, action) => {
         ...state,
         isAuthenticated: false,
         loading: false,
+        setSettingsLoading: false,
         user: null,
         error: action.payload,
         avatarStep: 1,
         step: 1,
         emailSent: false
       };
+
     case USER_LOADED:
       return {
         ...state,
@@ -104,11 +124,19 @@ export default (state = initialState, action) => {
         loading: false,
         user: action.payload.data.data
       };
+    case INFO_UPDATED:
+      return {
+        ...state,
+        settingsLoading: false,
+        isAuthenticated: true,
+        user: action.payload.data.user
+      };
     case AVATAR_UPLOADED:
       return {
         ...state,
         avatarStep: 2,
         loading: false,
+        setSettingsLoading: false,
         isAuthenticated: true,
         user: action.payload.data.user
       };
@@ -141,7 +169,13 @@ export default (state = initialState, action) => {
         loading: false,
         step: 3
       };
-
+    case PASSWORD_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        settingsLoading: false,
+        passwordUpdated: false
+      };
     case CODE_ERROR:
       return {
         ...state,
@@ -181,7 +215,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         error: null,
-        loading: false
+        loading: false,
+        settingsLoading: false,
+        passwordUpdated: false
+      };
+    case SET_SETTINGS_LOADING:
+      return {
+        ...state,
+        settingsLoading: true
       };
     case SET_USER_LOADING:
       return {

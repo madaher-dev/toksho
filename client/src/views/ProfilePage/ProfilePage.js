@@ -136,15 +136,54 @@ const ProfilePage = props => {
                           ? userProfile.handler
                           : null}
                       </p>
-                      <Button justIcon link className={classes.margin5}>
-                        <i className={'fab fa-twitter'} />
-                      </Button>
-                      <Button justIcon link className={classes.margin5}>
-                        <i className={'fab fa-instagram'} />
-                      </Button>
-                      <Button justIcon link className={classes.margin5}>
-                        <i className={'fab fa-facebook'} />
-                      </Button>
+                      {user.twitter && (
+                        <Button justIcon link className={classes.margin5}>
+                          <a
+                            target="_blank"
+                            href={`https://www.twitter.com/${user.twitter}`}
+                            rel="noreferrer"
+                            style={{ color: '#555555' }}
+                          >
+                            <i className={'fab fa-twitter'} />
+                          </a>
+                        </Button>
+                      )}
+                      {user.instagram && (
+                        <Button justIcon link className={classes.margin5}>
+                          <a
+                            target="_blank"
+                            href={`https://www.instagram.com/${user.instagram}`}
+                            rel="noreferrer"
+                            style={{ color: '#555555' }}
+                          >
+                            <i className={'fab fa-instagram'} />
+                          </a>
+                        </Button>
+                      )}
+                      {user.facebook && (
+                        <Button justIcon link className={classes.margin5}>
+                          <a
+                            target="_blank"
+                            href={user.facebook}
+                            rel="noreferrer"
+                            style={{ color: '#555555' }}
+                          >
+                            <i className={'fab fa-facebook'} />
+                          </a>
+                        </Button>
+                      )}
+                      {user.linkedIn && (
+                        <Button justIcon link className={classes.margin5}>
+                          <a
+                            target="_blank"
+                            href={user.linkedIn}
+                            rel="noreferrer"
+                            style={{ color: '#555555' }}
+                          >
+                            <i className={'fab fa-linkedin'} />
+                          </a>
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </GridItem>

@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     lowercase: true
   },
   photo: String,
+  facebook: String,
+  instagram: String,
+  twitter: String,
+  linkedIn: String,
   bio: String,
   dob: Date,
   password: {

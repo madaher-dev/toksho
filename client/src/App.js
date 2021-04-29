@@ -77,6 +77,12 @@ function App() {
                     component={Welcome}
                     page="watch"
                   />
+                  <PrivateRoute
+                    exact
+                    path="/settings"
+                    component={Welcome}
+                    page="settings"
+                  />
                   <DebateRoute
                     exact
                     path="/debates/:debate"

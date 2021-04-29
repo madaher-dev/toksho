@@ -27,6 +27,10 @@ export const AVATAR_FAIL = 'AVATAR_FAIL';
 export const UPDATE_BIO = 'UPDATE_BIO';
 export const BIO_FAIL = 'BIO_FAIL';
 export const SET_PUSHER = 'SET_PUSHER';
+export const INFO_UPDATED = 'INFO_UPDATED';
+export const PASSWORD_UPDATED = 'PASSWORD_UPDATED';
+export const SET_SETTINGS_LOADING = 'SET_SETTINGS_LOADING';
+export const PASSWORD_ERROR = 'PASSWORD_ERROR';
 
 //Profile
 export const GET_PROFILE = 'GET_PROFILE';
