@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+// import * as PusherPushNotifications from '@pusher/push-notifications-web';
 import AvatarModal from '../components/auth/AvatarModal';
 import UserDrawer from '../components/layout/UserDrawer';
 import HomePage from './Lounge/HomePage';
@@ -11,6 +11,7 @@ import MyDebates from './MyDebates/MyDebates';
 import Debate from './Debate/Debate';
 import Watch from './Watch/Watch';
 import Settings from './Settings/Settings';
+import Notifications from './Notifications/Notifications';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 56
   }
 }));
-const Welcome = ({ user, page, profile, match, setPusher }) => {
+const Welcome = ({ user, page, profile, match }) => {
   const classes = useStyles();
 
   const [openAvatarModal, setOpenAvatarModal] = useState(false);
@@ -38,7 +39,20 @@ const Welcome = ({ user, page, profile, match, setPusher }) => {
       setOpenAvatarModal(true);
     }
   }, [user]);
+  // const beamsClient = new PusherPushNotifications.Client({
+  //   instanceId: '3bcc43d3-a33b-4400-9548-00e7ac20d202'
+  // });
+  // const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
+  //   url: '/api/v1/users/beams/token'
+  // });
 
+  // useEffect(() => {
+  //   beamsClient
+  //     .start()
+  //     .then(() => beamsClient.setUserId(user._id, beamsTokenProvider))
+
+  //     .catch(console.error);
+  // }, []);
   const handleClose = () => {
     setOpenAvatarModal(false);
   };
@@ -60,6 +74,8 @@ const Welcome = ({ user, page, profile, match, setPusher }) => {
         <Watch />
       ) : page === 'settings' ? (
         <Settings />
+      ) : page === 'notifications' ? (
+        <Notifications />
       ) : (
         <NotFound />
       )}

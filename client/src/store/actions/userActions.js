@@ -50,6 +50,15 @@ export const resendEmail = email =>
     'AUTH_ERROR'
   );
 
+// Get My Notification
+
+export const getMyNotifications = () =>
+  factory.get(
+    '/api/v1/users/myNotifications',
+    'GET_NOTIFICATIONS',
+    'NOTIFICATION_FAIL'
+  );
+
 // Upload Avatar
 export const uploadAvatar = image => async dispatch => {
   const config = {

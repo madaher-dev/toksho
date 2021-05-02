@@ -12,7 +12,8 @@ import {
   DEBATE_READY,
   DEBATE_JOINED,
   SET_ENDED,
-  DEBATE_ENDED
+  DEBATE_ENDED,
+  PUSH_NOTIFICATION
 } from './Types';
 import axios from 'axios';
 
@@ -217,4 +218,10 @@ export const pushLive = debate => ({
 export const pushEnded = debate => ({
   type: DEBATE_ENDED,
   payload: debate
+});
+
+// Push New Ended Debate
+export const pushNotification = data => ({
+  type: PUSH_NOTIFICATION,
+  payload: data
 });

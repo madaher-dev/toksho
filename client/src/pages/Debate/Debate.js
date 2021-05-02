@@ -14,70 +14,16 @@ import SideBar from '../../views/SideBar/SideBar';
 import {
   getMyDebates,
   setLoading,
-  getDebate,
-  pushLike,
-  pushChallenge,
-  pushReady,
-  pushLive,
-  pushEnded
+  getDebate
 } from '../../store/actions/debateActions';
-import { pushPick } from '../../store/actions/profileActions';
 
-const Debate = ({
-  match,
-  fullDebate,
-  pushReady,
-  setLoading,
-  getDebate,
-  pushLike,
-  pushChallenge,
-  pushLive,
-  pushEnded,
-  pusher
-}) => {
+const Debate = ({ match, fullDebate, setLoading, getDebate }) => {
   const debate = match.params.debate;
   useEffect(() => {
     setLoading();
     //getMyDebates();
     getDebate(debate);
 
-    // const pusher = new Pusher('3112d5ae0257895cff95', {
-    //   cluster: 'eu',
-    //   encrypted: true
-    // });
-
-    const channel = pusher.subscribe('debates');
-    channel.bind('like', data => {
-      let newData = {};
-      newData.data = data;
-      pushLike(newData);
-    });
-    channel.bind('challenge', data => {
-      let newData = {};
-      newData.data = data;
-      pushChallenge(newData);
-    });
-    channel.bind('pick', data => {
-      let newData = {};
-      newData.data = data;
-      pushPick(newData);
-    });
-    channel.bind('ready', data => {
-      let newData = {};
-      newData.data = data;
-      pushReady(newData);
-    });
-    channel.bind('joined', data => {
-      let newData = {};
-      newData.data = data;
-      pushLive(newData);
-    });
-
-    channel.bind('ended', data => {
-      let newData = {};
-      newData.data = data;
-      pushEnded(newData);
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -103,7 +49,7 @@ const Debate = ({
       >
         <SideBar />
       </Box>
-      <Challengers sourcePage={'host'} />
+      <Challengers sourcePage="debate" />
     </Grid>
   );
 };
@@ -111,13 +57,7 @@ const Debate = ({
 Debate.propTypes = {
   fullDebate: PropTypes.object,
   setLoading: PropTypes.func.isRequired,
-  getDebate: PropTypes.func.isRequired,
-  pushLike: PropTypes.func.isRequired,
-  pushChallenge: PropTypes.func.isRequired,
-  pushPick: PropTypes.func.isRequired,
-  pushReady: PropTypes.func.isRequired,
-  pushLive: PropTypes.func.isRequired,
-  pushEnded: PropTypes.func.isRequired
+  getDebate: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -127,11 +67,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   getMyDebates,
   setLoading,
-  getDebate,
-  pushLike,
-  pushChallenge,
-  pushPick,
-  pushReady,
-  pushLive,
-  pushEnded
+  getDebate
 })(Debate);

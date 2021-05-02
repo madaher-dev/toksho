@@ -24,6 +24,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { logout } from '../../store/actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Badge from '@material-ui/core/Badge';
 
 const drawerWidth = 240;
 
@@ -97,7 +98,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UserDrawer = ({ logout }) => {
+const UserDrawer = ({ logout, notifications }) => {
   const classes = useStyles();
   const location = useLocation();
   const theme = useTheme();
@@ -176,15 +177,19 @@ const UserDrawer = ({ logout }) => {
             <ListItemText primary={'Watch'} />
           </ListItem>
           <ListItem
-            button
+            component={Link}
+            to="/notifications"
             key={'notifications'}
-            className={classes.parentHover}
+            className={isActiveParent('/notifications')}
           >
-            <ListItemIcon className={classes.childHover}>
-              <NotificationsIcon />
+            <ListItemIcon className={isActiveChild('/notifications')}>
+              <Badge badgeContent={notifications} color="primary">
+                <NotificationsIcon />
+              </Badge>
             </ListItemIcon>
             <ListItemText primary={'Notifications'} />
           </ListItem>
+
           <ListItem button key={'messages'} className={classes.parentHover}>
             <ListItemIcon className={classes.childHover}>
               <MailIcon />
@@ -246,7 +251,9 @@ UserDrawer.propTypes = {
   logout: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  notifications: state.users.newNotifications
+});
 
 export default connect(mapStateToProps, {
   logout

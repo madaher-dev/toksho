@@ -9,7 +9,7 @@ import SignupModal from '../../components/auth/SignupModal';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { checkUser, setPusher } from '../../store/actions/userActions';
+import { checkUser } from '../../store/actions/userActions';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -133,7 +133,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Landing = ({ isAuthenticated, checkUser, match, setPusher }) => {
+const Landing = ({ isAuthenticated, checkUser, match }) => {
   useEffect(() => {
     checkUser();
 
@@ -231,4 +231,4 @@ const mapStateToProps = state => ({
   isAuthenticated: state.users.isAuthenticated
 });
 
-export default connect(mapStateToProps, { checkUser, setPusher })(Landing);
+export default connect(mapStateToProps, { checkUser })(Landing);

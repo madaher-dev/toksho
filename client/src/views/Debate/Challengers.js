@@ -44,7 +44,8 @@ const Challengers = ({
   readyLoading,
   setReadyLoading,
   sourcePage,
-  myDebates
+  myDebates,
+  loadeddebate
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -61,7 +62,8 @@ const Challengers = ({
   let currentDebate;
   if (sourcePage === 'host' && myDebates && myDebates?.length > 0) {
     currentDebate = myDebates?.find(newDebate => newDebate._id === debate?._id);
-  } else if (debates?.length > 0)
+  } else if (sourcePage === 'debate') currentDebate = loadeddebate;
+  else if (debates?.length > 0)
     currentDebate = debates?.find(newDebate => newDebate._id === debate?._id);
 
   const handleReady = () => {
@@ -153,7 +155,8 @@ const mapStateToProps = state => ({
   myDebates: state.debates.myDebates,
   open: state.profiles.challengersModal,
   debate: state.profiles.currentDebateForChallengers,
-  readyLoading: state.profiles.readyLoading
+  readyLoading: state.profiles.readyLoading,
+  loadeddebate: state.debates.debate
 });
 
 export default connect(mapStateToProps, {

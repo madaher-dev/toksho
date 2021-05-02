@@ -6,7 +6,6 @@ import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateW
 import { makeStyles } from '@material-ui/core/styles';
 import { default as ReadyCard } from '../Cards/UpcommingDebateCard';
 import PropTypes from 'prop-types';
-import Challengers from '../Debate/Challengers';
 
 const useStyles = makeStyles(styles);
 
@@ -29,7 +28,7 @@ const Ended = ({ debates, loading }) => {
         <GridItem xs={12}> </GridItem>
       )}
       {/* sourcepage used to find current debate in appropriate state (host for My Debates page) */}
-      <Challengers sourcePage={'host'} />
+      {/* <Challengers sourcePage={'ended'} /> */}
     </GridContainer>
   );
 };

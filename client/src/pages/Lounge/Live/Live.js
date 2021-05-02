@@ -10,43 +10,16 @@ import { connect } from 'react-redux';
 
 import {
   setLoading,
-  getLiveDebates,
-  pushLike,
-  pushLive
+  getLiveDebates
 } from '../../../store/actions/debateActions';
 const useStyles = makeStyles(styles);
 
-const Live = ({
-  debates,
-  loading,
-  setLoading,
-  getLiveDebates,
-  pushLike,
-  pushLive,
-  pusher
-}) => {
+const Live = ({ debates, loading, setLoading, getLiveDebates }) => {
   const classes = useStyles();
 
   useEffect(() => {
     setLoading();
     getLiveDebates();
-
-    // const pusher = new Pusher('3112d5ae0257895cff95', {
-    //   cluster: 'eu',
-    //   encrypted: true
-    // });
-
-    const channel = pusher.subscribe('debates');
-    channel.bind('like', data => {
-      let newData = {};
-      newData.data = data;
-      pushLike(newData);
-    });
-    channel.bind('joined', data => {
-      let newData = {};
-      newData.data = data;
-      pushLive(newData);
-    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,9 +44,7 @@ const Live = ({
 Live.propTypes = {
   debates: PropTypes.array.isRequired,
   setLoading: PropTypes.func.isRequired,
-  getLiveDebates: PropTypes.func.isRequired,
-  pushLike: PropTypes.func.isRequired,
-  pushLive: PropTypes.func.isRequired
+  getLiveDebates: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
   loading: state.debates.loading,
@@ -83,7 +54,5 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   setLoading,
-  getLiveDebates,
-  pushLike,
-  pushLive
+  getLiveDebates
 })(Live);

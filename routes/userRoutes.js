@@ -30,6 +30,12 @@ router.patch(
   userController.updateInfo
 );
 router.patch('/updateBio', userController.updateInfo);
+router.post('/pusher/auth', userController.getPusherToken);
+router.get(
+  '/myNotifications',
+  userController.clearNotifications,
+  userController.myNotifications
+);
 
 //Restrict all the middleware after this point to admin
 router.use(authController.restrictTo('admin'));

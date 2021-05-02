@@ -2,9 +2,27 @@ const multer = require('multer');
 const aws = require('aws-sdk');
 var multerS3 = require('multer-sharp-s3');
 const User = require('./../models/userModel');
+const Notification = require('../models/notificationModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
+const Pusher = require('pusher');
+
+// Pusher
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+  useTLS: true
+});
+//const PushNotifications = require('@pusher/push-notifications-server');
+
+// let beamsClient = new PushNotifications({
+//   instanceId: process.env.BEAMS_INSTANCE_ID,
+//   secretKey: process.env.BEAMS_PRIMARY_KEY
+// });
 
 aws.config.update({
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -92,7 +110,8 @@ exports.updateInfo = catchAsync(async (req, res, next) => {
     'facebook',
     'twitter',
     'instagram',
-    'linkedIn'
+    'linkedIn',
+    'firstLogin'
   );
 
   // 3) Update user document
@@ -159,3 +178,40 @@ exports.getAllUsers = factory.getAll(User);
 // Do NOT update passwords with this!
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
+
+exports.getPusherToken = (req, res) => {
+  const socketId = req.body.socket_id;
+  const channel = req.body.channel_name;
+
+  const presenceData = {
+    user_id: req.user._id,
+    user_info: { name: req.user.name, handler: req.user.handler }
+  };
+
+  const auth = pusher.authenticate(socketId, channel, presenceData);
+  res.send(auth);
+};
+
+exports.myNotifications = catchAsync(async (req, res, next) => {
+  const notifications = await Notification.find({
+    user: req.user._id
+  })
+    .sort('-createdAt')
+    .populate({
+      path: 'source',
+      select: 'name photo handler'
+    });
+
+  res.status(200).json({
+    status: 'success',
+    data: notifications
+  });
+});
+
+exports.clearNotifications = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user._id, {
+    notifications: 0
+  });
+
+  next();
+});

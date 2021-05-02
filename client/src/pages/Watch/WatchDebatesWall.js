@@ -12,9 +12,7 @@ import CreatDebate from '../../pages/Lounge/Challenges/CreateDebate';
 import {
   openModal,
   getEndedDebates,
-  setLoading,
-  pushLike,
-  pushEnded
+  setLoading
 } from '../../store/actions/debateActions';
 
 import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
@@ -27,10 +25,7 @@ const WatchDebatesWall = ({
   setLoading,
   endedDebates,
   loading,
-  pushLike,
-  pushEnded,
-  getEndedDebates,
-  pusher
+  getEndedDebates
 }) => {
   const classes = useStyles();
   // This is equivalent to theme.breakpoints.down("sm")
@@ -42,23 +37,6 @@ const WatchDebatesWall = ({
   useEffect(() => {
     setLoading();
     getEndedDebates();
-    // const pusher = new Pusher('3112d5ae0257895cff95', {
-    //   cluster: 'eu',
-    //   encrypted: true
-    // });
-
-    const channel = pusher.subscribe('debates');
-    channel.bind('like', data => {
-      let newData = {};
-      newData.data = data;
-      pushLike(newData);
-    });
-
-    channel.bind('ended', data => {
-      let newData = {};
-      newData.data = data;
-      pushEnded(newData);
-    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -85,8 +63,6 @@ WatchDebatesWall.propTypes = {
   openModal: PropTypes.func.isRequired,
   getEndedDebates: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
-  pushLike: PropTypes.func.isRequired,
-  pushEnded: PropTypes.func.isRequired,
   endedDebates: PropTypes.array.isRequired
 };
 
@@ -99,7 +75,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   openModal,
   getEndedDebates,
-  setLoading,
-  pushLike,
-  pushEnded
+  setLoading
 })(withWidth()(WatchDebatesWall));

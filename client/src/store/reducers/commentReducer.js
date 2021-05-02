@@ -16,6 +16,26 @@ const initialState = {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initialState, action) => {
+  function upsert(array, item) {
+    // (1)
+    // make a copy of the existing array
+    let comments = array.slice();
+    const i = comments.findIndex(_item => _item._id === item._id);
+    if (i > -1) {
+      comments[i] = item;
+
+      return comments;
+    }
+    // (2)
+    else {
+      // make a copy of the existing array
+      let comments = array.slice();
+      comments.unshift(item);
+
+      return comments;
+    }
+  }
+
   switch (action.type) {
     case GET_COMMENTS:
       return {
@@ -26,30 +46,10 @@ export default (state = initialState, action) => {
     case ADD_COMMENT:
       return {
         ...state,
-        comments: [action.payload.data.comment, ...state.comments],
+        comments: upsert(state.comments, action.payload.data.comment),
         loading: false
       };
     case PUSH_COMMENTS:
-      function upsert(array, item) {
-        // (1)
-        // make a copy of the existing array
-        let comments = array.slice();
-        const i = comments.findIndex(_item => _item._id === item._id);
-        if (i > -1) {
-          comments[i] = item;
-
-          return comments;
-        }
-        // (2)
-        else {
-          // make a copy of the existing array
-          let comments = array.slice();
-          comments.unshift(item);
-
-          return comments;
-        }
-      }
-
       return {
         ...state,
         comments: upsert(state.comments, action.payload),

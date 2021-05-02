@@ -14,16 +14,19 @@ const PickButton = ({
   challenger,
   pickLoading,
   debate,
+  loadeddebate,
   debates,
   sourcePage,
-  myDebates
+  myDebates,
+  currentDebateForChallengers
 }) => {
   const classes = useStyles();
 
   let currentDebate;
   if (sourcePage === 'host') {
     currentDebate = myDebates?.find(newDebate => newDebate._id === debate?._id);
-  } else
+  } else if (sourcePage === 'debate') currentDebate = loadeddebate;
+  else
     currentDebate = debates?.find(newDebate => newDebate._id === debate?._id);
 
   const guestList = currentDebate?.guests.map(guest => guest?._id);
@@ -73,6 +76,7 @@ PickButton.propTypes = {
 const mapStateToProps = state => ({
   pickLoading: state.profiles.pickLoading,
   debates: state.debates.debates,
-  myDebates: state.debates.myDebates
+  myDebates: state.debates.myDebates,
+  loadeddebate: state.debates.debate
 });
 export default connect(mapStateToProps, {})(PickButton);

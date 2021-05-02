@@ -1,5 +1,6 @@
 const AppError = require('../utils/appError');
 const Debate = require('../models/debateModel');
+const Notification = require('../models/notificationModel');
 const User = require('./../models/userModel');
 const APIFeatures = require('./../utils/APIFeatures');
 const catchAsync = require('./../utils/catchAsync');
@@ -119,6 +120,29 @@ exports.challenge = catchAsync(async (req, res, next) => {
   pusher.trigger('debates', 'challenge', {
     debate: updatedDebate
   });
+  let notification = await Notification.create({
+    user: updatedDebate.user,
+    notType: 'challenge',
+    source: req.user._id,
+    debate: updatedDebate._id
+  });
+
+  notification = await Notification.populate(notification, {
+    path: 'source',
+    select: 'name photo handler'
+  });
+
+  const owner = await User.findByIdAndUpdate(
+    updatedDebate.user,
+    {
+      $inc: { notifications: 1 }
+    },
+    { new: true }
+  );
+
+  pusher.trigger(`private-${owner.handler}`, 'notification', {
+    notification
+  });
 
   res.status(201).json({
     status: 'success',
@@ -158,16 +182,34 @@ exports.like = catchAsync(async (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   );
-  // let snippet = {};
-  // snippet.title = updatedDebate.title;
-  // snippet.description = updatedDebate.synopsis;
-  // snippet.scheduledStartTime = updatedDebate.schedule;
-
-  // const broadcast = await google.scheduleBroadcast(snippet);
-  // console.log(broadcast);
   pusher.trigger('debates', 'like', {
     debate: updatedDebate
   });
+
+  if (updatedDebate.user !== req.user._id) {
+    let notification = await Notification.create({
+      user: updatedDebate.user,
+      notType: 'like',
+      source: req.user._id,
+      debate: updatedDebate._id
+    });
+
+    notification = await Notification.populate(notification, {
+      path: 'source',
+      select: 'name photo handler'
+    });
+
+    const owner = await User.findByIdAndUpdate(
+      updatedDebate.user,
+      {
+        $inc: { notifications: 1 }
+      },
+      { new: true }
+    );
+    pusher.trigger(`private-${owner.handler}`, 'notification', {
+      notification
+    });
+  }
 
   //await google.getChannelList();
   res.status(201).json({
@@ -190,6 +232,36 @@ exports.setReady = catchAsync(async (req, res, next) => {
   pusher.trigger('debates', 'ready', {
     debate: updatedDebate
   });
+
+  let notification = await Notification.create({
+    user: updatedDebate.user,
+    notType: 'ready_your',
+    //source: req.user._id,
+    debate: updatedDebate._id
+  });
+
+  notification = await Notification.populate(notification, {
+    path: 'source',
+    select: 'name photo handler'
+  });
+
+  const owner = await User.findByIdAndUpdate(
+    updatedDebate.user,
+    {
+      $inc: { notifications: 1 }
+    },
+    { new: true }
+  );
+  pusher.trigger(`private-${owner.handler}`, 'notification', {
+    notification
+  });
+  // Create Notification for every guest
+  Promise.all(
+    updatedDebate.guests.map(guest =>
+      sendReadyNotification(guest, req.user._id, updatedDebate)
+    )
+  );
+
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -276,6 +348,32 @@ exports.pick = catchAsync(async (req, res, next) => {
     debate: updatedDebate
   });
 
+  if (req.body.challenger !== req.user._id) {
+    //U cant pick yourself anyway
+    let notification = await Notification.create({
+      user: req.body.challenger,
+      notType: 'pick',
+      source: req.user._id,
+      debate: updatedDebate._id
+    });
+
+    notification = await Notification.populate(notification, {
+      path: 'source',
+      select: 'name photo handler'
+    });
+
+    const owner = await User.findByIdAndUpdate(
+      req.body.challenger,
+      {
+        $inc: { notifications: 1 }
+      },
+      { new: true }
+    );
+    pusher.trigger(`private-${owner.handler}`, 'notification', {
+      notification
+    });
+  }
+
   res.status(201).json({
     status: 'success',
     timestamp: req.requestTime,
@@ -350,4 +448,30 @@ exports.validateBody = (req, res, next) => {
     });
   }
   next();
+};
+
+const sendReadyNotification = async (guest, user, debate) => {
+  let guestNotification = await Notification.create({
+    user: guest,
+    notType: 'ready',
+    source: user,
+    debate
+  });
+
+  guestNotification = await Notification.populate(guestNotification, {
+    path: 'source',
+    select: 'name photo handler'
+  });
+
+  const owner = await User.findByIdAndUpdate(
+    guest,
+    {
+      $inc: { notifications: 1 }
+    },
+    { new: true }
+  );
+
+  pusher.trigger(`private-${owner.handler}`, 'notification', {
+    notification: guestNotification
+  });
 };

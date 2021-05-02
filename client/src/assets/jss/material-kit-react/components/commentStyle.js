@@ -57,6 +57,8 @@ const commentStyle = theme => ({
     color: '#A74A5A',
 
     textDecoration: 'none',
+    padding: 0,
+    margin: 0,
     '&:hover': {
       textDecoration: 'underline',
       color: '#A74A5A'

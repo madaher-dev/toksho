@@ -26,7 +26,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles(modalStyle);
 
-const ChallengersList = ({
+const LikesList = ({
   open,
   debate,
   setChallengersLoading,
@@ -41,10 +41,9 @@ const ChallengersList = ({
 
   useEffect(() => {
     if (debate) {
-      setChallengersLoading();
       getLikers(debate._id);
     }
-  }, [debate, setChallengersLoading, getLikers]);
+  }, [debate, getLikers]);
 
   return (
     <Dialog
@@ -85,7 +84,7 @@ const ChallengersList = ({
   );
 };
 
-ChallengersList.propTypes = {
+LikesList.propTypes = {
   setChallengersLoading: PropTypes.func.isRequired,
 
   getLikers: PropTypes.func.isRequired,
@@ -103,4 +102,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   setChallengersLoading,
   getLikers
-})(ChallengersList);
+})(LikesList);

@@ -34,8 +34,8 @@ const ChallengerCard = ({ challenger }) => {
       </GridItem>
       <GridItem xs={10}>
         <GridContainer className={classes.innerContainer}>
-          <GridItem xs={2} className={classes.info}>
-            <GridItem className={classes.name}>
+          <GridItem xs={10} className={classes.info}>
+            <GridItem xs={10} className={classes.name}>
               <a href={`/${challenger.handler}`} className={classes.link}>
                 <strong>{challenger.name}</strong>
               </a>

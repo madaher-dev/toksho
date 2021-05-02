@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import { TextField } from 'formik-material-ui';
 import { DatePicker } from '@material-ui/pickers';
 
-import { Avatar, Button as MuiButton, Typography } from '@material-ui/core';
+import { Avatar, Button as MuiButton } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import {
   CloudUpload as MuiCloudUpload,

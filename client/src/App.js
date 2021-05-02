@@ -83,6 +83,12 @@ function App() {
                     component={Welcome}
                     page="settings"
                   />
+                  <PrivateRoute
+                    exact
+                    path="/notifications"
+                    component={Welcome}
+                    page="notifications"
+                  />
                   <DebateRoute
                     exact
                     path="/debates/:debate"

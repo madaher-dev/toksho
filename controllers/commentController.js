@@ -5,6 +5,8 @@ const factory = require('./handlerFactory');
 const Debate = require('../models/debateModel');
 const Comment = require('./../models/commentModel');
 const Pusher = require('pusher');
+const Notification = require('../models/notificationModel');
+const User = require('./../models/userModel');
 
 // Pusher
 
@@ -57,6 +59,32 @@ exports.addComment = catchAsync(async (req, res, next) => {
   pusher.trigger('comments', 'new-comment', {
     comment: comment
   });
+  const updatedDebate = await Debate.findById(req.body.debate);
+
+  if (updatedDebate.user !== req.user._id) {
+    let notification = await Notification.create({
+      user: updatedDebate.user,
+      notType: 'comment',
+      source: req.user._id,
+      debate: updatedDebate._id
+    });
+
+    notification = await Notification.populate(notification, {
+      path: 'source',
+      select: 'name photo handler'
+    });
+
+    const owner = await User.findByIdAndUpdate(
+      updatedDebate.user,
+      {
+        $inc: { notifications: 1 }
+      },
+      { new: true }
+    );
+    pusher.trigger(`private-${owner.handler}`, 'notification', {
+      notification
+    });
+  }
 
   res.status(201).json({
     status: 'success',

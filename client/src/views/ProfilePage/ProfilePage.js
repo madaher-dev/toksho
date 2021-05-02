@@ -16,6 +16,7 @@ import GridItem from '../../material/Grid/GridItem.js';
 import HeaderLinks from '../../material/Header/HeaderLinks.js';
 import NavPills from '../../material/NavPills/NavPills.js';
 import Parallax from '../../material/Parallax/Parallax.js';
+import { Link } from 'react-router-dom';
 
 import studio1 from '../../assets/img/examples/studio-1.jpg';
 import studio3 from '../../assets/img/examples/studio-3.jpg';
@@ -184,6 +185,15 @@ const ProfilePage = props => {
                           </a>
                         </Button>
                       )}
+                      {!user.facebook &&
+                        !user.linkedIn &&
+                        !user.twitter &&
+                        !user.instagram &&
+                        myPage && (
+                          <Link to="/settings" style={{ color: '#A74A5A' }}>
+                            <p>Add your Social Portfolio...</p>
+                          </Link>
+                        )}
                     </div>
                   </div>
                 </GridItem>

@@ -12,7 +12,8 @@ import {
   SET_READY_LOADING,
   LOGOUT,
   CHALLENGE_WITHDRAW,
-  GET_LIKERS
+  GET_LIKERS,
+  GET_SINGLE_DEBATE
 } from '../actions/Types';
 
 const initialState = {
@@ -43,7 +44,9 @@ export default (state = initialState, action) => {
         ...state,
         error: action.payload,
         noProfile: true,
-        loading: false
+        loading: false,
+        pickLoading: null,
+        readyLoading: false
       };
     case NO_PROFILE:
       return {
@@ -69,7 +72,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         // guests: action.payload.data.debate.guests,
-        loading: false,
+        //loading: false,
         pickLoading: null
       };
     case CHALLENGERS_LOADING:
@@ -81,6 +84,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pickLoading: action.payload
+      };
+    case GET_SINGLE_DEBATE:
+      return {
+        ...state,
+        currentDebateForChallengers: action.payload.data.data
       };
     case CHALLENGE_WITHDRAW:
       return {

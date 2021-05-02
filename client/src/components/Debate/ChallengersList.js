@@ -42,7 +42,7 @@ const ChallengersList = ({
 
   useEffect(() => {
     if (debate) {
-      setChallengersLoading();
+      //setChallengersLoading();
       getChallengers(debate._id);
     }
   }, [debate, setChallengersLoading, getChallengers]);

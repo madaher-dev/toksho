@@ -13,7 +13,6 @@ import { Save as MuiSave } from '@material-ui/icons';
 import styled from 'styled-components';
 import { spacing } from '@material-ui/system';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
 
 import {
   updatePassword,

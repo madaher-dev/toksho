@@ -24,7 +24,10 @@ import {
   INFO_UPDATED,
   PASSWORD_UPDATED,
   SET_SETTINGS_LOADING,
-  PASSWORD_ERROR
+  PASSWORD_ERROR,
+  GET_NOTIFICATIONS,
+  NOTIFICATION_FAIL,
+  PUSH_NOTIFICATION
 } from '../actions/Types';
 
 const initialState = {
@@ -37,11 +40,29 @@ const initialState = {
   avatarStep: 1, // Step for the avatar page
   emailSent: false, //Validation Email Sent
   pusher: null,
-  passwordUpdated: false
+  passwordUpdated: false,
+  notifications: [{}],
+  newNotifications: 0
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initialState, action) => {
+  function upsert(array, item) {
+    // (1)
+    // make a copy of the existing array
+    let newArray = array.slice();
+
+    const i = newArray.findIndex(_item => _item._id === item._id);
+    if (i > -1) {
+      newArray[i] = item;
+      return newArray;
+    }
+    // (2)
+    else {
+      newArray.unshift(item);
+      return newArray;
+    }
+  }
   switch (action.type) {
     case REGISTER_SUCCESS: //Completed step 1 of registration
       return {
@@ -54,19 +75,38 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.data.user,
+        newNotifications: action.payload.data.user.notifications,
         isAuthenticated: true,
         loading: false,
         step: 1
+      };
+    case PUSH_NOTIFICATION:
+      return {
+        ...state,
+        notifications: upsert(state.notifications, action.payload.notification),
+        newNotifications: state.newNotifications + 1
       };
     case PASSWORD_UPDATED:
       return {
         ...state,
         user: action.payload.data.user,
+        newNotifications: action.payload.data.user.notifications,
         isAuthenticated: true,
         settingsLoading: false,
         passwordUpdated: true
       };
-
+    case GET_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications: action.payload.data,
+        newNotifications: 0
+      };
+    case NOTIFICATION_FAIL:
+      return {
+        ...state,
+        notifications: null,
+        error: action.payload
+      };
     case RESET_PASS_SUCCESSS: //checks if email verified and handler set (step 2 and 3)
       if (
         !action.payload.data.user.verified ||
@@ -85,6 +125,8 @@ export default (state = initialState, action) => {
         return {
           ...state,
           user: action.payload.data.user,
+          newNotifications: action.payload.data.user.notifications,
+
           isAuthenticated: true,
           loading: false,
 
@@ -114,7 +156,9 @@ export default (state = initialState, action) => {
         error: action.payload,
         avatarStep: 1,
         step: 1,
-        emailSent: false
+        emailSent: false,
+        newNotifications: 0,
+        notifications: [{}]
       };
 
     case USER_LOADED:

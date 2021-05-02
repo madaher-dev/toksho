@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 
 import GridContainer from '../../material/Grid/GridContainer.js';
 import GridItem from '../../material/Grid/GridItem.js';
@@ -36,10 +35,10 @@ const Social = ({
   const form = (
     <Formik
       initialValues={{
-        facebook: user.facebook,
-        twitter: user.twitter,
-        linkedIn: user.linkedIn,
-        instagram: user.instagram
+        facebook: user.facebook || '',
+        twitter: user.twitter || '',
+        linkedIn: user.linkedIn || '',
+        instagram: user.instagram || ''
       }}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -66,6 +65,7 @@ const Social = ({
                   name="facebook"
                   type="text"
                   label="Facebook"
+                  value={values.facebook}
                   placeholder="Your Facebook Page URL. ex: https://www.facebook.com/toksho"
                   variant="outlined"
                   fullWidth
@@ -81,6 +81,7 @@ const Social = ({
               <Box margin={1}>
                 <Field
                   component={TextField}
+                  value={values.twitter}
                   name="twitter"
                   type="text"
                   label="Twitter"
@@ -97,6 +98,7 @@ const Social = ({
               <Box margin={1}>
                 <Field
                   component={TextField}
+                  value={values.instagram}
                   name="instagram"
                   type="text"
                   label="Instagram"
@@ -115,6 +117,7 @@ const Social = ({
               <Box margin={1}>
                 <Field
                   component={TextField}
+                  value={values.linkedIn}
                   name="linkedIn"
                   type="text"
                   label="LinkedIn"
