@@ -23,7 +23,7 @@ import LiveStream from '../../components/Debate/LiveStream';
 import Guests from '../../components/Debates/Guests';
 import Comments from '../../components/Comments/Comments';
 import LikesList from '../../components/Debate/LikesList';
-import ReadDebateMeta from '../../meta/ReadyDebateMeta';
+//import ReadDebateMeta from '../../meta/ReadyDebateMeta';
 import Conference from '../../components/Debate/Conference';
 
 import {
@@ -133,7 +133,7 @@ const ReadyDebateView = ({
 
   return (
     <Card>
-      <ReadDebateMeta debate={debate} image={profileImage} />
+      {/* <ReadDebateMeta debate={debate} image={profileImage} /> */}
       <GridItem>
         <h4 className={classes.cardTitle}>{title}</h4>
       </GridItem>

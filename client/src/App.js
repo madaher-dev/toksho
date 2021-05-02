@@ -9,7 +9,7 @@ import { VoxeetProvider } from '@voxeet/react-components';
 import store from './Store';
 import PrivateRoute from './components/routing/PrivateRoute';
 import DebateRoute from './components/routing/DebateRoute';
-import HelmetMeta from './meta/AppMeta';
+//import HelmetMeta from './meta/AppMeta';
 
 import Landing from './pages/Home/Landing';
 import Alerts from './components/layout/Alerts';
@@ -53,7 +53,7 @@ function App() {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Router>
                 <Alerts />
-                <HelmetMeta />
+                {/* <HelmetMeta /> */}
                 <Switch>
                   <Route exact path="/" component={Landing} />
                   <Route path="/signup/:open" component={Landing} />
