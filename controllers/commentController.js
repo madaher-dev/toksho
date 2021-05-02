@@ -61,7 +61,7 @@ exports.addComment = catchAsync(async (req, res, next) => {
   });
   const updatedDebate = await Debate.findById(req.body.debate);
 
-  if (updatedDebate.user !== req.user._id) {
+  if (updatedDebate.user._id.toString() !== req.user._id.toString()) {
     let notification = await Notification.create({
       user: updatedDebate.user,
       notType: 'comment',

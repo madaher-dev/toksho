@@ -186,7 +186,7 @@ exports.like = catchAsync(async (req, res, next) => {
     debate: updatedDebate
   });
 
-  if (updatedDebate.user !== req.user._id) {
+  if (updatedDebate.user._id.toString() !== req.user._id.toString()) {
     let notification = await Notification.create({
       user: updatedDebate.user,
       notType: 'like',

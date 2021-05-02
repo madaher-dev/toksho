@@ -141,6 +141,7 @@ const UserDrawer = ({ logout, notifications }) => {
             </IconButton>
           </ListItem>
           <ListItem
+            button
             component={Link}
             to="/home"
             key={'lounge'}
@@ -152,6 +153,7 @@ const UserDrawer = ({ logout, notifications }) => {
             <ListItemText primary={'Lounge'} />
           </ListItem>
           <ListItem
+            button
             component={Link}
             to="/mydebates"
             key={'mydebates'}
@@ -166,6 +168,7 @@ const UserDrawer = ({ logout, notifications }) => {
             <ListItemText primary={'My Debates'} />
           </ListItem>
           <ListItem
+            button
             component={Link}
             to="/watch"
             key={'watch'}
@@ -177,6 +180,7 @@ const UserDrawer = ({ logout, notifications }) => {
             <ListItemText primary={'Watch'} />
           </ListItem>
           <ListItem
+            button
             component={Link}
             to="/notifications"
             key={'notifications'}
@@ -208,6 +212,7 @@ const UserDrawer = ({ logout, notifications }) => {
             to="/profile"
             key={'profile'}
             className={isActiveParent('/profile')}
+            button
           >
             <ListItemIcon color="inherit" className={isActiveChild('/profile')}>
               <PersonIcon />
@@ -219,6 +224,7 @@ const UserDrawer = ({ logout, notifications }) => {
             to="/settings"
             key={'settings'}
             className={isActiveParent('/settings')}
+            button
           >
             <ListItemIcon
               color="inherit"

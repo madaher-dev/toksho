@@ -332,6 +332,7 @@ const ReadyDebateView = ({
                           <FacebookShareButton
                             url={window.location.href}
                             beforeOnClick={() => setAnchorElRight(null)}
+                            style={{ padding: 5 }}
                           >
                             <FacebookIcon size={32} round={true} />
                           </FacebookShareButton>
@@ -340,6 +341,7 @@ const ReadyDebateView = ({
                           <TwitterShareButton
                             url={window.location.href}
                             beforeOnClick={() => setAnchorElRight(null)}
+                            style={{ padding: 5 }}
                           >
                             <TwitterIcon size={32} round={true} />
                           </TwitterShareButton>

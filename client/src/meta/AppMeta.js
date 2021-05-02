@@ -13,10 +13,7 @@ const HelmetMeta = () => {
         content={`${process.env.REACT_APP_WEBSITE_NAME}/favicon.ico`}
       />
 
-      <meta
-        property="og:url"
-        content="http://toksho.herokuapp.com/debates/607b15a807ccb500159e016e"
-      />
+      <meta property="og:url" content={process.env.REACT_APP_WEBSITE_NAME} />
       <meta property="og:type" content="website" />
       <meta property="og:title" content="TokSho" />
       <meta property="og:description" content="An online debate platform" />
