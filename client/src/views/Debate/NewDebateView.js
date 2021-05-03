@@ -327,7 +327,9 @@ const NewDebateView = ({
                       unlike={handleUnLike}
                       like={handleLike}
                       debate={debate}
+                      disabled={user ? false : true}
                     />
+
                     <Button
                       onClick={() => setOpenLikers(true)}
                       className={classes.linkButton}

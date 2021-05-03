@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import GridContainer from '../../material/Grid/GridContainer.js';
 import GridItem from '../../material/Grid/GridItem.js';
 import TextField from '@material-ui/core/TextField';
 import Button from '../../material/CustomButtons/Button.js';
+import { Link } from 'react-router-dom';
 
-const AddComment = ({ addComment, debate }) => {
+const AddComment = ({ addComment, debate, isAuthenticated }) => {
   const [state, setstate] = useState({
     comment: ''
   });
@@ -46,17 +49,32 @@ const AddComment = ({ addComment, debate }) => {
           paddingBottom: '10px'
         }}
       >
-        <Button
-          color="primary"
-          round
-          style={{ margin: 5, padding: 12 }}
-          onClick={handleAdd}
-        >
-          Have your say
-        </Button>
+        {isAuthenticated ? (
+          <Button
+            color="primary"
+            round
+            style={{ margin: 5, padding: 12 }}
+            onClick={handleAdd}
+          >
+            Have your say
+          </Button>
+        ) : (
+          <Link to="/login">
+            <Button color="primary" round style={{ margin: 5, padding: 12 }}>
+              Login to Comment
+            </Button>
+          </Link>
+        )}
       </GridItem>
     </GridContainer>
   );
 };
 
-export default AddComment;
+AddComment.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.users.isAuthenticated
+});
+export default connect(mapStateToProps, {})(AddComment);

@@ -97,11 +97,11 @@ const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
 
   let admin;
   let myDebate;
-  if (debate.user._id === user._id) admin = true;
+  if (debate.user._id === user?._id) admin = true;
   if (admin || guestList?.includes(user?._id)) myDebate = true;
 
   const live = debate.status === 'joined' ? true : false;
-  const joined = debate.joinedUsers?.includes(user._id);
+  const joined = debate.joinedUsers?.includes(user?._id);
   let abandoned;
   if (new Date(debate.endDate) < Date.now() && debate.status === 'ready')
     abandoned = true;
@@ -286,6 +286,7 @@ const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
                         unlike={handleUnLike}
                         like={handleLike}
                         debate={debate}
+                        disabled={user ? false : true}
                       />
                       <Button
                         onClick={() => setOpenLikers(true)}

@@ -44,12 +44,12 @@ const Comments = ({
     setLoading();
     getComments(debate);
 
-    const channel = pusher.subscribe('comments');
-    channel.bind('new-comment', data => {
+    const channel = pusher?.subscribe('comments');
+    channel?.bind('new-comment', data => {
       if (data.comment.debate === debate) pushComments(data.comment);
     });
 
-    channel.bind('delete-comment', data => {
+    channel?.bind('delete-comment', data => {
       if (data.comment.debate === debate) pullComments(data.comment._id);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,7 +109,7 @@ Comments.propTypes = {
 const mapStateToProps = state => ({
   loading: state.comments.loading,
   comments: state.comments.comments,
-  user: state.users.user._id,
+  user: state.users.user?._id,
   pusher: state.users.pusher
 });
 export default connect(mapStateToProps, {

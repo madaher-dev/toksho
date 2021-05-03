@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import Button from '../../material/CustomButtons/Button.js';
 
 import { handleOpenModal } from '../../store/actions/profileActions';
@@ -14,8 +14,8 @@ const ChallengeButton = ({
   challengeLoading,
   handleOpenModal
 }) => {
-  const myDebate = debate.user?._id === user._id ? true : false;
-  const challenger = debate.challengers?.includes(user._id);
+  const myDebate = debate.user?._id === user?._id ? true : false;
+  const challenger = debate.challengers?.includes(user?._id);
   let loading;
   if (challengeLoading === debate._id) loading = true;
 
@@ -55,7 +55,7 @@ const ChallengeButton = ({
         >
           Withdraw
         </Button>
-      ) : !abandoned ? (
+      ) : !abandoned & user ? (
         <Button
           color="primary"
           round
@@ -69,6 +69,17 @@ const ChallengeButton = ({
         >
           Challenge
         </Button>
+      ) : !user ? (
+        <Link to="/login">
+          <Button
+            color="primary"
+            round
+            disabled={loading}
+            style={{ margin: 5, padding: 12 }}
+          >
+            Login to Challenge
+          </Button>
+        </Link>
       ) : null}
     </div>
   );

@@ -8,11 +8,11 @@ import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateW
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(styles);
 
-const LikeButton = ({ like, unlike, user, debate, likeLoading }) => {
+const LikeButton = ({ like, unlike, user, debate, likeLoading, disabled }) => {
   const classes = useStyles();
   let liked;
-
-  if (debate.likes) liked = debate.likes.includes(user._id);
+  console.log(disabled);
+  if (debate.likes) liked = debate.likes.includes(user?._id);
   let loading;
   if (likeLoading === debate._id) loading = true;
 
@@ -27,7 +27,7 @@ const LikeButton = ({ like, unlike, user, debate, likeLoading }) => {
             event.preventDefault();
             unlike();
           }}
-          disabled={loading}
+          disabled={loading || disabled}
           edge="start"
         >
           <i className={'fas fa-heart'} />
@@ -35,7 +35,7 @@ const LikeButton = ({ like, unlike, user, debate, likeLoading }) => {
       ) : (
         <IconButton
           className={classes.socials}
-          disabled={loading}
+          disabled={loading || disabled}
           edge="start"
           onClick={event => {
             event.stopPropagation();

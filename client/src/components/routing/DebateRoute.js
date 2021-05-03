@@ -119,7 +119,7 @@ const DebateRoute = ({
             <CircularProgress color="inherit" />
           </Backdrop>
         ) : (
-          <NoAuthDebate />
+          <NoAuthDebate page={page} {...props} />
         )
       }
     />

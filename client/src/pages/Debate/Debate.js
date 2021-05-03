@@ -11,17 +11,13 @@ import EndedDebateView from '../../views/Debate/EndedDebateView';
 import Challengers from '../../views/Debate/Challengers';
 import SideBar from '../../views/SideBar/SideBar';
 
-import {
-  getMyDebates,
-  setLoading,
-  getDebate
-} from '../../store/actions/debateActions';
+import { setLoading, getDebate } from '../../store/actions/debateActions';
 
 const Debate = ({ match, fullDebate, setLoading, getDebate }) => {
   const debate = match.params.debate;
   useEffect(() => {
     setLoading();
-    //getMyDebates();
+
     getDebate(debate);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,7 +61,6 @@ const mapStateToProps = state => ({
   pusher: state.users.pusher
 });
 export default connect(mapStateToProps, {
-  getMyDebates,
   setLoading,
   getDebate
 })(Debate);
