@@ -14,7 +14,13 @@ import {
 } from '../../../store/actions/debateActions';
 const useStyles = makeStyles(styles);
 
-const Live = ({ debates, loading, setLoading, getLiveDebates }) => {
+const Live = ({
+  debates,
+  loading,
+  setLoading,
+  getLiveDebates,
+  handleOpenSnack
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -29,7 +35,11 @@ const Live = ({ debates, loading, setLoading, getLiveDebates }) => {
       {debates !== [] && !loading ? (
         <GridItem xs={12}>
           {debates.map(debate => (
-            <DebateCard key={debate._id + 1} debate={debate} />
+            <DebateCard
+              key={debate._id + 1}
+              debate={debate}
+              handleOpenSnack={handleOpenSnack}
+            />
           ))}
         </GridItem>
       ) : loading ? (

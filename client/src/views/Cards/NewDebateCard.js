@@ -5,8 +5,11 @@ import Badge from '../../material/Badge/Badge.js';
 import GridContainer from '../../material/Grid/GridContainer.js';
 import GridItem from '../../material/Grid/GridItem.js';
 import classNames from 'classnames';
+
 import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
 import { makeStyles } from '@material-ui/core/styles';
+import Popover from '@material-ui/core/Popover';
+
 import Moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -21,8 +24,8 @@ import {
 //import { handleOpenModal } from '../../../store/actions/profileActions';
 import ChallengeButton from '../../components/Debates/ChallengeButton';
 import LikeButton from '../../components/Debates/LikeButton';
-import Popover from '@material-ui/core/Popover';
-import { FacebookShareButton } from 'react-share';
+import ShareButtons from '../../components/Debates/ShareButtons';
+
 import { Link } from 'react-router-dom';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { useHistory } from 'react-router-dom';
@@ -33,7 +36,7 @@ const cardstyles = {
 };
 const useStyles = makeStyles(styles, cardstyles);
 
-const DebateCard = ({
+const NewDebateCard = ({
   debate,
   challenge,
   withdraw,
@@ -41,7 +44,8 @@ const DebateCard = ({
   setLikeLoading,
   like,
   unlike,
-  user
+  user,
+  handleOpenSnack
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -281,46 +285,15 @@ const DebateCard = ({
                           vertical: 'center',
                           horizontal: 'left'
                         }}
+                        onClick={event => {
+                          event.stopPropagation();
+                        }}
                       >
-                        <div>
-                          <FacebookShareButton
-                            url="/test"
-                            beforeOnClick={() => setAnchorElRight(null)}
-                          >
-                            <Button
-                              justIcon
-                              color="transparent"
-                              className={classes.margin5}
-                              onClick={event => {
-                                event.stopPropagation();
-                                event.preventDefault();
-                                setAnchorElRight(event.currentTarget);
-                              }}
-                            >
-                              <i
-                                className={classes.socials + ' fas fa-share'}
-                              />
-                            </Button>
-                          </FacebookShareButton>
-                        </div>
-                        <div>
-                          <FacebookShareButton url="/test">
-                            <Button
-                              justIcon
-                              color="transparent"
-                              className={classes.margin5}
-                              onClick={event => {
-                                event.stopPropagation();
-                                event.preventDefault();
-                                setAnchorElRight(event.currentTarget);
-                              }}
-                            >
-                              <i
-                                className={classes.socials + ' fas fa-share'}
-                              />
-                            </Button>
-                          </FacebookShareButton>
-                        </div>
+                        <ShareButtons
+                          debate={debate}
+                          setAnchorElRight={setAnchorElRight}
+                          handleOpenSnack={handleOpenSnack}
+                        />
                       </Popover>
 
                       <LikeButton
@@ -343,7 +316,7 @@ const DebateCard = ({
   );
 };
 
-DebateCard.propTypes = {
+NewDebateCard.propTypes = {
   debate: PropTypes.object.isRequired,
   challenge: PropTypes.func.isRequired,
   withdraw: PropTypes.func.isRequired,
@@ -366,4 +339,4 @@ export default connect(mapStateToProps, {
   like,
   unlike
   // handleOpenModal
-})(DebateCard);
+})(NewDebateCard);

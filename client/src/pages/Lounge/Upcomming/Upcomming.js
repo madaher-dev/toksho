@@ -17,7 +17,13 @@ import styles from '../../../assets/jss/material-kit-react/views/DebateWall/deba
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(styles);
 
-const Upcomming = ({ debates, loading, setLoading, getReadyDebates }) => {
+const Upcomming = ({
+  debates,
+  loading,
+  setLoading,
+  getReadyDebates,
+  handleOpenSnack
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -32,7 +38,11 @@ const Upcomming = ({ debates, loading, setLoading, getReadyDebates }) => {
       {debates !== [] && !loading ? (
         <GridItem xs={12}>
           {debates.map(debate => (
-            <DebateCard key={debate._id + 1} debate={debate} />
+            <DebateCard
+              key={debate._id + 1}
+              debate={debate}
+              handleOpenSnack={handleOpenSnack}
+            />
           ))}
         </GridItem>
       ) : loading ? (

@@ -10,6 +10,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import Popover from '@material-ui/core/Popover';
+
 import {
   setLikeLoading,
   like,
@@ -18,8 +21,7 @@ import {
 } from '../../store/actions/debateActions';
 
 import LikeButton from '../../components/Debates/LikeButton';
-import Popover from '@material-ui/core/Popover';
-import { FacebookShareButton } from 'react-share';
+import ShareButtons from '../../components/Debates/ShareButtons';
 import Guests from '../../components/Debates/Guests';
 import { Link } from 'react-router-dom';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -38,7 +40,8 @@ const DebateCard = ({
   like,
   unlike,
   user,
-  setJoin
+  setJoin,
+  handleOpenSnack
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -294,46 +297,15 @@ const DebateCard = ({
                             vertical: 'center',
                             horizontal: 'left'
                           }}
+                          onClick={event => {
+                            event.stopPropagation();
+                          }}
                         >
-                          <div>
-                            <FacebookShareButton
-                              url="/test"
-                              beforeOnClick={() => setAnchorElRight(null)}
-                            >
-                              <Button
-                                justIcon
-                                color="transparent"
-                                className={classes.margin5}
-                                onClick={event => {
-                                  event.stopPropagation();
-                                  event.preventDefault();
-                                  setAnchorElRight(event.currentTarget);
-                                }}
-                              >
-                                <i
-                                  className={classes.socials + ' fas fa-share'}
-                                />
-                              </Button>
-                            </FacebookShareButton>
-                          </div>
-                          <div>
-                            <FacebookShareButton url="/test">
-                              <Button
-                                justIcon
-                                color="transparent"
-                                className={classes.margin5}
-                                onClick={event => {
-                                  event.stopPropagation();
-                                  event.preventDefault();
-                                  setAnchorElRight(event.currentTarget);
-                                }}
-                              >
-                                <i
-                                  className={classes.socials + ' fas fa-share'}
-                                />
-                              </Button>
-                            </FacebookShareButton>
-                          </div>
+                          <ShareButtons
+                            debate={debate}
+                            setAnchorElRight={setAnchorElRight}
+                            handleOpenSnack={handleOpenSnack}
+                          />
                         </Popover>
                         <LikeButton
                           unlike={handleUnLike}

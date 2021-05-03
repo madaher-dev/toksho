@@ -64,7 +64,9 @@ const streamConference = async conference => {
 
 const uploadVideo = async (url, debateId) => {
   try {
-    const currentDebate = await Debate.findById(debateId);
+    const currentDebate = await Debate.findByIdAndUpdate(debateId, {
+      voxeetVideoURL: url
+    });
     const title = currentDebate.title;
     const description = currentDebate.synopsis;
     const language = currentDebate.language;

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(styles);
 
-const Ended = ({ debates, loading }) => {
+const Ended = ({ debates, loading, handleOpenSnack }) => {
   const classes = useStyles();
 
   return (
@@ -18,7 +18,11 @@ const Ended = ({ debates, loading }) => {
         <GridItem xs={12}>
           {debates?.map(debate => (
             <div key={debate._id + 1}>
-              <ReadyCard key={debate._id + 1} debate={debate} />
+              <ReadyCard
+                key={debate._id + 1}
+                debate={debate}
+                handleOpenSnack={handleOpenSnack}
+              />
             </div>
           ))}
         </GridItem>

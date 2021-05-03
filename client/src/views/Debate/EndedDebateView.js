@@ -3,12 +3,6 @@ import { Link } from 'react-router-dom';
 import Moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterShareButton,
-  TwitterIcon
-} from 'react-share';
 
 import Button from '../../material/CustomButtons/Button.js';
 import Card from '../../material/Card/Card.js';
@@ -24,6 +18,7 @@ import Comments from '../../components/Comments/Comments';
 import LikesList from '../../components/Debate/LikesList';
 import ReadDebateMeta from '../../meta/ReadyDebateMeta';
 import PlayerFrame from '../../components/Debate/PlayerFrame';
+import ShareButtons from '../../components/Debates/ShareButtons';
 
 import {
   setLikeLoading,
@@ -35,6 +30,8 @@ import classNames from 'classnames';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
 import { makeStyles } from '@material-ui/core/styles';
 import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const cardstyles = {
   cardTitle
@@ -43,6 +40,24 @@ const useStyles = makeStyles(styles, cardstyles);
 
 const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
   const classes = useStyles();
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  const [openSnack, setOpenSnack] = React.useState(false);
+
+  const handleOpenSnack = () => {
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+
   const imageClasses = classNames(
     classes.imgRaised,
     classes.imgRoundedCircle,
@@ -260,22 +275,11 @@ const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
                           horizontal: 'left'
                         }}
                       >
-                        <div>
-                          <FacebookShareButton
-                            url={window.location.href}
-                            beforeOnClick={() => setAnchorElRight(null)}
-                          >
-                            <FacebookIcon size={32} round={true} />
-                          </FacebookShareButton>
-                        </div>
-                        <div>
-                          <TwitterShareButton
-                            url={window.location.href}
-                            beforeOnClick={() => setAnchorElRight(null)}
-                          >
-                            <TwitterIcon size={32} round={true} />
-                          </TwitterShareButton>
-                        </div>
+                        <ShareButtons
+                          debate={debate}
+                          setAnchorElRight={setAnchorElRight}
+                          handleOpenSnack={handleOpenSnack}
+                        />
                       </Popover>
 
                       <LikeButton
@@ -318,6 +322,15 @@ const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
         debate={debate}
         handleCloseModal={handleCloseLikesModal}
       />
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleCloseSnack}
+      >
+        <Alert onClose={handleCloseSnack} severity="info">
+          Link Copied to Clipboard!
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };

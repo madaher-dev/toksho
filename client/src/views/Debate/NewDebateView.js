@@ -7,6 +7,7 @@ import GridItem from '../../material/Grid/GridItem.js';
 import classNames from 'classnames';
 import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
 import { makeStyles } from '@material-ui/core/styles';
+
 import Moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -22,18 +23,16 @@ import {
 import ChallengeButton from '../../components/Debates/ChallengeButton';
 import LikeButton from '../../components/Debates/LikeButton';
 import Popover from '@material-ui/core/Popover';
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterShareButton,
-  TwitterIcon
-} from 'react-share';
+
 import { Link } from 'react-router-dom';
 import { cardTitle } from '../../assets/jss/material-kit-react.js';
 import Comments from '../../components/Comments/Comments';
 import ChallengersList from '../../components/Debate/ChallengersList';
 import LikesList from '../../components/Debate/LikesList';
-import Helmet from 'react-helmet';
+import ShareButtons from '../../components/Debates/ShareButtons';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+//import Helmet from 'react-helmet';
 //import { useLocation } from 'react-router-dom';
 
 const cardstyles = {
@@ -70,6 +69,23 @@ const NewDebateView = ({
   var hours = Math.floor(duration.asHours());
   var mins = Math.floor(duration.asMinutes());
   var secs = Math.floor(duration.asSeconds());
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  const [openSnack, setOpenSnack] = React.useState(false);
+
+  const handleOpenSnack = () => {
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
 
   const handleChallenge = () => {
     setChallengeLoading(debate._id);
@@ -300,22 +316,11 @@ const NewDebateView = ({
                         horizontal: 'left'
                       }}
                     >
-                      <div>
-                        <FacebookShareButton
-                          url={window.location.href}
-                          beforeOnClick={() => setAnchorElRight(null)}
-                        >
-                          <FacebookIcon size={32} round={true} />
-                        </FacebookShareButton>
-                      </div>
-                      <div>
-                        <TwitterShareButton
-                          url={window.location.href}
-                          beforeOnClick={() => setAnchorElRight(null)}
-                        >
-                          <TwitterIcon size={32} round={true} />
-                        </TwitterShareButton>
-                      </div>
+                      <ShareButtons
+                        debate={debate}
+                        setAnchorElRight={setAnchorElRight}
+                        handleOpenSnack={handleOpenSnack}
+                      />
                     </Popover>
 
                     <LikeButton
@@ -347,6 +352,15 @@ const NewDebateView = ({
         debate={debate}
         handleCloseModal={handleCloseLikesModal}
       />
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleCloseSnack}
+      >
+        <Alert onClose={handleCloseSnack} severity="info">
+          Link Copied to Clipboard!
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };

@@ -3,12 +3,6 @@ import { Link } from 'react-router-dom';
 import Moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterShareButton,
-  TwitterIcon
-} from 'react-share';
 
 import Button from '../../material/CustomButtons/Button.js';
 import Card from '../../material/Card/Card.js';
@@ -16,6 +10,8 @@ import Badge from '../../material/Badge/Badge.js';
 import GridContainer from '../../material/Grid/GridContainer.js';
 import GridItem from '../../material/Grid/GridItem.js';
 import Popover from '@material-ui/core/Popover';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 import ChallengersList from '../../components/Debate/ChallengersList';
 import LikeButton from '../../components/Debates/LikeButton';
@@ -25,7 +21,7 @@ import Comments from '../../components/Comments/Comments';
 import LikesList from '../../components/Debate/LikesList';
 //import ReadDebateMeta from '../../meta/ReadyDebateMeta';
 import Conference from '../../components/Debate/Conference';
-
+import ShareButtons from '../../components/Debates/ShareButtons';
 import {
   setLikeLoading,
   like,
@@ -70,6 +66,23 @@ const ReadyDebateView = ({
   var hours = Math.floor(duration.asHours());
   var mins = Math.floor(duration.asMinutes());
   var secs = Math.floor(duration.asSeconds());
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  const [openSnack, setOpenSnack] = React.useState(false);
+
+  const handleOpenSnack = () => {
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
 
   const handleLike = () => {
     setLikeLoading(debate._id);
@@ -328,24 +341,11 @@ const ReadyDebateView = ({
                           horizontal: 'left'
                         }}
                       >
-                        <div>
-                          <FacebookShareButton
-                            url={window.location.href}
-                            beforeOnClick={() => setAnchorElRight(null)}
-                            style={{ padding: 5 }}
-                          >
-                            <FacebookIcon size={32} round={true} />
-                          </FacebookShareButton>
-                        </div>
-                        <div>
-                          <TwitterShareButton
-                            url={window.location.href}
-                            beforeOnClick={() => setAnchorElRight(null)}
-                            style={{ padding: 5 }}
-                          >
-                            <TwitterIcon size={32} round={true} />
-                          </TwitterShareButton>
-                        </div>
+                        <ShareButtons
+                          debate={debate}
+                          setAnchorElRight={setAnchorElRight}
+                          handleOpenSnack={handleOpenSnack}
+                        />
                       </Popover>
 
                       <LikeButton
@@ -389,6 +389,15 @@ const ReadyDebateView = ({
         debate={debate}
         handleCloseModal={handleCloseLikesModal}
       />
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleCloseSnack}
+      >
+        <Alert onClose={handleCloseSnack} severity="info">
+          Link Copied to Clipboard!
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };
@@ -403,7 +412,6 @@ ReadyDebateView.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  debates: state.debates.readyDebates,
   user: state.users.user
 });
 export default connect(mapStateToProps, {

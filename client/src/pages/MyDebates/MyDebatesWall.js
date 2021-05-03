@@ -20,6 +20,8 @@ import {
 
 import styles from '../../assets/jss/material-kit-react/views/DebateWall/debateWallStyle';
 import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 const useStyles = makeStyles(styles);
 
 const MyDebatesWall = ({
@@ -32,6 +34,24 @@ const MyDebatesWall = ({
   user
 }) => {
   const classes = useStyles();
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+  const [openSnack, setOpenSnack] = React.useState(false);
+
+  const handleOpenSnack = () => {
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+
   // This is equivalent to theme.breakpoints.down("sm")
   const isSmallScreen = /xs|sm/.test(width);
   const buttonProps = {
@@ -64,18 +84,38 @@ const MyDebatesWall = ({
             tabIcon: Camera,
             tabButton: 'Host',
             tabContent: (
-              <Host debates={myDebates} loading={loading} user={user._id} />
+              <Host
+                debates={myDebates}
+                loading={loading}
+                user={user._id}
+                handleOpenSnack={handleOpenSnack}
+              />
             ) //debates={debates} loading={loading} />
           },
           {
             tabButton: 'Guest',
             tabIcon: Camera,
             tabContent: (
-              <Guest debates={myDebates} loading={loading} user={user._id} />
+              <Guest
+                debates={myDebates}
+                loading={loading}
+                user={user._id}
+                handleOpenSnack={handleOpenSnack}
+              />
             )
           }
         ]}
       />
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={2000}
+        onClose={handleCloseSnack}
+        //anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnack} severity="info">
+          Link Copied to Clipboard!
+        </Alert>
+      </Snackbar>
       <CreatDebate />
     </div>
   );

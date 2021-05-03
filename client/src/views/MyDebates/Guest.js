@@ -11,7 +11,7 @@ import Challengers from '../Debate/Challengers';
 
 const useStyles = makeStyles(styles);
 
-const Guest = ({ debates, loading, user }) => {
+const Guest = ({ debates, loading, user, handleOpenSnack }) => {
   const classes = useStyles();
 
   const hostDebates = debates?.filter(({ guests }) =>
@@ -28,9 +28,17 @@ const Guest = ({ debates, loading, user }) => {
               debate.status === 'joined' ||
               debate.status === 'ended' ||
               debate.status === 'videoReady' ? (
-                <ReadyCard key={debate._id + 1} debate={debate} />
+                <ReadyCard
+                  key={debate._id + 1}
+                  debate={debate}
+                  handleOpenSnack={handleOpenSnack}
+                />
               ) : (
-                <DebateCard key={debate._id + 1} debate={debate} />
+                <DebateCard
+                  key={debate._id + 1}
+                  debate={debate}
+                  handleOpenSnack={handleOpenSnack}
+                />
               )}
             </div>
           ))}

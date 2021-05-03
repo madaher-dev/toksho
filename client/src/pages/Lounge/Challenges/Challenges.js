@@ -6,7 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import GridContainer from '../../../material/Grid/GridContainer.js';
 import GridItem from '../../../material/Grid/GridItem.js';
 
-import DebateCard from '../../../views/Cards/NewDebateCard';
+import NewDebateCard from '../../../views/Cards/NewDebateCard';
 import Challengers from '../../../views/Debate/Challengers';
 
 import {
@@ -18,7 +18,13 @@ import styles from '../../../assets/jss/material-kit-react/views/DebateWall/deba
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(styles);
 
-const Challenges = ({ debates, loading, setLoading, getAllDebates }) => {
+const Challenges = ({
+  debates,
+  loading,
+  setLoading,
+  getAllDebates,
+  handleOpenSnack
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -32,7 +38,11 @@ const Challenges = ({ debates, loading, setLoading, getAllDebates }) => {
       {debates !== [] && !loading ? (
         <GridItem xs={12}>
           {debates.map(debate => (
-            <DebateCard key={debate._id + 1} debate={debate} />
+            <NewDebateCard
+              key={debate._id + 1}
+              debate={debate}
+              handleOpenSnack={handleOpenSnack}
+            />
           ))}
         </GridItem>
       ) : loading ? (
