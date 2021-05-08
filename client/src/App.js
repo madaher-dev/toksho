@@ -73,6 +73,12 @@ function App() {
                   />
                   <PrivateRoute
                     exact
+                    path="/search"
+                    component={Welcome}
+                    page="search"
+                  />
+                  <PrivateRoute
+                    exact
                     path="/watch"
                     component={Welcome}
                     page="watch"

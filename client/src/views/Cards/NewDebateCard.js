@@ -58,7 +58,7 @@ const NewDebateCard = ({
 
   var now = Moment(); //todays date
   //var sched = Moment(debate.schedule); // schedule date
-  var created = Moment(debate.createdAt); // schedule date
+  var created = Moment(debate?.createdAt); // schedule date
   var duration = Moment.duration(now.diff(created));
   var days = Math.floor(duration.asDays());
   var hours = Math.floor(duration.asHours());
@@ -66,38 +66,38 @@ const NewDebateCard = ({
   var secs = Math.floor(duration.asSeconds());
 
   const handleChallenge = () => {
-    setChallengeLoading(debate._id);
-    challenge(debate._id);
+    setChallengeLoading(debate?._id);
+    challenge(debate?._id);
   };
   const handleWithdraw = () => {
-    setChallengeLoading(debate._id);
-    withdraw(debate._id);
+    setChallengeLoading(debate?._id);
+    withdraw(debate?._id);
   };
   const handleLike = () => {
-    setLikeLoading(debate._id);
-    like(debate._id);
+    setLikeLoading(debate?._id);
+    like(debate?._id);
   };
   const handleUnLike = () => {
-    setLikeLoading(debate._id);
-    unlike(debate._id);
+    setLikeLoading(debate?._id);
+    unlike(debate?._id);
   };
 
   let profileImage;
-  if (debate.user) {
+  if (debate?.user) {
     profileImage =
-      debate.user.photo === 'null'
+      debate?.user.photo === 'null'
         ? '/static/images/avatars/default-profile.png'
-        : debate.user.photo;
+        : debate?.user.photo;
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }
 
   let abandoned;
-  if (new Date(debate.schedule) < Date.now()) abandoned = true;
+  if (new Date(debate?.schedule) < Date.now()) abandoned = true;
 
   let title;
   if (abandoned) title = 'Abandoned';
-  else if (debate.status === 'new') title = 'Accepting Challengers';
+  else if (debate?.status === 'new') title = 'Accepting Challengers';
 
   const guestList = debate?.guests.map(guest => guest?._id);
 
@@ -107,7 +107,7 @@ const NewDebateCard = ({
     <Card>
       <CardActionArea
         component="span"
-        onClick={() => history.push(`/debates/${debate._id}`)}
+        onClick={() => history.push(`/debates/${debate?._id}`)}
         disableRipple={true}
       >
         <GridItem>
@@ -243,9 +243,17 @@ const NewDebateCard = ({
                       <GridContainer>
                         {debate.topics &&
                           debate.topics.map(topic => (
-                            <Badge color="primary" key={topic}>
-                              {topic}
-                            </Badge>
+                            <Link
+                              onClick={event => {
+                                event.stopPropagation();
+                                //event.preventDefault();
+                              }}
+                              to={`/search?topic=${topic}`}
+                              key={topic}
+                              //className={classes.link}
+                            >
+                              <Badge color="primary">{topic}</Badge>
+                            </Link>
                           ))}
                       </GridContainer>
                     </GridItem>
@@ -300,6 +308,7 @@ const NewDebateCard = ({
                         unlike={handleUnLike}
                         like={handleLike}
                         debate={debate}
+                        disabled={user ? false : true}
                       />
                       <h4>
                         {debate.likes.length > 0 ? debate.likes.length : null}

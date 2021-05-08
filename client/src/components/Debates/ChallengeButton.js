@@ -55,7 +55,7 @@ const ChallengeButton = ({
         >
           Withdraw
         </Button>
-      ) : !abandoned & user ? (
+      ) : !abandoned && user ? (
         <Button
           color="primary"
           round

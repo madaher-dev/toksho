@@ -129,12 +129,8 @@ const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
                   <GridContainer>
                     <GridItem xs={12}>
                       <Link
-                        onClick={event => {
-                          event.stopPropagation();
-                          event.preventDefault();
-                        }}
-                        className={classes.link}
                         to={`/${debate.user?.handler}`}
+                        className={classes.link}
                       >
                         {' '}
                         <strong>{debate.user?.name} </strong>
@@ -232,9 +228,17 @@ const EndedDebateView = ({ debate, setLikeLoading, like, unlike, user }) => {
                       <GridContainer>
                         {debate.topics &&
                           debate.topics.map(topic => (
-                            <Badge color="primary" key={topic}>
-                              {topic}
-                            </Badge>
+                            <Link
+                              onClick={event => {
+                                event.stopPropagation();
+                                //event.preventDefault();
+                              }}
+                              to={`/search?topic=${topic}`}
+                              //className={classes.link}
+                              key={topic}
+                            >
+                              <Badge color="primary">{topic}</Badge>
+                            </Link>
                           ))}
                       </GridContainer>
                     </GridItem>

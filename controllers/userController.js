@@ -196,7 +196,7 @@ exports.myNotifications = catchAsync(async (req, res, next) => {
   const notifications = await Notification.find({
     user: req.user._id
   })
-    .sort('-createdAt')
+    .sort({ createdAt: 'desc' })
     .populate({
       path: 'source',
       select: 'name photo handler'

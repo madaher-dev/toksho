@@ -18,6 +18,7 @@ router.route('/challengers/:debate').get(debateController.getChallengers);
 router.route('/likers/:debate').get(debateController.getLikers);
 router.route('/debate/:id').get(debateController.getSingleDebate);
 router.route('/test').post(test.downloadVideo);
+
 //Protect all routes after this middleware
 router.use(authController.protect);
 

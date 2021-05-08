@@ -9,6 +9,7 @@ import PickedNotification from '../../components/Notifications/PickedNotificatio
 import ReadyYourNotification from '../../components/Notifications/ReadyYourNotification';
 import ReadyNotification from '../../components/Notifications/ReadyNotification';
 import CommentNotification from '../../components/Notifications/CommentNotification';
+import JoinNotification from '../../components/Notifications/JoinNotification';
 
 const Notifications = ({ getMyNotifications, notifications, user }) => {
   useEffect(() => {
@@ -55,6 +56,12 @@ const Notifications = ({ getMyNotifications, notifications, user }) => {
               <CommentNotification
                 key={notification._id + 1}
                 source={notification.source}
+                debate={notification.debate}
+              />
+            ) : notification.notType === 'join' ? (
+              <JoinNotification
+                key={notification._id + 1}
+                source={user}
                 debate={notification.debate}
               />
             ) : null

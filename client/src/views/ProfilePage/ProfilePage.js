@@ -18,6 +18,8 @@ import NavPills from '../../material/NavPills/NavPills.js';
 import Parallax from '../../material/Parallax/Parallax.js';
 import { Link } from 'react-router-dom';
 
+import NotFound from '../../pages/NotFound';
+
 import studio1 from '../../assets/img/examples/studio-1.jpg';
 import studio3 from '../../assets/img/examples/studio-3.jpg';
 import work1 from '../../assets/img/examples/olu-eletu.jpg';
@@ -56,7 +58,7 @@ const ProfilePage = props => {
   const { ...rest } = props;
   const [myPage, setMyPage] = useState(false);
   useEffect(() => {
-    if (user.handler === profile || !profile) {
+    if ((user && user.handler === profile) || (user && !profile)) {
       setMyPage(true);
       setLoading();
       getMyDebates();
@@ -80,9 +82,9 @@ const ProfilePage = props => {
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
   const myProfileImage =
-    user.photo === 'null'
+    user?.photo === 'null'
       ? '/static/images/avatars/default-profile.png'
-      : user.photo;
+      : user?.photo;
   let userProfileImage;
   if (userProfile) {
     userProfileImage =
@@ -92,7 +94,7 @@ const ProfilePage = props => {
   }
 
   if (noProfile) {
-    return <NoProfile />;
+    return <NotFound />;
   } else {
     return (
       <div>
@@ -124,7 +126,7 @@ const ProfilePage = props => {
                     <div className={classes.name}>
                       <h3 className={classes.title}>
                         {myPage && user
-                          ? user.name
+                          ? user?.name
                           : userProfile
                           ? userProfile.name
                           : null}
@@ -132,12 +134,12 @@ const ProfilePage = props => {
                       <p>
                         {myPage && user ? '@' : userProfile ? '@' : null}
                         {myPage && user
-                          ? user.handler
+                          ? user?.handler
                           : userProfile
                           ? userProfile.handler
                           : null}
                       </p>
-                      {user.twitter && (
+                      {user?.twitter && (
                         <Button justIcon link className={classes.margin5}>
                           <a
                             target="_blank"
@@ -149,7 +151,7 @@ const ProfilePage = props => {
                           </a>
                         </Button>
                       )}
-                      {user.instagram && (
+                      {user?.instagram && (
                         <Button justIcon link className={classes.margin5}>
                           <a
                             target="_blank"
@@ -161,7 +163,7 @@ const ProfilePage = props => {
                           </a>
                         </Button>
                       )}
-                      {user.facebook && (
+                      {user?.facebook && (
                         <Button justIcon link className={classes.margin5}>
                           <a
                             target="_blank"
@@ -173,7 +175,7 @@ const ProfilePage = props => {
                           </a>
                         </Button>
                       )}
-                      {user.linkedIn && (
+                      {user?.linkedIn && (
                         <Button justIcon link className={classes.margin5}>
                           <a
                             target="_blank"
@@ -185,10 +187,10 @@ const ProfilePage = props => {
                           </a>
                         </Button>
                       )}
-                      {!user.facebook &&
-                        !user.linkedIn &&
-                        !user.twitter &&
-                        !user.instagram &&
+                      {!user?.facebook &&
+                        !user?.linkedIn &&
+                        !user?.twitter &&
+                        !user?.instagram &&
                         myPage && (
                           <Link to="/settings" style={{ color: '#A74A5A' }}>
                             <p>Add your Social Portfolio...</p>
@@ -295,7 +297,6 @@ const ProfilePage = props => {
                         )
                       }
                     ]}
-                    style={{ backgroundColor: 'red' }}
                   />
                 </GridItem>
               </GridContainer>

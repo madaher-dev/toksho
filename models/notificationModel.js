@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
 
 const notificationSchema = mongoose.Schema(
   {
     notType: String,
     createdAt: {
       type: Date,
-      default: Date.now()
-      // select: false //does not return field in select query
+      default: Date.now
     },
 
     user: {

@@ -11,6 +11,7 @@ import MyDebates from './MyDebates/MyDebates';
 import Debate from './Debate/Debate';
 import Watch from './Watch/Watch';
 import Settings from './Settings/Settings';
+import Search from './Search/Search';
 import Notifications from './Notifications/Notifications';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -74,6 +75,8 @@ const Welcome = ({ user, page, profile, match }) => {
         <Watch />
       ) : page === 'settings' ? (
         <Settings />
+      ) : page === 'search' ? (
+        <Search />
       ) : page === 'notifications' ? (
         <Notifications />
       ) : (

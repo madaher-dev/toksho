@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import NotAuthProfile from '../../views/ProfilePage/NotAuthProfile';
+import ProfilePage from '../../views/ProfilePage/ProfilePage';
 import Welcome from '../Welcome';
 
 import { checkUser, setLoading } from '../../store/actions/userActions';
@@ -45,7 +45,7 @@ const Profile = ({
           <CircularProgress color="inherit" />
         </Backdrop>
       ) : (
-        <NotAuthProfile />
+        <ProfilePage profile={match.params.handler} />
       )}
     </div>
   );

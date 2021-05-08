@@ -1,5 +1,5 @@
 const AppError = require('../utils/appError');
-const APIFeatures = require('./../utils/APIFeatures');
+
 const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 const axios = require('axios').default;

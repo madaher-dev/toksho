@@ -7,6 +7,8 @@ const catchAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
 const Pusher = require('pusher');
 const google = require('../utils/google');
+const schedule = require('node-schedule');
+const Email = require('../utils/email');
 
 // Pusher
 
@@ -89,7 +91,7 @@ exports.getDebatesByHandler = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ handler: req.params.handler });
   const features = new APIFeatures(
     Debate.find({
-      $or: [{ user: user._id }, { guests: user._id }]
+      $or: [{ user: user._id }, { guests: user?._id }]
     }),
     req.query
   )
@@ -223,7 +225,7 @@ exports.like = catchAsync(async (req, res, next) => {
 
 // Set debate as ready
 exports.setReady = catchAsync(async (req, res, next) => {
-  const updatedDebate = await Debate.findOneAndUpdate(
+  let updatedDebate = await Debate.findOneAndUpdate(
     { _id: req.params.debate },
     { status: 'ready' },
     { new: true }
@@ -244,6 +246,10 @@ exports.setReady = catchAsync(async (req, res, next) => {
     path: 'source',
     select: 'name photo handler'
   });
+  updatedDebate = await Debate.populate(updatedDebate, {
+    path: 'guests',
+    select: 'name photo handler email'
+  });
 
   const owner = await User.findByIdAndUpdate(
     updatedDebate.user,
@@ -255,11 +261,33 @@ exports.setReady = catchAsync(async (req, res, next) => {
   pusher.trigger(`private-${owner.handler}`, 'notification', {
     notification
   });
+
+  // Schedule Join Notification for host
+  let scheduledDate = new Date(updatedDebate.schedule.getTime() - 15 * 60000);
+
+  schedule.scheduleJob(
+    `${updatedDebate._id}_${req.user._id}`, //Job name, prefered to be unique
+    scheduledDate, // 2020-05-02T12:52:00.000Z
+    function() {
+      sendJoinNotification(req.user._id, updatedDebate._id);
+    }
+  );
+  const debateLink = `https://www.toksho.me/${updatedDebate._id}`;
   // Create Notification for every guest
+
   Promise.all(
-    updatedDebate.guests.map(guest =>
-      sendReadyNotification(guest, req.user._id, updatedDebate)
-    )
+    updatedDebate.guests.map(guest => {
+      sendReadyNotification(guest, req.user._id, updatedDebate);
+
+      schedule.scheduleJob(
+        `${updatedDebate._id}_${guest._id}`, //Job name, prefered to be unique
+        scheduledDate, // 2020-05-02T12:52:00.000Z
+        function() {
+          sendJoinNotification(guest._id, updatedDebate._id);
+          new Email(guest, debateLink).sendJoin();
+        }
+      );
+    })
   );
 
   res.status(201).json({
@@ -474,4 +502,27 @@ const sendReadyNotification = async (guest, user, debate) => {
   pusher.trigger(`private-${owner.handler}`, 'notification', {
     notification: guestNotification
   });
+};
+
+const sendJoinNotification = async (user, debate) => {
+  const currentDebate = await Debate.findById(debate);
+  if (currentDebate.status === 'ready') {
+    let joinNotification = await Notification.create({
+      user,
+      notType: 'join',
+      debate
+    });
+
+    const owner = await User.findByIdAndUpdate(
+      user,
+      {
+        $inc: { notifications: 1 }
+      },
+      { new: true }
+    );
+
+    pusher.trigger(`private-${owner.handler}`, 'notification', {
+      notification: joinNotification
+    });
+  }
 };

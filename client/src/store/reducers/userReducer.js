@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
   function upsert(array, item) {
     // (1)
     // make a copy of the existing array
-    let newArray = array.slice();
+    let newArray = array?.slice();
 
     const i = newArray.findIndex(_item => _item._id === item._id);
     if (i > -1) {
@@ -69,6 +69,7 @@ export default (state = initialState, action) => {
         ...state,
         user: action.payload.data.user,
         loading: false,
+        error: null,
         step: 2
       };
     case HANDLER_ADDED: //Completed step 3 of registration

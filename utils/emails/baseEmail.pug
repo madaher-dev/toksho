@@ -1,0 +1,51 @@
+//- Email template adapted from https://github.com/leemunroe/responsive-html-email-template
+//- Converted from HTML using https://html2pug.now.sh/
+
+doctype html
+html
+  head
+    meta(name='viewport', content='width=device-width')
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title= subject
+
+    include _style
+  body
+    div(style='border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;')
+      // <![endif]
+      .img-container.center.fixedwidth(align='center' style='padding-right: 0px;padding-left: 0px;')
+        //if mso
+          table(width='100%' cellpadding='0' cellspacing='0' border='0')
+            tr(style='line-height:0px')
+              td(style='padding-right: 0px;padding-left: 0px;' align='center')
+        img.center.fixedwidth(align='center' border='0' src='https://toksho.me/favicon.ico' alt='your-logo' title='your-logo' style='text-decoration: none; -ms-interpolation-mode: bicubic; height: auto; border: 0; width: 100%; max-width: 125px; display: block;' width='125')
+        div(style='font-size:1px;line-height:10px') &nbsp;
+
+    table.body(role='presentation', border='0', cellpadding='0', cellspacing='0')
+      tbody
+        tr
+          td
+          td.container
+            .content
+              // START CENTERED WHITE CONTAINER
+              table.main(role='presentation')
+
+                // START MAIN AREA
+                tbody
+                  tr
+                    td.wrapper
+                      table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                          tr
+                            td
+                              // CONTENT
+                              block content
+
+              // START FOOTER
+              .footer
+                table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                  tbody
+                    tr
+                      td.content-block
+                        span.apple-link Toksho - An Online Video Debate Platform!
+                       
+          //- td  

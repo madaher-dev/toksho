@@ -273,9 +273,17 @@ const NewDebateView = ({
                     <GridContainer>
                       {debate.topics &&
                         debate.topics.map(topic => (
-                          <Badge color="primary" key={topic}>
-                            {topic}
-                          </Badge>
+                          <Link
+                            onClick={event => {
+                              event.stopPropagation();
+                              //event.preventDefault();
+                            }}
+                            to={`/search?topic=${topic}`}
+                            //className={classes.link}
+                            key={topic}
+                          >
+                            <Badge color="primary">{topic}</Badge>
+                          </Link>
                         ))}
                     </GridContainer>
                   </GridItem>

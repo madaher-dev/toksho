@@ -56,8 +56,8 @@ const profilePageStyle = {
   navWrapper: {
     //margin: '20px auto 50px auto',
     margin: 0,
-    padding: 0,
-    textAlign: 'center'
+    padding: 0
+    //textAlign: 'center',
     //backgroundColor: 'yellow'
   }
 };

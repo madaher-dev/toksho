@@ -54,7 +54,7 @@ const DebateCard = ({
 
   var now = Moment(); //todays date
   // var sched = Moment(debate.schedule); // schedule date
-  var created = Moment(debate.createdAt); // schedule date
+  var created = Moment(debate?.createdAt); // schedule date
   var duration = Moment.duration(now.diff(created));
   var days = Math.floor(duration.asDays());
   var hours = Math.floor(duration.asHours());
@@ -62,22 +62,22 @@ const DebateCard = ({
   var secs = Math.floor(duration.asSeconds());
 
   const handleLike = () => {
-    setLikeLoading(debate._id);
-    like(debate._id);
+    setLikeLoading(debate?._id);
+    like(debate?._id);
   };
   const handleUnLike = () => {
-    setLikeLoading(debate._id);
-    unlike(debate._id);
+    setLikeLoading(debate?._id);
+    unlike(debate?._id);
   };
   const handleJoin = () => {
-    setJoin(debate._id);
+    setJoin(debate?._id);
   };
   let profileImage;
-  if (debate.user) {
+  if (debate?.user) {
     profileImage =
-      debate.user.photo === 'null'
+      debate?.user.photo === 'null'
         ? '/static/images/avatars/default-profile.png'
-        : debate.user.photo;
+        : debate?.user.photo;
   } else {
     profileImage = '/static/images/avatars/default-profile.png';
   }
@@ -85,38 +85,44 @@ const DebateCard = ({
   const guestList = debate?.guests.map(guest => guest?._id);
 
   let myDebate;
-  if (debate.user._id === user._id || guestList?.includes(user?._id))
+  if (debate?.user._id === user?._id || guestList?.includes(user?._id))
     myDebate = true;
 
-  const live = debate.status === 'joined' ? true : false;
-  const joined = debate.joinedUsers?.includes(user._id);
+  const live = debate?.status === 'joined' ? true : false;
+  const joined = debate?.joinedUsers?.includes(user?._id);
 
   if (
     joined &&
-    new Date(debate.endDate) > Date.now() &&
-    debate.status !== 'ended' &&
-    debate.status !== 'videoReady'
+    new Date(debate?.endDate) > Date.now() &&
+    debate?.status !== 'ended' &&
+    debate?.status !== 'videoReady'
   ) {
-    return <Redirect to={`/debates/${debate._id}`} />;
+    return <Redirect to={`/debates/${debate?._id}`} />;
   }
 
   let abandoned;
-  if (new Date(debate.endDate) < Date.now() && debate.status === 'ready')
+  if (new Date(debate?.endDate) < Date.now() && debate?.status === 'ready')
     abandoned = true;
 
   let title;
   if (abandoned) title = 'Abandoned';
-  else if (debate.status === 'ready') title = 'Upcomming';
-  else if (debate.status === 'joined' && new Date(debate.endDate) < Date.now())
+  else if (debate?.status === 'ready') title = 'Upcomming';
+  else if (
+    debate?.status === 'joined' &&
+    new Date(debate?.endDate) < Date.now()
+  )
     title = 'Ended';
-  else if (debate.status === 'joined' && new Date(debate.endDate) > Date.now())
+  else if (
+    debate?.status === 'joined' &&
+    new Date(debate?.endDate) > Date.now()
+  )
     title = 'Live';
 
   return (
     <Card>
       <CardActionArea
         component="span"
-        onClick={() => history.push(`/debates/${debate._id}`)}
+        onClick={() => history.push(`/debates/${debate?._id}`)}
         disableRipple={true}
       >
         <GridItem>
@@ -143,13 +149,13 @@ const DebateCard = ({
                             event.stopPropagation();
                             //event.preventDefault();
                           }}
-                          to={`/${debate.user?.handler}`}
+                          to={`/${debate?.user.handler}`}
                           className={classes.link}
                         >
                           {' '}
-                          <strong>{debate.user?.name} </strong>
+                          <strong>{debate?.user?.name} </strong>
                         </Link>
-                        @{debate.user?.handler}{' '}
+                        @{debate?.user?.handler}{' '}
                         {hours >= 24
                           ? days
                           : mins >= 60
@@ -172,7 +178,7 @@ const DebateCard = ({
                         >
                           <GridItem zeroMinWidth>
                             <h4 style={{ overflowWrap: 'break-word' }}>
-                              <strong>{debate.title}</strong>
+                              <strong>{debate?.title}</strong>
                             </h4>
                           </GridItem>
                         </GridContainer>
@@ -187,7 +193,7 @@ const DebateCard = ({
                               className={classes.description}
                               style={{ overflowWrap: 'break-word' }}
                             >
-                              {debate.synopsis}
+                              {debate?.synopsis}
                             </p>
                           </GridItem>
                         </GridContainer>
@@ -199,15 +205,15 @@ const DebateCard = ({
                       <GridItem xs={12} md={6}>
                         <p>
                           <strong>Date: </strong>
-                          {Moment(debate.schedule).format('DD MMM YYYY')}
+                          {Moment(debate?.schedule).format('DD MMM YYYY')}
                         </p>
                         <p>
                           <strong>Time: </strong>
-                          {Moment(debate.schedule).format('h:mm A')}
+                          {Moment(debate?.schedule).format('h:mm A')}
                         </p>
                         <p>
                           <strong>Language: </strong>
-                          {debate.language}
+                          {debate?.language}
                         </p>
                       </GridItem>
                       <GridItem
@@ -219,18 +225,18 @@ const DebateCard = ({
                           <GridItem className={classes.duration}>
                             <p>
                               <strong>Duration: </strong>
-                              {debate.duration === '30'
+                              {debate?.duration === '30'
                                 ? '30 mins'
                                 : debate.duration === '45'
                                 ? '45 mins'
-                                : debate.duration === '60'
+                                : debate?.duration === '60'
                                 ? '1 hr'
                                 : null}
                             </p>
                             <p>
                               <strong>
-                                {debate.challengers &&
-                                  debate.challengers.length}{' '}
+                                {debate?.challengers &&
+                                  debate?.challengers.length}{' '}
                               </strong>
                               Challengers
                             </p>
@@ -253,11 +259,19 @@ const DebateCard = ({
                         }}
                       >
                         <GridContainer>
-                          {debate.topics &&
-                            debate.topics.map(topic => (
-                              <Badge color="primary" key={topic}>
-                                {topic}
-                              </Badge>
+                          {debate?.topics &&
+                            debate?.topics.map(topic => (
+                              <Link
+                                onClick={event => {
+                                  event.stopPropagation();
+                                  //event.preventDefault();
+                                }}
+                                to={`/search?topic=${topic}`}
+                                key={topic}
+                                //className={classes.link}
+                              >
+                                <Badge color="primary">{topic}</Badge>
+                              </Link>
                             ))}
                         </GridContainer>
                       </GridItem>
@@ -311,9 +325,12 @@ const DebateCard = ({
                           unlike={handleUnLike}
                           like={handleLike}
                           debate={debate}
+                          disabled={user ? false : true}
                         />
                         <h4>
-                          {debate.likes.length > 0 ? debate.likes.length : null}
+                          {debate?.likes.length > 0
+                            ? debate?.likes.length
+                            : null}
                         </h4>
                       </GridItem>
                     </GridContainer>
@@ -324,8 +341,8 @@ const DebateCard = ({
           </GridItem>
           <GridItem style={{ marginLeft: 10 }}>
             <Guests
-              guests={debate.guests}
-              schedule={debate.schedule}
+              guests={debate?.guests}
+              schedule={debate?.schedule}
               myDebate={myDebate}
               handleJoin={handleJoin}
               live={live}

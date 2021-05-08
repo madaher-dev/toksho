@@ -23,6 +23,7 @@ class APIFeatures {
     if (this.queryString.sort) {
       // if there is a sort operator in the query
       const sortBy = this.queryString.sort.split(',').join(' '); //enables multiple sorting with ,
+
       this.query = this.query.sort(sortBy); //sort by
     } else {
       this.query = this.query.sort('-createdAt'); //sort by created date if no sorting requested

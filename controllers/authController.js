@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
-const sendEmail = require('./../utils/email');
+const Email = require('../utils/email');
 
 const signToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -54,21 +54,8 @@ exports.resendEmail = catchAsync(async (req, res, next) => {
 
   // 3) Send it to user's email
 
-  const message =
-    'Please use the following code to validate your email:\n\n' +
-    `${confirmToken}.\n`;
-
-  const html_message =
-    `<p> Please use the following code to validate your email:\n\n` +
-    `<p>${confirmToken}.\n`;
-
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Confirm your Email',
-      message,
-      html_message
-    });
+    await new Email(user, confirmToken).sendWelcome();
 
     user.password = undefined;
 
@@ -102,38 +89,18 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   // 3) Send it to user's email
 
-  const message =
-    'Please use the following code to validate your email:\n\n' +
-    `${confirmToken}.\n`;
+  //const url = `${req.protocol}://${req.get('host')}/me`;
+  // console.log(url);
+  await new Email(newUser, confirmToken).sendWelcome();
 
-  const html_message =
-    `<p> Please use the following code to validate your email:\n\n` +
-    `<p>${confirmToken}.\n`;
+  newUser.password = undefined;
 
-  try {
-    await sendEmail({
-      email: newUser.email,
-      subject: 'Confirm your Email',
-      message,
-      html_message
-    });
-
-    newUser.password = undefined;
-
-    res.status('200').json({
-      status: 'success',
-      data: {
-        user: newUser
-      }
-    });
-  } catch (err) {
-    await newUser.remove();
-
-    return next(
-      new AppError('There was an error sending the email. Try again later!'),
-      500
-    );
-  }
+  res.status('200').json({
+    status: 'success',
+    data: {
+      user: newUser
+    }
+  });
 });
 
 exports.validateEmail = catchAsync(async (req, res, next) => {
@@ -260,29 +227,18 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send it to user's email
   const resetURL = `${req.protocol}://${req.get('host')}/reset/${resetToken}`;
-  const message =
-    'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-    'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n' +
-    `${resetURL}.\n` +
-    `If you didn't forget your password, please ignore this email!`;
-  const html_message =
-    '<p> You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-    'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n' +
-    `<a href="${resetURL}">${resetURL}</a>\n` +
-    `If you didn't forget your password, please ignore this email!</p>`;
+
   try {
-    await sendEmail({
-      email: user.email,
-      subject: 'Your password reset token (valid for 1 hr)',
-      message,
-      html_message
-    });
+    //const url = `${req.protocol}://${req.get('host')}/me`;
+    // console.log(url);
+    await new Email(user, resetURL).sendPasswordReset();
 
     res.status(200).json({
       status: 'success',
       message: 'Token sent to email!'
     });
   } catch (err) {
+    console.log(err);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });

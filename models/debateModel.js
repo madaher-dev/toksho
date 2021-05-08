@@ -17,7 +17,7 @@ const debateSchema = mongoose.Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now()
+      default: Date.now
     },
     schedule: Date,
     endDate: Date,

@@ -11,7 +11,7 @@ const useStyles = makeStyles(styles);
 const LikeButton = ({ like, unlike, user, debate, likeLoading, disabled }) => {
   const classes = useStyles();
   let liked;
-  console.log(disabled);
+
   if (debate.likes) liked = debate.likes.includes(user?._id);
   let loading;
   if (likeLoading === debate._id) loading = true;
