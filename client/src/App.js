@@ -20,7 +20,7 @@ import NotVerified from './components/auth/NotVerified';
 import Forgot from './pages/Home/Forgot';
 import ResetPassword from './components/auth/ResetPassword';
 import Profile from './pages/Profile/Profile';
-//import Test from './Test2';
+import Test from './Test';
 
 import './assets/scss/material-kit-react.scss?v=1.9.0';
 import '@voxeet/react-components/dist/voxeet-react-components.css';
@@ -58,7 +58,7 @@ function App() {
                   <Route exact path="/" component={Landing} />
                   <Route path="/signup/:open" component={Landing} />
                   <Route exact path="/login" component={Login} />
-                  {/* <Route exact path="/test" component={Test} /> */}
+                  <Route exact path="/test" component={Test} />
                   <PrivateRoute
                     exact
                     path="/home"

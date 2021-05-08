@@ -12,3 +12,6 @@ export const getSearchTopic = topic =>
     'GET_SEARCH',
     'GET_SEARCH_ERROR'
   );
+
+export const getTopicsCloud = () =>
+  factory.get(`/api/v1/debates/topics`, 'GET_TOPICS', 'GET_TOPICS_ERROR');

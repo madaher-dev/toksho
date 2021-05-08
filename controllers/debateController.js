@@ -478,6 +478,42 @@ exports.validateBody = (req, res, next) => {
   next();
 };
 
+// Get Topics for cloud
+
+exports.getTopics = catchAsync(async (req, res, next) => {
+  let topics = await Debate.aggregate([
+    { $project: { topics: 1 } },
+    { $unwind: '$topics' },
+    { $group: { _id: '$topics', count: { $sum: 1 } } }
+  ]);
+  topics = topics.map(topic => {
+    topic.value = topic._id;
+    delete topic._id;
+    return topic;
+  });
+
+  function compare(a, b) {
+    if (a.count > b.count) {
+      return -1;
+    }
+    if (a.count < b.count) {
+      return 1;
+    }
+    return 0;
+  }
+
+  topics.sort(compare);
+
+  topics = topics.slice(0, 10);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      topics
+    }
+  });
+});
+
 const sendReadyNotification = async (guest, user, debate) => {
   let guestNotification = await Notification.create({
     user: guest,
