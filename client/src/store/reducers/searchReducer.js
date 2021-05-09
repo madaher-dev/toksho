@@ -1,14 +1,15 @@
 import {
   SET_SEARCH_LOADING,
   GET_SEARCH,
-  GET_SEARCH_ERROR,
+  SEARCH_ERROR,
   GET_TOPICS,
-  GET_TOPICS_ERROR
+  GET_SEARCH_USERS
 } from '../actions/Types';
 
 const initialState = {
   debates: [],
   topics: [],
+  users: [],
   error: null,
   loading: false
 };
@@ -27,6 +28,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         topics: action.payload.data.topics,
+        loading: false,
+        error: null
+      };
+    case GET_SEARCH_USERS:
+      return {
+        ...state,
+        users: action.payload.data.users,
         loading: false,
         error: null
       };

@@ -19,6 +19,7 @@ router.route('/likers/:debate').get(debateController.getLikers);
 router.route('/debate/:id').get(debateController.getSingleDebate);
 router.route('/test').post(test.downloadVideo);
 router.route('/topics').get(debateController.getTopics);
+router.route('/search').get(debateController.getSearchDebate);
 //Protect all routes after this middleware
 router.use(authController.protect);
 

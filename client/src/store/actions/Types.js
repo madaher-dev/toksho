@@ -85,6 +85,6 @@ export const PULL_COMMENTS = 'PULL_COMMENTS';
 
 export const SET_SEARCH_LOADING = 'SET_SEARCH_LOADING';
 export const GET_SEARCH = 'GET_SEARCH';
-export const GET_SEARCH_ERROR = 'GET_SEARCH_ERROR';
+export const SEARCH_ERROR = 'SEARCH_ERROR';
 export const GET_TOPICS = 'GET_TOPICS';
-export const GET_TOPICS_ERROR = 'GET_TOPICS_ERROR';
+export const GET_SEARCH_USERS = 'GET_SEARCH_USERS';

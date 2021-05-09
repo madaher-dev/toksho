@@ -514,6 +514,34 @@ exports.getTopics = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getSearchDebate = catchAsync(async (req, res, next) => {
+  //127.0.0.1:8000/api/v1/resource?sort=price,-duration&duration[gte]=5&difficulty=easy
+  //-price for desending
+  //,duration as a second sorting operator in case of tie
+
+  const features = new APIFeatures(Debate.find(), {
+    $or: [
+      { title: { $regex: req.query.q, $options: 'i' } },
+      { synopsis: { $regex: req.query.q, $options: 'i' } }
+    ]
+    // page: 1 - can add different fileds to query object according to API Features
+  })
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  let filteredDebates = await features.query; //7ikmet rabina
+
+  // Send responce
+  res.status(200).json({
+    status: 'success',
+    data: {
+      debates: filteredDebates
+    }
+  });
+});
+
 const sendReadyNotification = async (guest, user, debate) => {
   let guestNotification = await Notification.create({
     user: guest,

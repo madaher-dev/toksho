@@ -1,10 +1,11 @@
 import React from 'react';
 import TagCloud from './TagCloud';
+import SearchBar from './SearchBar';
 
 const SideBar = () => {
   return (
     <div>
-      <div>Side Bar</div>
+      <SearchBar />
       <TagCloud />
     </div>
   );

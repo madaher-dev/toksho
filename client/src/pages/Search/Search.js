@@ -13,14 +13,21 @@ import MuiAlert from '@material-ui/lab/Alert';
 
 import {
   getSearchTopic,
-  setSearchLoading
+  setSearchLoading,
+  getSearch
 } from '../../store/actions/searchActions';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const Search = ({ getSearchTopic, debates, loading, setSearchLoading }) => {
+const Search = ({
+  getSearchTopic,
+  debates,
+  loading,
+  setSearchLoading,
+  getSearch
+}) => {
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -40,14 +47,19 @@ const Search = ({ getSearchTopic, debates, loading, setSearchLoading }) => {
 
   let query = useQuery();
   let searchQuery;
-  if (query.get('topic')) searchQuery = query.get('topic');
+  let searchTopic;
+  if (query.get('topic')) searchTopic = query.get('topic');
+  if (query.get('search')) searchQuery = query.get('search');
 
   useEffect(() => {
-    if (searchQuery) {
+    if (searchTopic) {
       setSearchLoading();
-      getSearchTopic(searchQuery);
+      getSearchTopic(searchTopic);
+    } else if (searchQuery) {
+      setSearchLoading();
+      getSearch(searchQuery);
     }
-  }, [searchQuery, getSearchTopic, setSearchLoading]);
+  }, [searchTopic, getSearchTopic, setSearchLoading, searchQuery, getSearch]);
 
   return (
     <Grid container>
@@ -83,7 +95,8 @@ const Search = ({ getSearchTopic, debates, loading, setSearchLoading }) => {
 
 Search.propTypes = {
   getSearchTopic: PropTypes.func.isRequired,
-  setSearchLoading: PropTypes.func.isRequired
+  setSearchLoading: PropTypes.func.isRequired,
+  getSearch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -93,5 +106,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getSearchTopic,
-  setSearchLoading
+  setSearchLoading,
+  getSearch
 })(Search);

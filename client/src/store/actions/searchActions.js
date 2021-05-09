@@ -7,11 +7,21 @@ const factory = require('./actionsFactory');
 export const setSearchLoading = () => ({ type: SET_SEARCH_LOADING });
 
 export const getSearchTopic = topic =>
+  factory.get(`/api/v1/debates?topics=${topic}`, 'GET_SEARCH', 'SEARCH_ERROR');
+
+export const getSearch = query =>
   factory.get(
-    `/api/v1/debates?topics=${topic}`,
+    `/api/v1/debates/search/?q=${query}`,
     'GET_SEARCH',
-    'GET_SEARCH_ERROR'
+    'SEARCH_ERROR'
   );
 
 export const getTopicsCloud = () =>
-  factory.get(`/api/v1/debates/topics`, 'GET_TOPICS', 'GET_TOPICS_ERROR');
+  factory.get(`/api/v1/debates/topics`, 'GET_TOPICS', 'SEARCH_ERROR');
+
+export const getUsers = query =>
+  factory.get(
+    `/api/v1/users/search?q=${query}`,
+    'GET_SEARCH_USERS',
+    'SEARCH_ERROR'
+  );

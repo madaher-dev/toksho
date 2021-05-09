@@ -1,9 +1,8 @@
 const express = require('express');
-
 const router = express.Router();
-
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+
 router.post('/signup', authController.checkExisting, authController.signup);
 router.post('/login', authController.login);
 router.post('/forgotPassword', authController.forgotPassword);
@@ -16,6 +15,7 @@ router.post('/checkHandler', authController.checkHandler);
 router.get('/deleteCookie', authController.deleteCookie);
 router.post('/getProfileByHandler', userController.getProfileByHandler);
 router.get('/profiles/:profile', userController.getProfile);
+router.get('/search', userController.getSearchUser);
 //Protect all routes after this middleware
 router.use(authController.protect);
 

@@ -7,6 +7,7 @@ const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
 const Pusher = require('pusher');
+const APIFeatures = require('./../utils/APIFeatures');
 
 // Pusher
 
@@ -174,6 +175,48 @@ exports.createUser = (req, res) => {
 
 exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
+
+exports.getSearchUser = catchAsync(async (req, res, next) => {
+  //127.0.0.1:8000/api/v1/resource?sort=price,-duration&duration[gte]=5&difficulty=easy
+  //-price for desending
+  //,duration as a second sorting operator in case of tie
+
+  const features = new APIFeatures(User.find(), {
+    $or: [
+      { name: { $regex: req.query.q, $options: 'i' } },
+      { handler: { $regex: req.query.q, $options: 'i' } },
+      { bio: { $regex: req.query.q, $options: 'i' } }
+    ]
+    // page: 1 - can add different fileds to query object according to API Features
+  })
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  let filteredUsers = await features.query; //7ikmet rabina
+
+  filteredUsers = filteredUsers.map(({ _id, name, handler, photo, bio }) => ({
+    id: _id,
+    name,
+    handler,
+    photo,
+    bio
+  }));
+  const searchField = {
+    id: 9999999999999,
+    name: `Search for "${req.query.q}"`,
+    handler: req.query.q
+  };
+  filteredUsers.push(searchField);
+  // Send responce
+  res.status(200).json({
+    status: 'success',
+    data: {
+      users: filteredUsers
+    }
+  });
+});
 
 // Do NOT update passwords with this!
 exports.updateUser = factory.updateOne(User);
