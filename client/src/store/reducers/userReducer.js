@@ -262,7 +262,8 @@ export default (state = initialState, action) => {
         error: null,
         loading: false,
         settingsLoading: false,
-        passwordUpdated: false
+        passwordUpdated: false,
+        linkSent: false
       };
     case SET_SETTINGS_LOADING:
       return {

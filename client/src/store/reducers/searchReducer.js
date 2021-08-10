@@ -3,13 +3,15 @@ import {
   GET_SEARCH,
   SEARCH_ERROR,
   GET_TOPICS,
-  GET_SEARCH_USERS
+  GET_SEARCH_USERS,
+  SET_FILTER
 } from '../actions/Types';
 
 const initialState = {
   debates: [],
   topics: [],
   users: [],
+  filters: { duration: 'All', language: 'All' },
   error: null,
   loading: false
 };
@@ -24,18 +26,21 @@ export default (state = initialState, action) => {
         loading: false,
         error: null
       };
+    case SET_FILTER:
+      return {
+        ...state,
+        filters: action.payload
+      };
     case GET_TOPICS:
       return {
         ...state,
         topics: action.payload.data.topics,
-        loading: false,
         error: null
       };
     case GET_SEARCH_USERS:
       return {
         ...state,
         users: action.payload.data.users,
-        loading: false,
         error: null
       };
 

@@ -88,3 +88,4 @@ export const GET_SEARCH = 'GET_SEARCH';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 export const GET_TOPICS = 'GET_TOPICS';
 export const GET_SEARCH_USERS = 'GET_SEARCH_USERS';
+export const SET_FILTER = 'SET_FILTER';

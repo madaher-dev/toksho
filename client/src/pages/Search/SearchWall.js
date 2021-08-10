@@ -14,12 +14,13 @@ const useStyles = makeStyles(styles);
 const SearchWall = ({ debates, loading, handleOpenSnack }) => {
   const classes = useStyles();
 
+  console.log(loading);
   return (
     <GridContainer spacing={0} className={classes.container}>
       <GridItem>
         <h2>Search Results</h2>
       </GridItem>
-      {debates !== [] && !loading ? (
+      {debates.length > 0 && !loading ? (
         <GridItem xs={12}>
           {debates.map(debate => (
             <div key={debate._id + 1}>
@@ -45,7 +46,9 @@ const SearchWall = ({ debates, loading, handleOpenSnack }) => {
       ) : loading ? (
         <CircularProgress className={classes.wallLoader} />
       ) : (
-        <GridItem xs={12}> </GridItem>
+        <GridItem xs={12}>
+          <p>Your search did not return any results!</p>
+        </GridItem>
       )}
       <Challengers sourcePage={'host'} />
     </GridContainer>

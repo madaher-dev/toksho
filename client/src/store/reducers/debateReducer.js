@@ -21,6 +21,7 @@ import {
   SET_ENDED,
   DEBATE_ENDED,
   GET_ENDED_DEBATES,
+  SET_FILTER,
   LOGOUT
 } from '../actions/Types';
 
@@ -183,6 +184,36 @@ export default (state = initialState, action) => {
         likeLoading: null,
         openModal: false,
         joined: null
+      };
+
+    case SET_FILTER:
+      function filterDebate(debate) {
+        let duration;
+        if (action.payload.duration === '30 mins') duration = 30;
+        else if (action.payload.duration === '45 mins') duration = 45;
+        else if (action.payload.duration === '1 hr') duration = 60;
+
+        if (action.payload.language === 'All') {
+          return debate.duration === duration;
+        } else {
+          if (action.payload.duration === 'All')
+            return debate.language === action.payload.language;
+          else {
+            return (
+              debate.duration === duration &&
+              debate.language === action.payload.language
+            );
+          }
+        }
+      }
+      return {
+        ...state,
+        debates: state.debates.filter(filterDebate),
+        readyDebates: state.readyDebates.filter(filterDebate),
+        myDebates: state.myDebates.filter(filterDebate),
+        userDebates: state.userDebates.filter(filterDebate),
+        liveDebates: state.liveDebates.filter(filterDebate),
+        endedDebates: state.endedDebates.filter(filterDebate)
       };
     case SET_ENDED:
       return {

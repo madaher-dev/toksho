@@ -32,7 +32,12 @@ const SearchBar = ({ getUsers, users }) => {
   // const handleOnFocus = () => {};
 
   return (
-    <div style={{ paddingTop: 20, paddingRight: 20 }}>
+    <div
+      style={{
+        paddingTop: 20,
+        paddingRight: 20
+      }}
+    >
       <ReactSearchAutocomplete
         items={users}
         onSearch={handleOnSearch}
@@ -41,7 +46,7 @@ const SearchBar = ({ getUsers, users }) => {
         //onFocus={handleOnFocus}
         fuseOptions={{ keys: ['name', 'handler', 'bio'], shouldSort: false }}
         placeholder="Search Toksho"
-        styling={{ iconColor: '#A74A5A' }}
+        styling={{ iconColor: '#A74A5A', zIndex: 1000 }}
       />
     </div>
   );

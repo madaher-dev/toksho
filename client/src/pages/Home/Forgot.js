@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = ({
+const Forgot = ({
   forgotPass,
   isAuthenticated,
   error,
@@ -163,7 +163,7 @@ const Login = ({
     );
   }
 };
-Login.propTypes = {
+Forgot.propTypes = {
   forgotPass: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   error: PropTypes.string,
@@ -184,4 +184,4 @@ export default connect(mapStateToProps, {
   clearErrors,
   setAlert,
   setLoading
-})(Login);
+})(Forgot);

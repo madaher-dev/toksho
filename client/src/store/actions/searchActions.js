@@ -1,5 +1,5 @@
-import { SET_SEARCH_LOADING } from './Types';
-import axios from 'axios';
+import { SET_SEARCH_LOADING, SET_FILTER } from './Types';
+
 // const FormData = require('form-data');
 const factory = require('./actionsFactory');
 
@@ -25,3 +25,9 @@ export const getUsers = query =>
     'GET_SEARCH_USERS',
     'SEARCH_ERROR'
   );
+
+//Set Language Filter
+export const setLanguageFilter = filter => ({
+  type: SET_FILTER,
+  payload: filter
+});

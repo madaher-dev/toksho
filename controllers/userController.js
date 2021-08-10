@@ -203,6 +203,9 @@ exports.getSearchUser = catchAsync(async (req, res, next) => {
     photo,
     bio
   }));
+
+  filteredUsers = filteredUsers.slice(0, 9);
+
   const searchField = {
     id: 9999999999999,
     name: `Search for "${req.query.q}"`,
